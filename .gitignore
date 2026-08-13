@@ -1,0 +1,28 @@
+# secrets — never commit
+.env
+*.env
+secrets/
+*.key
+*.pem
+
+# python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+dist/
+build/
+
+# notebooks
+.ipynb_checkpoints/
+
+# os / editors
+.DS_Store
+.vscode/
+.idea/
+
+# data — allow only clearly-synthetic content
+data/*
+!data/synthetic/
+!data/synthetic/**
+!data/README.md
