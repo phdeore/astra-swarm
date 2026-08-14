@@ -33,8 +33,9 @@ def _parse_json(text: str) -> dict:
 
 # --- Step 1: parse a raw alert into structured fields ------------------------
 def parse_alert(raw: str) -> dict:
-    prompt = f"""You are a SOC alert parser. Extract these fields from the raw alert.
-Return ONLY valid JSON. If a field is not present, use an empty string or empty list.
+    prompt = f"""You are a SOC alert parser. Extract these fields from the raw alert. 
+    Return ONLY JSON. No preamble, no code fences, no commentary. If a field is not present, 
+    use an empty string or empty list.
 
 Fields:
 - source_system: the tool/system that emitted it (firewall, EDR, SIEM, WAF, DLP, IAM, etc.)
