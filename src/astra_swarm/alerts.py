@@ -5,6 +5,7 @@ import re
 from typing import Any
 
 from anthropic import Anthropic
+from matplotlib import text
 from .agent_loop import run_with_tools
 
 _client = Anthropic()
@@ -25,10 +26,59 @@ def _ask(prompt: str, system: str | None = None, max_tokens: int = 800) -> str:
     return "".join(b.text for b in resp.content if b.type == "text")
 
 
-def _parse_json(text: str) -> dict:
-    """Best-effort JSON extraction; strips ``` fences if the model adds them."""
-    text = re.sub(r"^\s*```(?:json)?\s*", "", text.strip())
-    text = re.sub(r"\s*```\s*$", "", text)
+def _parse_json(text: str):
+    """Extract a JSON object or array from Claude's output, tolerating prose and code fences."""
+    text = text.strip()
+
+    # Fast path
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+
+    # Strip ''' fences
+    stripped = re.sub(r"^\s*```(?:json)?\s*", "", text)
+    stripped = re.sub(r"\s*```\s*$", "", stripped)
+    try:
+        return json.loads(stripped)
+    except json.JSONDecodeError:
+        pass
+
+    # Anchor on whichever of { or [ appears first]}
+    candidates = [i for i in (text.find("{"), text.find("[")) if i != -1]
+    if not candidates:
+        raise ValueError(f"no JSON object or array found; raw: {text[:300]!r}")
+    start = min(candidates)
+
+    depth, in_string, escape = 0, False, False
+    for i in range(start, len(text)):
+        c = text[i]
+        if escape:
+            escape = False
+            continue
+        if c == "\\":
+            escape = True
+            continue
+        if c == '"':
+            in_string = not in_string
+            continue
+        if in_string:
+            continue
+        if c in "{[":
+            depth += 1
+        elif c in "}]":
+            depth -= 1
+            if depth == 0:
+                candidate = text[start : i + 1]
+                try:
+                    return json.loads(candidate)
+                except json.JSONDecodeError as e:
+                    raise ValueError(
+                        f"extracted JSON is malformed: {e}. "
+                        f"candidate: {candidate[:300]!r}"
+                    ) from e
+        raise ValueError(f"unbalanced brackets; raw: {text[:300]!r}")
+
     return json.loads(text)
 
 
@@ -56,21 +106,23 @@ Raw alert:
 def enrich_with_attack(parsed: dict) -> dict:
     """Ask Claude to identify up to 3 relevant ATT&CK techniques for a parsed alert,
     letting it call the lookup_attack_technique tool as needed."""
-    prompt = f"""You are a SOC analyst. Given the parsed alert below, identify up to 3
-MITRE ATT&CK techniques that best describe the adversary behavior it evidences.
-Use the lookup_attack_technique tool — either by ID if you're confident, or by
-keyword to search — to confirm each technique's details before including it.
+    prompt = f"""Return ONLY a single JSON object. No preamble. No explanation. No markdown
+code fences. No text before or after the JSON. If you have nothing to say, still return
+a valid JSON object with an empty techniques list.
 
-Then return ONLY JSON, no preamble or code fences, with this shape:
+Exact schema:
 {{
   "techniques": [
     {{"id": "T####", "name": "...", "tactics": ["..."], "why_relevant": "one sentence"}},
-    ...
   ],
   "summary": "one sentence tying the techniques to the alert"
 }}
 
-If no technique clearly fits, return {{"techniques": [], "summary": "..."}}.
+Task: identify up to 3 MITRE ATT&CK techniques that best describe the adversary behavior
+in the parsed alert below. You MUST call lookup_attack_technique for every technique you
+cite — either by ID if you're confident, or by keyword to search. Do not cite any technique
+you have not looked up. If no technique clearly fits, return an empty techniques list and
+say so in the summary.
 
 Parsed alert:
 {json.dumps(parsed, indent=2)}
