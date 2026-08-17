@@ -161,14 +161,20 @@ Summary:
 
 # --- The chain ---------------------------------------------------------------
 def triage_chain(raw_alert: str) -> dict:
+    def _step(name, fn):
+        try:
+            return fn()
+        except Exception as e:
+            raise RuntimeError(f"step {name} failed: {type(e).__name__}: {e}") from e
+
     """Run parse → attack enrichment → summarize → assess_severity in sequence."""
-    parsed = parse_alert(raw_alert)
+    parsed = _step("parse_alert", lambda: parse_alert(raw_alert))
     # A light gate — catch a totally-empty parse before wasting more tokens.
     if not parsed.get("description"):
         raise ValueError("parse_alert step returned no description; aborting chain")
-    attack = enrich_with_attack(parsed)
-    summary = summarize(parsed)
-    verdict = assess_severity(parsed, summary)
+    attack = _step("enrich_with_attack", lambda: enrich_with_attack(parsed))
+    summary = _step("summarize", lambda: summarize(parsed))
+    verdict = _step("assess_severity", lambda: assess_severity(parsed, summary))
     return {
         "raw": raw_alert,
         "parsed": parsed,
