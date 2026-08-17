@@ -5,6 +5,7 @@ import re
 from typing import Any
 
 from anthropic import Anthropic
+from .agent_loop import run_with_tools
 
 _client = Anthropic()
 MODEL = "claude-haiku-4-5-20251001"
@@ -52,6 +53,32 @@ Raw alert:
     return _parse_json(_ask(prompt, max_tokens=800))
 
 
+def enrich_with_attack(parsed: dict) -> dict:
+    """Ask Claude to identify up to 3 relevant ATT&CK techniques for a parsed alert,
+    letting it call the lookup_attack_technique tool as needed."""
+    prompt = f"""You are a SOC analyst. Given the parsed alert below, identify up to 3
+MITRE ATT&CK techniques that best describe the adversary behavior it evidences.
+Use the lookup_attack_technique tool — either by ID if you're confident, or by
+keyword to search — to confirm each technique's details before including it.
+
+Then return ONLY JSON, no preamble or code fences, with this shape:
+{{
+  "techniques": [
+    {{"id": "T####", "name": "...", "tactics": ["..."], "why_relevant": "one sentence"}},
+    ...
+  ],
+  "summary": "one sentence tying the techniques to the alert"
+}}
+
+If no technique clearly fits, return {{"techniques": [], "summary": "..."}}.
+
+Parsed alert:
+{json.dumps(parsed, indent=2)}
+"""
+    result = run_with_tools(prompt, max_rounds=6, max_tokens=1500)
+    return _parse_json(result["final_text"])
+
+
 # --- Step 2: summarize in analyst voice --------------------------------------
 def summarize(parsed: dict) -> str:
     prompt = f"""You are a Tier 1 SOC analyst. Given this parsed alert, write a 2-3 sentence
@@ -82,14 +109,21 @@ Summary:
 
 # --- The chain ---------------------------------------------------------------
 def triage_chain(raw_alert: str) -> dict:
-    """Run parse → summarize → assess_severity in sequence."""
+    """Run parse → attack enrichment → summarize → assess_severity in sequence."""
     parsed = parse_alert(raw_alert)
     # A light gate — catch a totally-empty parse before wasting more tokens.
     if not parsed.get("description"):
         raise ValueError("parse_alert step returned no description; aborting chain")
+    attack = enrich_with_attack(parsed)
     summary = summarize(parsed)
     verdict = assess_severity(parsed, summary)
-    return {"raw": raw_alert, "parsed": parsed, "summary": summary, "verdict": verdict}
+    return {
+        "raw": raw_alert,
+        "parsed": parsed,
+        "attack": attack,
+        "summary": summary,
+        "verdict": verdict,
+    }
 
 
 # --- Synthetic alert generator (for Day 2 fixtures) --------------------------
