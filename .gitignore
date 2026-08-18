@@ -29,5 +29,6 @@ data/*
 !data/synthetic/**
 !data/README.md
 
-# logs
+# Others
 logs/*
+cassettes/*
