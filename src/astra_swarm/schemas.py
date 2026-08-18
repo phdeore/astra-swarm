@@ -8,21 +8,40 @@ from datetime import datetime, timezone
 from enum import Enum
 from typing import Optional, Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
+
+_UNSUPPORTED_KEYWORDS = {
+    "minimum",
+    "maximum",
+    "exclusiveMinimum",
+    "exclusiveMaximum",
+    "minLength",
+    "maxLength",
+    "pattern",
+    "minItems",
+    "maxItems",
+    "uniqueItems",
+    "format",
+    "multipleOf",
+}
 
 
 def to_strict_schema(model_cls: type[BaseModel]) -> dict[str, Any]:
     """Produce an Anthropic-strict-mode-compatible JSON Schema from a Pydantic model.
 
-    Two adjustments to what Pydantic emits by default:
+    Adjustments:
       1. Every object gets `additionalProperties: false`.
-      2. Every property is added to `required` (Anthropic strict mode requires this).
+      2. Every property is added to `required`.
+      3. Keywords the strict grammar does not support are stripped
+         (enforcement stays client-side via Pydantic validators).
     """
     schema = model_cls.model_json_schema()
 
     def _tighten(node: Any) -> None:
         if not isinstance(node, dict):
             return
+        for kw in _UNSUPPORTED_KEYWORDS & node.keys():
+            del node[kw]
         if node.get("type") == "object" and "properties" in node:
             node["required"] = list(node["properties"].keys())
             node["additionalProperties"] = False
@@ -148,10 +167,13 @@ class AttackEnrichment(BaseModel):
 
 
 class SeverityVerdict(BaseModel):
-    """Output shape of assess_severity."""
-
-    severity: Severity  # existing enum from Day 1
+    severity: Severity
     rationale: str = Field(description="One sentence explaining the severity choice")
-    confidence: float = Field(ge=0.0, le=1.0, description="0.0 to 1.0")
-    # NOTE: `ge` and `le` are Pydantic constraints only. The Anthropic grammar
-    # cannot enforce numeric bounds — this is why client-side validation matters.
+    confidence: float = Field(description="0.0 to 1.0")
+
+    @field_validator("confidence")
+    @classmethod
+    def _confidence_in_range(cls, v: float) -> float:
+        if not 0.0 <= v <= 1.0:
+            raise ValueError(f"confidence must be in [0.0, 1.0], got {v}")
+        return v
