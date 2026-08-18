@@ -6,9 +6,41 @@ from __future__ import annotations
 import uuid
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Optional
+from typing import Optional, Any
 
 from pydantic import BaseModel, Field
+
+
+def to_strict_schema(model_cls: type[BaseModel]) -> dict[str, Any]:
+    """Produce an Anthropic-strict-mode-compatible JSON Schema from a Pydantic model.
+
+    Two adjustments to what Pydantic emits by default:
+      1. Every object gets `additionalProperties: false`.
+      2. Every property is added to `required` (Anthropic strict mode requires this).
+    """
+    schema = model_cls.model_json_schema()
+
+    def _tighten(node: Any) -> None:
+        if not isinstance(node, dict):
+            return
+        if node.get("type") == "object" and "properties" in node:
+            node["required"] = list(node["properties"].keys())
+            node["additionalProperties"] = False
+            for prop in node["properties"].values():
+                _tighten(prop)
+        for key in ("anyOf", "allOf", "oneOf"):
+            if key in node:
+                for s in node[key]:
+                    _tighten(s)
+        if "items" in node:
+            _tighten(node["items"])
+        for defs_key in ("$defs", "definitions"):
+            if defs_key in node:
+                for s in node[defs_key].values():
+                    _tighten(s)
+
+    _tighten(schema)
+    return schema
 
 
 class AlertClass(str, Enum):
@@ -79,3 +111,47 @@ class Incident(BaseModel):
     recommended_response: str
     proposed_actions: list[ProposedAction] = Field(default_factory=list)
     requires_human_approval: bool = True
+
+
+class ParsedAlert(BaseModel):
+    """Output shape of parse_alert — the raw-alert-to-structured-fields step."""
+
+    source_system: str = Field(description="Tool/system that emitted the alert")
+    timestamp: str = Field(description="When the event occurred, verbatim from alert")
+    entities_users: list[str] = Field(description="Users, usernames, emails")
+    entities_hosts: list[str] = Field(description="Hostnames")
+    entities_ips: list[str] = Field(description="IP addresses")
+    indicators: list[str] = Field(
+        description="Suspicious values — hashes, domains, ports, techniques"
+    )
+    description: str = Field(description="One-sentence factual summary")
+
+
+class AttackTechniqueCitation(BaseModel):
+    """One MITRE ATT&CK technique cited by the enrichment step."""
+
+    id: str = Field(description="Technique ID like T1078 or T1078.001")
+    name: str = Field(description="Technique name")
+    tactics: list[str] = Field(description="Associated MITRE ATT&CK tactic names")
+    why_relevant: str = Field(
+        description="One sentence connecting technique to the alert"
+    )
+
+
+class AttackEnrichment(BaseModel):
+    """Output shape of enrich_with_attack."""
+
+    techniques: list[AttackTechniqueCitation] = Field(
+        description="Up to 3 cited techniques; may be empty if none clearly fit"
+    )
+    summary: str = Field(description="One sentence tying techniques to the alert")
+
+
+class SeverityVerdict(BaseModel):
+    """Output shape of assess_severity."""
+
+    severity: Severity  # existing enum from Day 1
+    rationale: str = Field(description="One sentence explaining the severity choice")
+    confidence: float = Field(ge=0.0, le=1.0, description="0.0 to 1.0")
+    # NOTE: `ge` and `le` are Pydantic constraints only. The Anthropic grammar
+    # cannot enforce numeric bounds — this is why client-side validation matters.
