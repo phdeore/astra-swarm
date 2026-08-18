@@ -28,3 +28,6 @@ data/*
 !data/synthetic/
 !data/synthetic/**
 !data/README.md
+
+# logs
+logs/*

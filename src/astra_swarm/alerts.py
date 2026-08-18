@@ -124,24 +124,37 @@ Raw alert:
 
 # --- Step 2: enrich (strict + tools) -----------------------------------------
 def enrich_with_attack(parsed: ParsedAlert) -> AttackEnrichment:
-    """Uses the tool loop for lookups AND constrains the final answer to AttackEnrichment."""
-    from .agent_loop import run_with_tools_structured  # defined in Step 6
+    from .agent_loop import run_with_tools_structured
 
     prompt = f"""You are a SOC analyst. Identify up to 3 MITRE ATT&CK techniques that best
-describe the adversary behavior in this parsed alert. You MUST call a lookup tool
-(lookup_attack_technique_by_id or search_attack_techniques) for every technique you cite —
-do not include any technique you have not looked up. If no technique clearly fits, return
-an empty techniques list.
+describe the adversary behavior in this parsed alert. You MUST call a lookup tool for
+every technique you cite — do not include any technique you have not looked up.
+
+Constraints on your search:
+- Look up at most 4 candidate techniques total, across both tools.
+- If your first two searches don't surface a strongly-relevant technique, stop and
+  return an empty techniques list — an honest "no clear fit" beats speculation.
+- Once you have your 3 techniques (or have decided none fit), commit to the final
+  answer. Do not keep searching for confirmation.
 
 Parsed alert:
 {parsed.model_dump_json(indent=2)}
 """
-    return run_with_tools_structured(
-        prompt,
-        output_model=AttackEnrichment,
-        max_rounds=6,
-        max_tokens=1500,
-    )
+    try:
+        return run_with_tools_structured(
+            prompt,
+            output_model=AttackEnrichment,
+            max_rounds=6,
+            max_tokens=1500,
+        )
+    except RuntimeError as e:
+        if "max_rounds" in str(e):
+            # Graceful degradation: return empty enrichment rather than crash chain
+            return AttackEnrichment(
+                techniques=[],
+                summary=f"Enrichment inconclusive within {6}-round budget.",
+            )
+        raise
 
 
 # --- Step 3: summarize (stays free-form) -------------------------------------
