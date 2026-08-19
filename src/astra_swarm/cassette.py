@@ -22,7 +22,7 @@ from pathlib import Path
 
 from anthropic import Anthropic
 
-_CASSETTE_DIR = Path("./cassettes")  # or ./cassettes on Mac
+_CASSETTE_DIR = Path("/content/astra-swarm/cassettes")  # or ./cassettes on Mac
 _original_create = Anthropic().messages.create.__func__  # unbound method
 
 
