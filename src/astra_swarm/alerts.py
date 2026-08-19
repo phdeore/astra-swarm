@@ -227,10 +227,13 @@ def triage_chain(raw_alert: str) -> TriageResult:
 
 # --- Synthetic Alert Generation ----------------------------------------------
 def generate_synthetic_alerts(n: int = 5) -> list[str]:
-    prompt = f"""Generate {n} realistic raw security alert strings, separated by a line
-containing only '---'. Vary source (firewall, EDR, SIEM, WAF, DLP, IAM), format
-(syslog, JSON, CEF, key=value), and severity mix. Include realistic entities.
-Return only the alerts and separators. No numbering or commentary.
+    prompt = f"""Generate {n} diverse raw security alerts separated ONLY by '\n---\n'.
+
+Constraints:
+- Sources: Firewall, EDR, SIEM, WAF, DLP, IAM
+- Formats: Syslog, JSON, CEF, Key=Value
+- Data: Realistic IPs, hashes, usernames, timestamps, severities
+- Output: Raw alert text and delimiters only (no markdown, headers, numbering, or explanations)
 """
     resp = _client.messages.create(
         model=_MODEL,
