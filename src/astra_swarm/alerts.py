@@ -110,6 +110,8 @@ def _ask_structured(
                 f"Return corrected JSON that satisfies all constraints."
             )
 
+    raise RuntimeError("structured response retry loop exhausted unexpectedly")
+
 
 # --- Step 1: parse (strict) --------------------------------------------------
 def parse_alert(raw: str) -> ParsedAlert:
@@ -141,12 +143,15 @@ Parsed alert:
 {parsed.model_dump_json(indent=2)}
 """
     try:
-        return run_with_tools_structured(
+        result = run_with_tools_structured(
             prompt,
             output_model=AttackEnrichment,
             max_rounds=6,
             max_tokens=1500,
         )
+        if not isinstance(result, AttackEnrichment):
+            raise TypeError("structured enrichment result is not AttackEnrichment")
+        return result
     except RuntimeError as e:
         if "max_rounds" in str(e):
             # Graceful degradation: return empty enrichment rather than crash chain
@@ -220,7 +225,7 @@ def triage_chain(raw_alert: str) -> TriageResult:
     )
 
 
-# --- Unchanged --------------------------------------------------
+# --- Synthetic Alert Generation ----------------------------------------------
 def generate_synthetic_alerts(n: int = 5) -> list[str]:
     prompt = f"""Generate {n} realistic raw security alert strings, separated by a line
 containing only '---'. Vary source (firewall, EDR, SIEM, WAF, DLP, IAM), format
@@ -232,5 +237,10 @@ Return only the alerts and separators. No numbering or commentary.
         max_tokens=2500,
         messages=[{"role": "user", "content": prompt}],
     )
+    input_tokens = resp.usage.input_tokens
+    output_tokens = resp.usage.output_tokens
+
+    print(f"Input tokens (generate_synthetic_alerts): {input_tokens}")
+    print(f"Output tokens (generate_synthetic_alerts): {output_tokens}")
     text = "".join(b.text for b in resp.content if b.type == "text")
     return [a.strip() for a in text.split("---") if a.strip()][:n]
