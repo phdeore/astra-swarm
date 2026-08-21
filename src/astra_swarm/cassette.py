@@ -24,13 +24,16 @@ from pathlib import Path
 from anthropic import Anthropic
 from anthropic.resources.messages import Messages
 
-# _CASSETTE_DIR = Path("/content/astra-swarm/cassettes")  # or ./cassettes on Mac
-_CASSETTE_DIR = Path(
-    os.environ.get(
-        "ASTRA_CASSETTE_DIR",
-        "/content/astra-swarm/cassettes",  # default fallback
+
+def _cassette_dir() -> Path:
+    return Path(
+        os.environ.get(
+            "ASTRA_CASSETTE_DIR",
+            "/content/astra-swarm/cassettes",
+        )
     )
-)
+
+
 _original_create = Messages.create
 
 
@@ -56,8 +59,9 @@ def cassette(name: str, mode: str = "auto"):
     mode: 'record' always calls real API + saves; 'replay' only replays (errors on miss);
           'auto' replays if cache exists, records if not.
     """
-    _CASSETTE_DIR.mkdir(parents=True, exist_ok=True)
-    cache_path = _CASSETTE_DIR / f"{name}.pkl"
+    cache_dir = _cassette_dir()  # resolved every call
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    cache_path = cache_dir / f"{name}.pkl"
     cache: dict = {}
     if cache_path.exists() and mode in ("replay", "auto"):
         cache = pickle.loads(cache_path.read_bytes())
