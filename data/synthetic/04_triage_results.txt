@@ -1,0 +1,19 @@
+--- Alert 1 ---
+  Cited ATT&CK: T1110, T1110.001
+  Severity: Severity.MEDIUM (conf 0.75)
+
+--- Alert 2 ---
+  Cited ATT&CK: T1003.002, T1003, T1059.001
+  Severity: Severity.HIGH (conf 0.85)
+
+--- Alert 3 ---
+  Cited ATT&CK: T1190
+  Severity: Severity.MEDIUM (conf 0.78)
+
+--- Alert 4 ---
+  Cited ATT&CK: T1110, T1110.001
+  Severity: Severity.HIGH (conf 0.82)
+
+--- Alert 5 ---
+  Cited ATT&CK: T1567, T1020, T1041
+  Severity: Severity.HIGH (conf 0.87)
