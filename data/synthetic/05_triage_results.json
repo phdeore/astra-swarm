@@ -1,0 +1,194 @@
+[
+  {
+    "raw": "CEF:0|Palo Alto Networks|PAN-OS|10.1.2|THREAT_LOG|Malware Detected|8|src=192.168.1.105 dst=10.45.23.67 act=reset suser=jsmith proto=tcp spt=54821 dpt=443 cs1Label=Malware cs1=Trojan.Win32.GenericKD hash=d41d8cd98f00b204e9800998ecf8427e",
+    "parsed": {
+      "source_system": "Palo Alto Networks PAN-OS",
+      "timestamp": "",
+      "entities_users": [
+        "jsmith"
+      ],
+      "entities_hosts": [],
+      "entities_ips": [
+        "192.168.1.105",
+        "10.45.23.67"
+      ],
+      "indicators": [
+        "Trojan.Win32.GenericKD",
+        "d41d8cd98f00b204e9800998ecf8427e",
+        "443"
+      ],
+      "description": "Malware detected on source IP 192.168.1.105 communicating to destination IP 10.45.23.67 identified as Trojan.Win32.GenericKD."
+    },
+    "attack": {
+      "techniques": [],
+      "summary": "The alert describes detection of Trojan.Win32.GenericKD malware communicating between internal and external IPs, but no strongly-relevant MITRE ATT&CK techniques surfaced from multiple search attempts; the alert lacks sufficient tactical context (execution method, persistence mechanism, lateral movement, etc.) to definitively map to specific techniques."
+    },
+    "summary": "A generic Windows trojan (Trojan.Win32.GenericKD) was detected on internal host 192.168.1.105 associated with user jsmith, establishing outbound communication to 10.45.23.67 over port 443. The malware hash (d41d8cd98f00b204e9800998ecf8427e) suggests this may be a known or polymorphic variant. Immediate containment and forensic analysis of the source host is recommended to determine infection vector and scope.",
+    "verdict": {
+      "severity": "high",
+      "rationale": "Active trojan malware on an internal host with confirmed command-and-control communication indicates significant functional impact risk and potential for lateral movement; information impact is likely given trojan capabilities; asset criticality and recoverability depend on host role but the confirmed C2 communication and user association (jsmith) suggest moderate scope requiring urgent containment to prevent further compromise.",
+      "confidence": 0.82
+    }
+  },
+  {
+    "raw": "Nov 15 14:32:19 SIEM-prod elastic-agent[2847]: {\"event_type\":\"detection\",\"severity\":\"high\",\"user\":\"agarcia\",\"source_ip\":\"172.16.89.42\",\"dest_ip\":\"203.0.113.88\",\"command\":\"powershell -nop -w hidden -c IEX\",\"agent_name\":\"EDR-ENDPOINT-047\",\"timestamp\":\"2024-11-15T14:32:19Z\",\"hash_md5\":\"5d41402abc4b2a76b9719d911017c592\"}",
+    "parsed": {
+      "source_system": "elastic-agent",
+      "timestamp": "2024-11-15T14:32:19Z",
+      "entities_users": [
+        "agarcia"
+      ],
+      "entities_hosts": [
+        "EDR-ENDPOINT-047"
+      ],
+      "entities_ips": [
+        "172.16.89.42",
+        "203.0.113.88"
+      ],
+      "indicators": [
+        "powershell -nop -w hidden -c IEX",
+        "5d41402abc4b2a76b9719d911017c592"
+      ],
+      "description": "User agarcia executed a suspicious PowerShell command with obfuscation flags from host EDR-ENDPOINT-047 (172.16.89.42) to destination 203.0.113.88."
+    },
+    "attack": {
+      "techniques": [
+        {
+          "id": "T1059.001",
+          "name": "PowerShell",
+          "tactics": [
+            "Execution"
+          ],
+          "why_relevant": "The alert identifies the use of PowerShell with obfuscation flags (-nop, -w hidden) and IEX (Invoke-Expression) for code execution, which is a direct match for adversary abuse of PowerShell commands."
+        }
+      ],
+      "summary": "The adversary executed obfuscated PowerShell commands on the compromised endpoint, consistent with T1059.001 (PowerShell) for code execution."
+    },
+    "summary": "User agarcia executed a suspicious obfuscated PowerShell command on EDR-ENDPOINT-047 that attempted to download and execute code from remote IP 203.0.113.88, using no-profile and hidden-window flags to evade detection. This is a classic fileless malware execution pattern and warrants immediate investigation into the source of the command and the legitimacy of the destination IP. We should isolate the endpoint, review the user's recent activity, and check whether 203.0.113.88 is a known malicious or suspicious address.",
+    "verdict": {
+      "severity": "high",
+      "rationale": "Execution of obfuscated PowerShell with IEX (Invoke-Expression) indicates fileless malware attempt with high functional impact risk; information impact is moderate (endpoint compromise); recoverability is good if caught early; scope is single-host; asset criticality depends on role but warrants urgent investigation and isolation.",
+      "confidence": 0.85
+    }
+  },
+  {
+    "raw": "<134>Nov 15 14:35:47 WAF-cluster-01 ModSecurity[5621]: mod_security_audit_log client_ip=198.51.100.22 request_uri=/admin/login.php method=POST attack_detected=true rule_id=930100 msg=Path_Traversal_Attack severity=critical matched_pattern=../../etc/passwd user_agent=curl/7.68.0",
+    "parsed": {
+      "source_system": "ModSecurity",
+      "timestamp": "Nov 15 14:35:47",
+      "entities_users": [],
+      "entities_hosts": [
+        "WAF-cluster-01"
+      ],
+      "entities_ips": [
+        "198.51.100.22"
+      ],
+      "indicators": [
+        "../../etc/passwd",
+        "rule_id=930100",
+        "Path_Traversal_Attack",
+        "/admin/login.php"
+      ],
+      "description": "ModSecurity detected a path traversal attack from 198.51.100.22 targeting /admin/login.php with matched pattern ../../etc/passwd."
+    },
+    "attack": {
+      "techniques": [],
+      "summary": "While ModSecurity detected a path traversal attack attempting to read /etc/passwd via directory traversal, this specific attack vector does not correspond to a clearly-defined MITRE ATT&CK Enterprise technique; ATT&CK's focus is primarily on post-exploitation and high-level adversary tactics rather than specific web vulnerability exploitation methods."
+    },
+    "summary": "ModSecurity blocked a path traversal attack originating from 198.51.100.22 against the /admin/login.php endpoint on Nov 15 at 14:35:47 UTC. The attacker attempted to escape the web root using directory traversal sequences (../../etc/passwd) to access sensitive system files, which was caught by rule 930100. This is a direct attempt to compromise administrative access and warrants investigation into the source IP's broader activity and any successful exploitation attempts.",
+    "verdict": {
+      "severity": "high",
+      "rationale": "Path traversal attack targeting administrative login endpoint represents high functional impact potential (unauthorized admin access) and elevated information impact (sensitive system files), though ModSecurity's successful blocking mitigates recoverability concerns and limits actual damage scope.",
+      "confidence": 0.85
+    }
+  },
+  {
+    "raw": "severity=MEDIUM timestamp=2024-11-15T14:38:52Z event_type=AUTHENTICATION_FAILURE src_ip=10.200.15.78 dest_ip=10.200.15.1 user=mchen protocol=SSH failed_attempts=7 action=BLOCKED session_id=sess_a1b2c3d4e5f6 reason=BRUTE_FORCE_DETECTED",
+    "parsed": {
+      "source_system": "",
+      "timestamp": "2024-11-15T14:38:52Z",
+      "entities_users": [
+        "mchen"
+      ],
+      "entities_hosts": [],
+      "entities_ips": [
+        "10.200.15.78",
+        "10.200.15.1"
+      ],
+      "indicators": [
+        "SSH",
+        "BRUTE_FORCE_DETECTED",
+        "failed_attempts=7"
+      ],
+      "description": "SSH brute force attack detected with 7 failed authentication attempts from source IP 10.200.15.78 targeting user mchen; session blocked."
+    },
+    "attack": {
+      "techniques": [
+        {
+          "id": "T1110",
+          "name": "Brute Force",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "The alert describes 7 failed SSH authentication attempts against user mchen, which is a direct match for the brute force technique targeting credential access."
+        },
+        {
+          "id": "T1110.001",
+          "name": "Password Guessing",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "The subtechnique specifically covers password guessing attacks via SSH (port 22), matching the detected brute force behavior targeting the SSH service on the victim system."
+        }
+      ],
+      "summary": "The adversary is conducting a brute force credential attack via SSH to compromise the mchen account, employing password guessing techniques common to initial access attempts."
+    },
+    "summary": "SSH brute force activity was detected on 2024-11-15 at 14:38 UTC, with 7 failed authentication attempts from source IP 10.200.15.78 targeting user account mchen; the session was blocked before compromise. User mchen and the targeted host (10.200.15.1) are affected. Notable here is that the attack originated from an internal subnet (10.200.x.x), which warrants investigation into whether this is a compromised internal system or lateral movement activity.",
+    "verdict": {
+      "severity": "medium",
+      "rationale": "SSH brute force attack from internal network (10.200.x.x) with 7 failed attempts was blocked before successful compromise, limiting functional and information impact; however, internal sourcing suggests potential lateral movement or compromised asset requiring investigation, and the targeting of user mchen indicates elevated asset/account criticality, warranting elevated severity above low despite successful containment.",
+      "confidence": 0.75
+    }
+  },
+  {
+    "raw": "CEF:0|CrowdStrike|Falcon|5.27|DuplicateDetectedEvent|Behavioral Threat|7|src=10.100.50.33 suser=rbrown dst=192.0.2.15 act=quarantine cat=Suspicious_Process process=/usr/bin/wget processId=7829 hash_sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 reason=Download_Suspicious_Binary",
+    "parsed": {
+      "source_system": "CrowdStrike Falcon",
+      "timestamp": "",
+      "entities_users": [
+        "rbrown"
+      ],
+      "entities_hosts": [],
+      "entities_ips": [
+        "10.100.50.33",
+        "192.0.2.15"
+      ],
+      "indicators": [
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/usr/bin/wget",
+        "7829",
+        "Download_Suspicious_Binary"
+      ],
+      "description": "CrowdStrike detected a suspicious process (wget) on host 192.0.2.15 initiated by user rbrown from source IP 10.100.50.33, which was quarantined due to suspicious binary download activity."
+    },
+    "attack": {
+      "techniques": [
+        {
+          "id": "T1105",
+          "name": "Ingress Tool Transfer",
+          "tactics": [
+            "Command and Control"
+          ],
+          "why_relevant": "The alert shows wget being used to download a suspicious binary, which is a classic example of ingress tool transfer via command-line utilities."
+        }
+      ],
+      "summary": "The detected wget process downloading a suspicious binary from an external source represents an ingress tool transfer attack, where an adversary brings malicious code into a compromised host."
+    },
+    "summary": "**Alert Summary:**\n\nCrowdStrike detected user rbrown initiating a suspicious wget process from source IP 10.100.50.33 to download a binary on host 192.0.2.15, which was subsequently quarantined. The activity is notable for the use of a command-line download utility to retrieve what appears to be malicious or unauthorized software, suggesting either lateral movement or initial compromise on that endpoint.",
+    "verdict": {
+      "severity": "medium",
+      "rationale": "The alert indicates a blocked suspicious binary download with confirmed detection and quarantine (limiting functional impact), a single non-critical user account involved (limiting information impact), automatic containment enabling recovery, localized scope to one endpoint, and a general workstation asset; however, the use of wget for unauthorized binary retrieval represents a genuine intrusion indicator warranting prompt investigation.",
+      "confidence": 0.72
+    }
+  }
+]
