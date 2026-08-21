@@ -14,6 +14,7 @@ Usage:
 
 from __future__ import annotations
 
+import os
 import hashlib
 import json
 import pickle
@@ -22,7 +23,13 @@ from pathlib import Path
 
 from anthropic import Anthropic
 
-_CASSETTE_DIR = Path("/content/astra-swarm/cassettes")  # or ./cassettes on Mac
+# _CASSETTE_DIR = Path("/content/astra-swarm/cassettes")  # or ./cassettes on Mac
+_CASSETTE_DIR = Path(
+    os.environ.get(
+        "ASTRA_CASSETTE_DIR",
+        "/content/astra-swarm/cassettes",  # default fallback
+    )
+)
 _original_create = Anthropic().messages.create.__func__  # unbound method
 
 

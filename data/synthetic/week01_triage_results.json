@@ -1,0 +1,347 @@
+[
+  {
+    "raw": "CEF:0|Palo Alto Networks|PAN-OS|9.1.0|denied_connection|Connection Blocked|5|src=192.168.1.105 dst=203.45.67.89 dpt=443 act=blocked cs1Label=Policy cs1=Outbound_Block cat=Connection",
+    "parsed": {
+      "source_system": "Palo Alto Networks PAN-OS",
+      "timestamp": "",
+      "entities_users": [],
+      "entities_hosts": [],
+      "entities_ips": [
+        "192.168.1.105",
+        "203.45.67.89"
+      ],
+      "indicators": [
+        "443",
+        "Outbound_Block"
+      ],
+      "description": "Connection from 192.168.1.105 to 203.45.67.89 on port 443 was blocked by Outbound_Block policy."
+    },
+    "attack": {
+      "techniques": [],
+      "summary": "The alert describes a blocked outbound connection from an internal IP to an external IP on port 443, but does not provide sufficient behavioral indicators of attack activity to confidently map to specific MITRE ATT&CK techniques; the firewall block itself is a defensive action rather than adversary behavior."
+    },
+    "summary": "# Alert Summary\n\nA host at 192.168.1.105 attempted an outbound HTTPS connection to external IP 203.45.67.89, which was successfully blocked by the Outbound_Block firewall policy on our Palo Alto Networks gateway. The affected internal host is currently unable to reach this external destination, though without additional context on the host identity or destination reputation, the risk level cannot yet be determined.",
+    "verdict": {
+      "severity": "low",
+      "rationale": "A firewall policy successfully blocked an outbound connection attempt with no indication of compromise or data loss; functional impact is minimal since the block prevented unwanted communication, information impact is none, recoverability is automatic, scope is limited to one host, and criticality depends on the unknown host and destination.",
+      "confidence": 0.6
+    }
+  },
+  {
+    "raw": "Jan 15 10:23:47 fw01 sshd[2847]: Failed password for invalid user admin from 10.45.32.201 port 54321 ssh2",
+    "parsed": {
+      "source_system": "sshd",
+      "timestamp": "Jan 15 10:23:47",
+      "entities_users": [
+        "admin"
+      ],
+      "entities_hosts": [
+        "fw01"
+      ],
+      "entities_ips": [
+        "10.45.32.201"
+      ],
+      "indicators": [
+        "54321",
+        "ssh2"
+      ],
+      "description": "Failed SSH password authentication attempt for invalid user admin from IP 10.45.32.201 on port 54321."
+    },
+    "attack": {
+      "techniques": [],
+      "summary": "No MITRE ATT&CK techniques strongly matched after exhausting the search budget; while the alert describes a failed SSH authentication attempt consistent with credential-based attacks, the search keywords did not surface relevant technique matches."
+    },
+    "summary": "Failed SSH authentication attempt detected on firewall fw01 where an attacker at 10.45.32.201 tried to authenticate as user \"admin\" on non-standard port 54321, though the attempt was unsuccessful. The use of a non-standard SSH port and targeting of a privileged account suggests potential reconnaissance or brute-force activity against critical infrastructure. Recommend checking for additional failed attempts from this source and verifying firewall access controls.",
+    "verdict": {
+      "severity": "medium",
+      "rationale": "The failed authentication attempt targets a critical asset (firewall fw01) and privileged account (admin), indicating potential adversarial intent, but successful compromise was prevented by authentication controls and the incident has minimal immediate functional or information impact; however, the reconnaissance pattern on non-standard ports warrants investigation to prevent future exploitation attempts.",
+      "confidence": 0.75
+    }
+  },
+  {
+    "raw": "{\"timestamp\": \"2024-01-15T10:45:12Z\", \"source\": \"edr-endpoint-01\", \"event_type\": \"process_execution\", \"process_name\": \"powershell.exe\", \"process_hash\": \"5d41402abc4b2a76b9719d911017c592\", \"user\": \"DOMAIN\\\\jsmith\", \"parent_process\": \"explorer.exe\", \"action\": \"detected\"}",
+    "parsed": {
+      "source_system": "edr-endpoint-01",
+      "timestamp": "2024-01-15T10:45:12Z",
+      "entities_users": [
+        "DOMAIN\\jsmith"
+      ],
+      "entities_hosts": [],
+      "entities_ips": [],
+      "indicators": [
+        "powershell.exe",
+        "5d41402abc4b2a76b9719d911017c592",
+        "explorer.exe"
+      ],
+      "description": "Process execution of powershell.exe by user DOMAIN\\jsmith detected, spawned from explorer.exe with hash 5d41402abc4b2a76b9719d911017c592."
+    },
+    "attack": {
+      "techniques": [],
+      "summary": "No clear MITRE ATT&CK techniques matched the alert criteria after exhausting relevant search queries."
+    },
+    "summary": "User DOMAIN\\jsmith executed powershell.exe from explorer.exe on an EDR-monitored endpoint this morning. The process hash 5d41402abc4b2a76b9719d911017c592 should be verified against known-good baselines, as explorer spawning PowerShell is a common living-off-the-land technique. Recommend checking command-line arguments and parent process chain to determine if this was user-initiated or potentially malicious.",
+    "verdict": {
+      "severity": "medium",
+      "rationale": "Explorer spawning PowerShell is a common living-off-the-land technique with potential for lateral movement and code execution, but lacks immediate functional impact confirmation; severity is tempered by the single endpoint scope, lack of confirmed malicious activity, and the ability to recover/remediate through process termination or account controls.",
+      "confidence": 0.72
+    }
+  },
+  {
+    "raw": "timestamp=1705318200 severity=HIGH source_ip=172.16.45.67 destination_ip=8.8.8.8 protocol=DNS query_type=A domain=malicious-c2.xyz response_code=NXDOMAIN user_id=none status=blocked",
+    "parsed": {
+      "source_system": "DNS Security System",
+      "timestamp": "1705318200",
+      "entities_users": [],
+      "entities_hosts": [],
+      "entities_ips": [
+        "172.16.45.67",
+        "8.8.8.8"
+      ],
+      "indicators": [
+        "malicious-c2.xyz",
+        "DNS",
+        "A",
+        "NXDOMAIN"
+      ],
+      "description": "DNS query to malicious-c2.xyz from 172.16.45.67 to 8.8.8.8 was blocked with NXDOMAIN response."
+    },
+    "attack": {
+      "techniques": [],
+      "summary": "The DNS query to a malicious C2 domain does not clearly map to a strongly-relevant MITRE ATT&CK technique based on available search results; while DNS-based command and control is a known adversary behavior, specific ATT&CK techniques matching this alert pattern were not surfaced by the search tools."
+    },
+    "summary": "An internal host at 172.16.45.67 attempted a DNS query to the known malicious domain malicious-c2.xyz via Google's public resolver (8.8.8.8) and was blocked with an NXDOMAIN response. This suggests potential command-and-control communication activity originating from that internal asset. We should identify the host owner and determine if malware or unauthorized software is present on that system.",
+    "verdict": {
+      "severity": "high",
+      "rationale": "An internal host attempted communication with a known C2 domain indicating potential malware infection with significant functional impact risk, moderate information impact from possible lateral movement, limited immediate recoverability challenges, internal scope, and critical asset concern given the compromise suggests active threat.",
+      "confidence": 0.85
+    }
+  },
+  {
+    "raw": "CEF:0|ModSecurity|WAF|3.0|sql_injection|SQL Injection Attempt Blocked|9|src=203.12.45.78 request=/api/login?user=admin' OR '1'='1 act=blocked cs1Label=Attack_Type cs1=SQL_Injection msg=Pattern matched",
+    "parsed": {
+      "source_system": "WAF",
+      "timestamp": "",
+      "entities_users": [
+        "admin"
+      ],
+      "entities_hosts": [],
+      "entities_ips": [
+        "203.12.45.78"
+      ],
+      "indicators": [
+        "SQL_Injection",
+        "admin' OR '1'='1"
+      ],
+      "description": "SQL injection attempt detected in API login request and blocked by ModSecurity WAF."
+    },
+    "attack": {
+      "techniques": [],
+      "summary": "The SQL injection attempt detected in the API login request does not clearly map to specific MITRE ATT&CK Enterprise techniques, as SQL injection is primarily a vulnerability exploitation vector rather than a defined ATT&CK technique in the Enterprise framework."
+    },
+    "summary": "# Alert Summary\n\nA SQL injection attack originating from IP 203.12.45.78 was detected and blocked by our WAF while targeting the admin account during an API login request. The attacker used a classic boolean-based injection payload (`admin' OR '1'='1`) in an attempt to bypass authentication, but ModSecurity successfully prevented the malicious request from reaching the application backend. While this particular attempt was blocked, the targeting of administrative credentials warrants investigation into whether this IP has been probing other systems or accounts.",
+    "verdict": {
+      "severity": "high",
+      "rationale": "SQL injection targeting admin credentials indicates potential for complete system compromise and unauthorized administrative access; however, the attack was successfully blocked by WAF, limiting immediate functional impact, but the reconnaissance suggests ongoing threat activity requiring urgent investigation.",
+      "confidence": 0.82
+    }
+  },
+  {
+    "raw": "Feb 02 14:12:33 siem-collector securityd[1923]: alert_id=SEC-2024-0845 severity=MEDIUM event=failed_login source=192.168.10.201 user=kchen attempts=5 status=account_locked reason=brute_force",
+    "parsed": {
+      "source_system": "securityd",
+      "timestamp": "Feb 02 14:12:33",
+      "entities_users": [
+        "kchen"
+      ],
+      "entities_hosts": [],
+      "entities_ips": [
+        "192.168.10.201"
+      ],
+      "indicators": [
+        "brute_force",
+        "account_locked",
+        "5_failed_attempts"
+      ],
+      "description": "User kchen experienced account lockout after 5 failed login attempts from 192.168.10.201 due to brute force activity."
+    },
+    "attack": {
+      "techniques": [
+        {
+          "id": "T1110",
+          "name": "Brute Force",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "The alert describes 5 failed login attempts against user kchen, which is a direct example of brute force credential attack activity."
+        },
+        {
+          "id": "T1110.001",
+          "name": "Password Guessing",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "The alert indicates systematic password guessing attempts that resulted in account lockout after multiple failed authentication attempts against the kchen account."
+        }
+      ],
+      "summary": "The adversary conducted a brute force attack via password guessing, resulting in 5 failed login attempts and account lockout for user kchen from source IP 192.168.10.201."
+    },
+    "summary": "User kchen's account was locked out on Feb 02 at 14:12:33 following five consecutive failed login attempts originating from IP 192.168.10.201, indicating potential brute force activity against that account. The lockout is a protective measure, but the source IP and attack pattern warrant investigation to determine if this is a legitimate user error or an actual compromise attempt. We should verify with kchen whether they initiated these login attempts and consider blocking or monitoring 192.168.10.201 pending further analysis.",
+    "verdict": {
+      "severity": "medium",
+      "rationale": "The brute force attack was successfully mitigated by account lockout (good recoverability and automatic protection), but the incident indicates active compromise attempts against a user account with unknown asset criticality and no data exfiltration evidence, requiring investigation to rule out lateral movement or further exploitation.",
+      "confidence": 0.75
+    }
+  },
+  {
+    "raw": "{\"log_id\": \"WAF-20240215-003421\", \"timestamp\": \"2024-02-15T09:34:21Z\", \"client_ip\": \"185.220.101.45\", \"method\": \"POST\", \"uri\": \"/admin/upload\", \"status_code\": 403, \"threat_type\": \"file_upload_restriction\", \"blocked_file_hash\": \"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3\", \"action\": \"blocked\"}",
+    "parsed": {
+      "source_system": "WAF",
+      "timestamp": "2024-02-15T09:34:21Z",
+      "entities_users": [],
+      "entities_hosts": [],
+      "entities_ips": [
+        "185.220.101.45"
+      ],
+      "indicators": [
+        "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+        "POST",
+        "/admin/upload",
+        "file_upload_restriction"
+      ],
+      "description": "WAF blocked a POST request to /admin/upload from 185.220.101.45 due to file upload restriction with hash a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3."
+    },
+    "attack": {
+      "techniques": [],
+      "summary": "The alert describes a blocked file upload attempt to an admin endpoint, but this defensive action does not clearly map to established MITRE ATT&CK techniques without additional context about the adversary's actual capabilities or successful intrusions."
+    },
+    "summary": "A WAF block was triggered on 2024-02-15 at 09:34 UTC when IP 185.220.101.45 attempted a POST request to /admin/upload that violated file upload restrictions; the request payload hashed to a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3. This appears to be a blocked malicious file upload attempt targeting an administrative endpoint, with no legitimate user context identified. Notable is the targeting of the admin upload function, which warrants correlation against threat intel to determine if 185.220.101.45 is part of a known threat actor campaign.",
+    "verdict": {
+      "severity": "medium",
+      "rationale": "The alert represents a successfully blocked attack attempt with low immediate functional impact due to WAF prevention, but the targeting of a critical /admin/upload endpoint combined with unknown source IP and payload hash indicates moderate information impact risk and warrants investigation for recoverability and scope assessment.",
+      "confidence": 0.72
+    }
+  },
+  {
+    "raw": "event_id=4625 logon_type=3 source_ip=10.8.12.45 source_hostname=unknown dest_ip=192.168.50.10 dest_hostname=dc01 username=administrator status=0xc000006d timestamp=2024-02-20T16:45:10Z failure_reason=bad_credentials",
+    "parsed": {
+      "source_system": "Windows Event Log",
+      "timestamp": "2024-02-20T16:45:10Z",
+      "entities_users": [
+        "administrator"
+      ],
+      "entities_hosts": [
+        "dc01"
+      ],
+      "entities_ips": [
+        "10.8.12.45",
+        "192.168.50.10"
+      ],
+      "indicators": [
+        "event_id=4625",
+        "logon_type=3",
+        "status=0xc000006d",
+        "bad_credentials"
+      ],
+      "description": "Failed logon attempt with bad credentials from source IP 10.8.12.45 to domain controller dc01 for user administrator."
+    },
+    "attack": {
+      "techniques": [
+        {
+          "id": "T1110",
+          "name": "Brute Force",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "Failed logon attempt with bad credentials to a domain controller matches the pattern of brute force attack activity attempting to gain unauthorized access through systematic credential guessing."
+        },
+        {
+          "id": "T1110.001",
+          "name": "Password Guessing",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "The failed logon attempt with invalid credentials to the administrator account demonstrates password guessing activity targeting a high-value domain controller account."
+        }
+      ],
+      "summary": "The failed logon attempt to domain controller dc01 with bad credentials for the administrator account represents brute force and password guessing attacks on high-value targets within the network infrastructure."
+    },
+    "summary": "A failed logon attempt targeting the administrator account on domain controller dc01 was detected at 16:45 UTC on February 20th, originating from IP 10.8.12.45 with invalid credentials supplied (status code 0xc000006d). This represents a network logon attempt (type 3) against a critical infrastructure asset, which warrants investigation into whether this is part of a broader credential attack or reconnaissance activity. The source IP should be cross-referenced for other suspicious activities and correlated with any other failed attempts during the same timeframe.",
+    "verdict": {
+      "severity": "medium",
+      "rationale": "Failed logon to a critical asset (domain controller) targeting a high-privilege account (administrator) with bad credentials indicates potential reconnaissance or credential attack activity, but with low immediate functional impact since the attempt failed; however, the targeting of dc01 and administrative credentials elevates concern for scope and asset criticality.",
+      "confidence": 0.75
+    }
+  },
+  {
+    "raw": "CEF:0|Fortinet|FortiGate|7.0.5|malware_detected|Malware Detection|8|src=172.31.8.99 dst=198.51.100.5 proto=tcp dpt=80 msg=Trojan.Win32.Generic file_hash=e99a18c428cb38d5f260853678922e03 action=quarantine",
+    "parsed": {
+      "source_system": "Fortinet FortiGate",
+      "timestamp": "",
+      "entities_users": [],
+      "entities_hosts": [],
+      "entities_ips": [
+        "172.31.8.99",
+        "198.51.100.5"
+      ],
+      "indicators": [
+        "tcp",
+        "80",
+        "Trojan.Win32.Generic",
+        "e99a18c428cb38d5f260853678922e03"
+      ],
+      "description": "Malware detection alert for Trojan.Win32.Generic from source IP 172.31.8.99 to destination IP 198.51.100.5 on port 80, file quarantined."
+    },
+    "attack": {
+      "techniques": [],
+      "summary": "The alert indicates malware detection (Trojan.Win32.Generic) with network communication over port 80, but the generic nature of the indicator and lack of specific adversary tradecraft details do not clearly map to discrete MITRE ATT&CK techniques."
+    },
+    "summary": "A Trojan.Win32.Generic malware signature was detected on an internal host (172.31.8.99) attempting outbound communication to 198.51.100.5 over HTTP; the suspicious file (MD5: e99a18c428cb38d5f260853678922e03) has been quarantined by FortiGate. The use of port 80 for C2 or data exfiltration is typical for this malware family, making this a moderate-to-high priority incident requiring immediate endpoint isolation and forensics on the source host.",
+    "verdict": {
+      "severity": "high",
+      "rationale": "Active Trojan detection on internal host with confirmed quarantine demonstrates real functional impact and data compromise risk; outbound C2 communication indicates scope beyond single system; internal network origin elevates asset criticality and suggests potential lateral movement threat despite successful containment.",
+      "confidence": 0.82
+    }
+  },
+  {
+    "raw": "<134>Feb 28 11:56:44 edrclient-ws15 CarbonBlack: detection_id=d41d8cd98f00b204e9800998ecf8427e threat_severity=CRITICAL process_name=mimikatz.exe process_path=C:\\\\Windows\\\\Temp\\\\mimikatz.exe command_line=\"mimikatz.exe privilege::debug sekurlsa::logonpasswords\" user=WORKGROUP\\\\mrobinson action=terminated timestamp=2024-02-28T11:56:44Z",
+    "parsed": {
+      "source_system": "CarbonBlack",
+      "timestamp": "2024-02-28T11:56:44Z",
+      "entities_users": [
+        "WORKGROUP\\mrobinson"
+      ],
+      "entities_hosts": [
+        "edrclient-ws15"
+      ],
+      "entities_ips": [],
+      "indicators": [
+        "d41d8cd98f00b204e9800998ecf8427e",
+        "mimikatz.exe",
+        "C:\\Windows\\Temp\\mimikatz.exe",
+        "privilege::debug",
+        "sekurlsa::logonpasswords",
+        "CRITICAL"
+      ],
+      "description": "CarbonBlack detected execution of mimikatz.exe with credential dumping commands by user WORKGROUP\\mrobinson on edrclient-ws15, with CRITICAL threat severity and process terminated."
+    },
+    "attack": {
+      "techniques": [
+        {
+          "id": "T1003",
+          "name": "OS Credential Dumping",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "The alert indicates execution of mimikatz.exe with sekurlsa::logonpasswords command, which is a direct method of dumping OS credentials from memory."
+        }
+      ],
+      "summary": "The detection of mimikatz.exe executing credential dumping commands (sekurlsa::logonpasswords) on the endpoint aligns with OS Credential Dumping (T1003) under Credential Access tactics, where adversaries attempt to extract account login material from system memory."
+    },
+    "summary": "**SOC Alert Summary**\n\nCarbonBlack detected execution of mimikatz.exe on workstation edrclient-ws15 by user mrobinson on 2024-02-28 at 11:56 UTC, with the tool running credential-dumping commands (sekurlsa::logonpasswords) that indicate an attempt to extract cached credentials from system memory. The process has been terminated and the alert is marked CRITICAL severity, warranting immediate investigation into whether credentials were successfully harvested and whether lateral movement has occurred.",
+    "verdict": {
+      "severity": "critical",
+      "rationale": "Mimikatz credential dumping execution represents a critical threat due to high functional impact (credential harvesting), severe information impact (potential exposure of domain credentials), automated containment (process terminated) improving recoverability, likely lateral scope given workstation context, and high asset criticality if credentials enable further compromise.",
+      "confidence": 0.92
+    }
+  }
+]
