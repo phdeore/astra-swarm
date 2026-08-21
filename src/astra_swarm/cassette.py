@@ -14,14 +14,15 @@ Usage:
 
 from __future__ import annotations
 
-import os
 import hashlib
 import json
+import os
 import pickle
 from contextlib import contextmanager
 from pathlib import Path
 
 from anthropic import Anthropic
+from anthropic.resources.messages import Messages
 
 # _CASSETTE_DIR = Path("/content/astra-swarm/cassettes")  # or ./cassettes on Mac
 _CASSETTE_DIR = Path(
@@ -30,7 +31,7 @@ _CASSETTE_DIR = Path(
         "/content/astra-swarm/cassettes",  # default fallback
     )
 )
-_original_create = Anthropic().messages.create.__func__  # unbound method
+_original_create = Messages.create
 
 
 def _fingerprint(kwargs: dict) -> str:
@@ -57,30 +58,30 @@ def cassette(name: str, mode: str = "auto"):
     """
     _CASSETTE_DIR.mkdir(parents=True, exist_ok=True)
     cache_path = _CASSETTE_DIR / f"{name}.pkl"
-    cache: dict[str, object] = {}
+    cache: dict = {}
     if cache_path.exists() and mode in ("replay", "auto"):
         cache = pickle.loads(cache_path.read_bytes())
-
-    from types import MethodType
+    hits = misses = 0
 
     def _wrapped(self, **kwargs):
+        nonlocal hits, misses
         fp = _fingerprint(kwargs)
         if fp in cache and mode in ("replay", "auto"):
+            hits += 1
             return cache[fp]
         if mode == "replay":
             raise RuntimeError(
-                f"cassette miss for {name!r} in replay mode; fingerprint={fp}. "
-                "Rerun in 'record' or 'auto' mode."
+                f"cassette miss for {name!r} in replay mode; fingerprint={fp}"
             )
+        misses += 1
         response = _original_create(self, **kwargs)
         cache[fp] = response
         cache_path.write_bytes(pickle.dumps(cache))
         return response
 
-    # Monkeypatch every Anthropic client instance's create method for the block
-    Anthropic.messages.__class__.create = _wrapped  # type: ignore[assignment]
+    Messages.create = _wrapped
     try:
         yield
     finally:
-        # Restore the original method
-        Anthropic.messages.__class__.create = _original_create  # type: ignore[assignment]
+        Messages.create = _original_create
+    print(f"[cassette:{name}] {hits} replayed, {misses} recorded")
