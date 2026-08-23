@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from typing import Any
+from typing import Any, TypeVar
 
 from pydantic import BaseModel, ValidationError
 
@@ -14,6 +14,7 @@ from .schemas import to_strict_schema
 
 _client = Anthropic()
 _MODEL = "claude-haiku-4-5-20251001"
+_M = TypeVar("_M", bound=BaseModel)
 
 
 def run_with_tools(
@@ -95,18 +96,14 @@ def run_with_tools(
 
 def run_with_tools_structured(
     user_prompt: str,
-    output_model: type[BaseModel],
+    output_model: type[_M],
     tools: list[dict[str, Any]] | None = None,
-    system: str | None = None,
+    system: str | list[dict[str, Any]] | None = None,
     max_rounds: int = 6,
     max_tokens: int = 1500,
     max_repairs: int = 1,
-) -> BaseModel:
-    """Tool-use loop that constrains the FINAL answer to output_model's strict schema.
-
-    Loops through tool calls until the model produces a non-tool response; that final
-    response is grammar-constrained to output_model. Pydantic-validates before returning.
-    """
+) -> _M:
+    """Tool-use loop with schema-constrained final answer; injects rounds_used if present."""
     tools = tools if tools is not None else ALL_TOOL_SCHEMAS
     schema = to_strict_schema(output_model)
     messages: list[dict[str, Any]] = [{"role": "user", "content": user_prompt}]
@@ -120,8 +117,8 @@ def run_with_tools_structured(
                 "output_config": {"format": {"type": "json_schema", "schema": schema}},
                 "messages": messages,
             }
-            if system:
-                kwargs["system"] = system
+            if system is not None:
+                kwargs["system"] = system  # SDK accepts str or list-of-blocks
 
             response = _client.messages.create(**kwargs)
             messages.append({"role": "assistant", "content": response.content})
@@ -130,14 +127,17 @@ def run_with_tools_structured(
                 raw = "".join(b.text for b in response.content if b.type == "text")
                 try:
                     data = json.loads(raw)
-                    return output_model.model_validate(data)
+                    result = output_model.model_validate(data)
+                    # Post-inject rounds_used if the model defines it.
+                    if "rounds_used" in output_model.model_fields:
+                        result = result.model_copy(update={"rounds_used": round_num})
+                    return result
                 except (json.JSONDecodeError, ValidationError) as e:
                     if attempt >= max_repairs:
                         raise ValueError(
                             f"{output_model.__name__} validation failed: {e}. "
                             f"Raw: {raw[:300]!r}"
                         ) from e
-                    # Repair: append a correction turn and retry the whole loop
                     messages.append(
                         {
                             "role": "user",
@@ -147,9 +147,8 @@ def run_with_tools_structured(
                             ),
                         }
                     )
-                    break  # break the inner round-loop; outer loop retries
+                    break
 
-            # tool_use: execute and continue
             tool_results = []
             for block in response.content:
                 if block.type == "tool_use":
@@ -163,9 +162,6 @@ def run_with_tools_structured(
                     )
             messages.append({"role": "user", "content": tool_results})
         else:
-            # max_rounds exhausted
             raise RuntimeError(f"hit max_rounds={max_rounds} without a final answer")
 
-    raise RuntimeError(
-        "exhausted max_repairs"
-    )  # unreachable but keeps type checkers happy
+    raise RuntimeError("exhausted max_repairs")

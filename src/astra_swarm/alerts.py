@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import re
-from typing import Any
+from typing import Any, TypeVar
 
 from anthropic import Anthropic
 from pydantic import BaseModel, ValidationError
@@ -18,6 +18,7 @@ from .schemas import (
 
 _client = Anthropic()
 _MODEL = "claude-haiku-4-5-20251001"
+_M = TypeVar("_M", bound=BaseModel)
 
 
 # --- Helpers ----------------------------------------------------------------
@@ -68,12 +69,12 @@ def _parse_json(text: str) -> Any:
 
 def _ask_structured(
     prompt: str,
-    model_cls: type[BaseModel],
+    model_cls: type[_M],
     *,
     system: str | None = None,
     max_tokens: int = 1024,
     max_repairs: int = 1,
-) -> BaseModel:
+) -> _M:
     """Call Claude with an output_config schema; validate with Pydantic; repair on failure.
 
     The grammar guarantees valid JSON of the right shape. Pydantic catches semantic
