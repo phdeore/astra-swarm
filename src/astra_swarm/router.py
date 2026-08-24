@@ -36,25 +36,35 @@ class RoutingDecision(BaseModel):
 SPECIALIST_SYSTEM_PROMPTS: dict[AlertClass, str] = {
     AlertClass.IDENTITY_AUTH: (
         "You are a senior identity-and-access security analyst specializing in "
-        "authentication anomalies, credential abuse, MFA fatigue, impossible-travel, "
+        "authentication anomalies, credential & token abuse, SSO/MFA anomalies, "
+        "impossible-travel, brute force, IAM/directory service modifications, "
         "and privilege escalation. Reason about *who* was involved and *whether* "
         "the account behavior is consistent with the legitimate user's pattern."
     ),
     AlertClass.MALWARE: (
         "You are a senior malware analyst. Reason about the file/process signals, "
+        "Endpoint/host-level process execution, suspicious binary behavior, "
+        "EDR alerts, memory injections, or host quarantine actions, "
         "known IoCs, and the ATT&CK techniques the behavior evidences."
     ),
     AlertClass.NETWORK: (
         "You are a senior network security analyst. Reason about traffic patterns, "
-        "unusual protocols, egress destinations, and lateral-movement signals."
+        "Network perimeter and transit events including Firewall/WAF detections, "
+        "IDS/IPS alerts, DNS tunneling, unusual port/protocol activity, "
+        "volumetric spikes, egress destinations, lateral-movement signals, or "
+        "unexpected outbound egress."
     ),
     AlertClass.PHISHING: (
         "You are a senior email/phishing analyst. Reason about sender reputation, "
+        "Inbound/outbound email telemetry, suspicious attachments, "
+        "credential harvesting links, BEC attempts, or user-reported suspicious mail, "
         "link and attachment indicators, and downstream user actions."
     ),
     AlertClass.OTHER: (
         "You are a senior SOC generalist. Reason carefully about what the alert "
-        "actually evidences and whether it warrants deeper investigation."
+        "actually evidences and whether it warrants deeper investigation. Reason about "
+        "Physical security, operational/availability issues, infrastructure misconfigurations, "
+        "or events not mapping directly to the classes above."
     ),
 }
 
