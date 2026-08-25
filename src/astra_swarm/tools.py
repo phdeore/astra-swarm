@@ -6,6 +6,7 @@ import json
 from typing import Any, Callable
 
 from . import attack_kb
+from .auth_logs import query_auth_logs as _query_auth_logs_fn
 
 
 def lookup_attack_technique_by_id(technique_id: str) -> dict[str, Any]:
@@ -78,3 +79,31 @@ def dispatch_tool(name: str, tool_input: dict[str, Any]) -> str:
     except Exception as e:  # noqa: BLE001
         return json.dumps({"error": f"tool raised: {type(e).__name__}: {e}"})
     return result if isinstance(result, str) else json.dumps(result)
+
+
+def query_auth_logs(user: str, hours: int) -> dict[str, Any]:
+    return _query_auth_logs_fn(user, hours)
+
+
+QUERY_AUTH_LOGS_TOOL: dict[str, Any] = {
+    "name": "query_auth_logs",
+    "description": (
+        "Query recent authentication activity for a specific user over the last N hours. "
+        "Returns login counts, unique source IPs, geographic locations, MFA challenge "
+        "count, and recent log entries. Use this to investigate credential abuse, "
+        "impossible-travel, MFA fatigue, or any alert where identity behavior matters."
+    ),
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "user": {"type": "string", "description": "User email or samAccountName"},
+            "hours": {"type": "integer", "description": "Lookback window (1-336)"},
+        },
+        "required": ["user", "hours"],
+        "additionalProperties": False,
+    },
+    "strict": True,
+}
+
+TOOL_REGISTRY["query_auth_logs"] = query_auth_logs
+ALL_TOOL_SCHEMAS.append(QUERY_AUTH_LOGS_TOOL)
