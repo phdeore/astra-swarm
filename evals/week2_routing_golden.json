@@ -21,7 +21,7 @@
     },
     {
         "alert": "CEF:0|Palo Alto Networks|PAN-OS|10.1.2|dns-query-blocked|DNS Query Blocked|5|src=192.168.1.105 dst=8.8.8.8 dhost=malware.c2.net proto=udp dpt=53 cs1Label=QueryType cs1=A",
-        "expected_class": "network"
+        "expected_class": "malware"
     },
     {
         "alert": "2024-01-15T09:23:47Z ubuntu sshd[4521]: Failed password for invalid user admin from 203.0.113.42 port 54832 ssh2",

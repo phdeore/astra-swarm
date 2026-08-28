@@ -44,7 +44,7 @@ SPECIALIST_SYSTEM_PROMPTS: dict[AlertClass, str] = {
     AlertClass.MALWARE: (
         "You are a senior malware analyst. Reason about the file/process signals, "
         "Endpoint/host-level process execution, suspicious binary behavior, "
-        "EDR alerts, memory injections, or host quarantine actions, "
+        "EDR alerts, memory injections, or host quarantine actions, malware beaconing, "
         "known IoCs, and the ATT&CK techniques the behavior evidences."
     ),
     AlertClass.NETWORK: (
@@ -71,7 +71,7 @@ SPECIALIST_SYSTEM_PROMPTS: dict[AlertClass, str] = {
 
 def classify_alert(raw: str) -> RoutingDecision:
     """Cheap Haiku classifier — one strict-schema call, no tools."""
-    prompt = f"""Classify this raw security alert into one of these classes:
+    prompt = f"""Classify this raw security alert into one of these classes based on threat type:
 - identity_auth: login anomalies, MFA issues, credential events, IAM changes
 - malware: process/file signals, EDR detections, known-bad hashes, malware beaconing
 - network: firewall, IDS/IPS, unusual protocols, egress alerts
