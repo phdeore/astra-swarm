@@ -57,7 +57,16 @@ def react_triage(
     max_rounds: int = 10,
 ) -> AgentInvestigation:
     """Run the ReAct agent on one alert with a specialist system prompt."""
-    system = specialist_prompt_for(routing.alert_class) + "\n\n" + AGENT_INSTRUCTIONS
+    # system = specialist_prompt_for(routing.alert_class) + "\n\n" + AGENT_INSTRUCTIONS
+    system_blocks = [
+        {
+            "type": "text",
+            "text": specialist_prompt_for(routing.alert_class)
+            + "\n\n"
+            + AGENT_INSTRUCTIONS,
+            "cache_control": {"type": "ephemeral"},
+        }
+    ]
 
     prompt = f"""Alert (class={routing.alert_class.value}):
 {raw_alert}
@@ -69,7 +78,7 @@ Investigate and produce your final assessment as structured output."""
     return run_with_tools_structured(
         prompt,
         output_model=AgentInvestigation,
-        system=system,
+        system=system_blocks,
         max_rounds=max_rounds,
         max_tokens=2000,
     )

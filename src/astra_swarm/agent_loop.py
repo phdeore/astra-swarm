@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import json
-from typing import Any, TypeVar
-
-from pydantic import BaseModel, ValidationError
+import copy as _copy
 
 from anthropic import Anthropic
+from pydantic import BaseModel, ValidationError
+from typing import Any, TypeVar
 
 from .tools import ALL_TOOL_SCHEMAS, dispatch_tool
 from .schemas import to_strict_schema
@@ -110,10 +110,15 @@ def run_with_tools_structured(
 
     for attempt in range(max_repairs + 1):
         for round_num in range(1, max_rounds + 1):
+            # cache the tool schemas
+            cached_tools = _copy.deepcopy(tools) if tools else None
+            if cached_tools:
+                cached_tools[-1]["cache_control"] = {"type": "ephemeral"}
+
             kwargs: dict[str, Any] = {
                 "model": _MODEL,
                 "max_tokens": max_tokens,
-                "tools": tools,
+                "tools": cached_tools,
                 "output_config": {"format": {"type": "json_schema", "schema": schema}},
                 "messages": messages,
             }
@@ -122,6 +127,12 @@ def run_with_tools_structured(
 
             response = _client.messages.create(**kwargs)
             messages.append({"role": "assistant", "content": response.content})
+
+            print(
+                f"  usage: input={response.usage.input_tokens} "
+                f"cache_read={getattr(response.usage, 'cache_read_input_tokens', 0)} "
+                f"cache_create={getattr(response.usage, 'cache_creation_input_tokens', 0)}"
+            )
 
             if response.stop_reason != "tool_use":
                 raw = "".join(b.text for b in response.content if b.type == "text")
