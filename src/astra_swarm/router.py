@@ -73,7 +73,7 @@ def classify_alert(raw: str) -> RoutingDecision:
     """Cheap Haiku classifier — one strict-schema call, no tools."""
     prompt = f"""Classify this raw security alert into one of these classes:
 - identity_auth: login anomalies, MFA issues, credential events, IAM changes
-- malware: process/file signals, EDR detections, known-bad hashes
+- malware: process/file signals, EDR detections, known-bad hashes, malware beaconing
 - network: firewall, IDS/IPS, unusual protocols, egress alerts
 - phishing: email, malicious links or attachments, user-reported suspicious mail
 - other: doesn't clearly fit above
