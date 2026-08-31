@@ -32,3 +32,4 @@ data/*
 # Others
 logs/*
 cassettes/*
+screenshots/*
