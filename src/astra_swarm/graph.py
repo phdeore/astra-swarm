@@ -113,7 +113,7 @@ def enrichment_worker(state: TriageState) -> dict:
     result = run_with_tools_structured(
         prompt,
         output_model=EnrichmentResult,
-        max_rounds=4,
+        max_rounds=6,
         max_tokens=1200,
     )
     return {"enrichment": result.techniques, "workers_run": ["enrichment"]}
@@ -133,7 +133,7 @@ Alert: {state['raw']}
     result = run_with_tools_structured(
         prompt,
         output_model=IdentitySignals,
-        max_rounds=4,
+        max_rounds=6,
         max_tokens=1000,
     )
     return {"identity": result, "workers_run": ["identity"]}
