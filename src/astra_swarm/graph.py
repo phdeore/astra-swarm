@@ -110,13 +110,21 @@ def enrichment_worker(state: TriageState) -> dict:
     # Reuse the run_with_tools_structured path but with a narrower schema
     from .agent_loop import run_with_tools_structured
 
-    result = run_with_tools_structured(
-        prompt,
-        output_model=EnrichmentResult,
-        max_rounds=6,
-        max_tokens=1200,
-    )
-    return {"enrichment": result.techniques, "workers_run": ["enrichment"]}
+    try:
+        result = run_with_tools_structured(
+            prompt,
+            output_model=EnrichmentResult,
+            max_rounds=8,
+            max_tokens=1200,
+        )
+        if not isinstance(result, EnrichmentResult):
+            raise TypeError("structured enrichment result is not EnrichmentResult")
+        return {"enrichment": result.techniques, "workers_run": ["enrichment"]}
+    except RuntimeError as e:
+        if "max_rounds" in str(e):
+            # Graceful degradation: return empty enrichment rather than crash chain
+            return {"enrichment": [], "workers_run": ["enrichment:degraded"]}
+        raise
 
 
 def identity_worker(state: TriageState) -> dict:
@@ -130,12 +138,19 @@ Alert: {state['raw']}
 """
     from .agent_loop import run_with_tools_structured
 
-    result = run_with_tools_structured(
-        prompt,
-        output_model=IdentitySignals,
-        max_rounds=6,
-        max_tokens=1000,
-    )
+    try:
+        result = run_with_tools_structured(
+            prompt,
+            output_model=IdentitySignals,
+            max_rounds=8,
+            max_tokens=1000,
+        )
+    except RuntimeError as e:
+        if "max_rounds" in str(e):
+            # If the identity worker fails to converge, return empty signals but still
+            # mark it as having run.
+            return {"identity": IdentitySignals(), "workers_run": ["identity:degraded"]}
+        raise
     return {"identity": result, "workers_run": ["identity"]}
 
 
