@@ -177,3 +177,36 @@ class SeverityVerdict(BaseModel):
         if not 0.0 <= v <= 1.0:
             raise ValueError(f"confidence must be in [0.0, 1.0], got {v}")
         return v
+
+
+class ITDRFindings(BaseModel):
+    """Output of the ITDR specialist agent — richer than IdentitySignals."""
+
+    impossible_travel: bool
+    impossible_travel_evidence: str = Field(description="Empty if not detected")
+    mfa_fatigue: bool
+    mfa_fatigue_evidence: str
+    privilege_escalation: bool
+    privilege_escalation_evidence: str
+    dormant_reactivation: bool
+    dormant_reactivation_evidence: str
+    affected_users: list[str]
+    recommended_actions: list[str] = Field(
+        description="Specific identity-response actions, e.g. force_reauth, revoke_session"
+    )
+    confidence: float = Field(description="0.0 to 1.0")
+
+
+class ThreatIntelBrief(BaseModel):
+    """SOC-analyst-worker output — pulls in ATT&CK context beyond raw technique lookup."""
+
+    related_campaigns: list[str] = Field(description="Named campaigns/actors if any")
+    kill_chain_stage: str = Field(
+        description="e.g. 'initial access', 'lateral movement'"
+    )
+    prior_alert_context: str = Field(
+        description="What other alerts on this entity look like"
+    )
+    threat_severity_hint: str = Field(
+        description="Analyst's gut read: low/medium/high/critical"
+    )

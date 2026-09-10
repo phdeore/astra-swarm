@@ -7,14 +7,14 @@ from typing import Any
 
 from pydantic import BaseModel
 
-from .graph import TriageState
+from .graph import IncidentState
 
 
 class Incident(BaseModel):
     """A group of related triage results correlated by shared entities."""
 
     incident_id: str
-    triage_results: list[TriageState]
+    triage_results: list[IncidentState]
     shared_entities: dict[str, list[str]]
     highest_severity: str
     alert_count: int
@@ -22,7 +22,7 @@ class Incident(BaseModel):
     model_config = {"arbitrary_types_allowed": True}
 
 
-def _extract_entities(triage: TriageState) -> dict[str, set[str]]:
+def _extract_entities(triage: IncidentState) -> dict[str, set[str]]:
     """Pull user/host/IP entities from a triage result."""
     inv = triage.get("investigation")
     entities: dict[str, set[str]] = {"users": set(), "hosts": set(), "ips": set()}
@@ -40,7 +40,7 @@ def _extract_entities(triage: TriageState) -> dict[str, set[str]]:
     return entities
 
 
-def correlate(triage_results: list[TriageState]) -> list[Incident]:
+def correlate(triage_results: list[IncidentState]) -> list[Incident]:
     """Union-find style clustering: two alerts are in the same incident if they
     share any entity (user, host, or IP)."""
     # Extract entities per alert
