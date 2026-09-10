@@ -3,6 +3,7 @@ from typing import Annotated, Optional, Required, TypedDict, Literal, cast
 import uuid
 from langgraph.graph import END, START, StateGraph
 from langgraph.checkpoint.memory import MemorySaver
+from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
 from langchain_core.runnables import RunnableConfig
 from pydantic import BaseModel, Field, field_validator
 
@@ -21,6 +22,25 @@ from .schemas import (
 # Renamed and versioned. Version field lets Week 5's eval harness detect
 # whether a persisted incident was produced by an older graph.
 STATE_VERSION = 4
+
+# Register every custom class that appears in IncidentState so the checkpointer
+# can round-trip them safely. New Pydantic/enum types added to state must be
+# added here too — omitting one causes a warning now, an error in a future
+# LangGraph release.
+_ALLOWED_MODULES = [
+    ("astra_swarm.router", "AlertClass"),
+    ("astra_swarm.router", "RoutingDecision"),
+    ("astra_swarm.schemas", "Severity"),
+    ("astra_swarm.schemas", "AttackTechniqueCitation"),
+    ("astra_swarm.schemas", "AgentInvestigation"),
+    ("astra_swarm.schemas", "IdentitySignals"),
+    ("astra_swarm.graph", "InvestigationEvaluation"),
+    ("astra_swarm.graph", "ITDRFindings"),
+    ("astra_swarm.graph", "ThreatIntelBrief"),
+    ("astra_swarm.graph", "SupervisorDecision"),
+]
+
+setattr(JsonPlusSerializer, "allowed_msgpack_modules", tuple(_ALLOWED_MODULES))
 
 
 class InvestigationEvaluation(BaseModel):
