@@ -2,6 +2,8 @@ from operator import add
 from typing import Annotated, Optional, Required, TypedDict, Literal, cast
 import uuid
 from langgraph.graph import END, START, StateGraph
+from langgraph.checkpoint.memory import MemorySaver
+from langchain_core.runnables import RunnableConfig
 from pydantic import BaseModel, Field, field_validator
 
 from astra_swarm.itdr import itdr_specialist_node
@@ -376,7 +378,8 @@ def orchestrator(state: IncidentState) -> list[str]:
     return workers
 
 
-def build_triage_graph():
+def build_triage_graph(checkpointer=None):
+    """Compose the graph. Pass a checkpointer to enable resumability."""
     builder = StateGraph(IncidentState)
 
     # Existing nodes (Week 3, renamed/repurposed)
@@ -421,11 +424,15 @@ def build_triage_graph():
             "__end__": END,
         },
     )
-    return builder.compile()
+    return builder.compile(checkpointer=checkpointer)
 
 
-triage_graph = build_triage_graph()
+# Module-level default with in-memory checkpointer
+_checkpointer = MemorySaver()
+triage_graph = build_triage_graph(checkpointer=_checkpointer)
 
 
 def graph_triage(raw_alert: str) -> IncidentState:
-    return cast(IncidentState, triage_graph.invoke(new_incident_state(raw_alert)))
+    initial = new_incident_state(raw_alert)
+    config: RunnableConfig = {"configurable": {"thread_id": initial["incident_id"]}}
+    return cast(IncidentState, triage_graph.invoke(initial, config=config))
