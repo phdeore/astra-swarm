@@ -425,6 +425,9 @@ def build_triage_graph(checkpointer=None):
     """Compose the graph. Pass a checkpointer to enable resumability."""
     builder = StateGraph(IncidentState)
 
+    def _pass_through(state):
+        return {}
+
     # Existing nodes (Week 3, renamed/repurposed)
     builder.add_node("router", router_node)
     builder.add_node("enrichment_worker", enrichment_worker)
@@ -436,6 +439,8 @@ def build_triage_graph(checkpointer=None):
     builder.add_node("supervisor", supervisor_node)
     builder.add_node("itdr_specialist", itdr_specialist_node)  # Section 3
     builder.add_node("soc_analyst_worker", soc_analyst_worker_node)  # below
+    builder.add_node("escalation_notification", escalation_notification_node)
+    builder.add_node("post_eval", _pass_through)
 
     # Flow: START → router → supervisor → (worker | assessment | end)
     builder.add_edge(START, "router")
@@ -449,30 +454,18 @@ def build_triage_graph(checkpointer=None):
     # Assessment goes to evaluator; evaluator loops or exits via refinement router
     builder.add_edge("assessment_worker", "evaluator")
 
-    """
-    builder.add_conditional_edges(
-        "evaluator",
-        refinement_router,  # existing from Week 3
-        {"refine": "increment_refinement", "end": END},
-    )
-    """
-    builder.add_node("escalation_notification", escalation_notification_node)
-
-    def _pass_through(state):
-        return {}
-
-    builder.add_node("post_eval", _pass_through)
-
     builder.add_conditional_edges(
         "evaluator",
         refinement_router,
         {"refine": "increment_refinement", "end": "post_eval"},
     )
+
     builder.add_conditional_edges(
         "post_eval",
         escalation_router,
         {"escalated": "escalation_notification", "normal": END},
     )
+
     builder.add_edge("escalation_notification", END)
 
     builder.add_edge("increment_refinement", "supervisor")
