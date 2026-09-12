@@ -1,5 +1,5 @@
 from operator import add
-from typing import Annotated, Optional, Required, TypedDict, Literal, cast
+from typing import Annotated, Iterator, Optional, Required, TypedDict, Literal, cast
 import uuid
 from langgraph.graph import END, START, StateGraph
 from langgraph.checkpoint.memory import MemorySaver
@@ -382,6 +382,29 @@ def assessment_worker(state: IncidentState) -> dict:
     return {"investigation": inv, "workers_run": ["assessment"]}
 
 
+def escalation_router(state: IncidentState) -> str:
+    """After evaluator passes, decide whether the incident is high-priority."""
+    if state.get("escalated"):
+        return "escalated"
+    inv = state.get("investigation")
+    if inv and inv.severity.value in ("high", "critical"):
+        return "escalated"
+    return "normal"
+
+
+def escalation_notification_node(state: IncidentState) -> dict:
+    """Log or notify — for now, just marks the state. Week 6 wires HITL here."""
+    assert (
+        "investigation" in state
+    ), "escalation_notification_node requires assessment_worker to have run first"
+    print(
+        f"[ESCALATION] Incident {state['incident_id']} flagged: "
+        f"severity={state['investigation'].severity.value}, "
+        f"itdr_escalated={state.get('escalated', False)}"
+    )
+    return {"workers_run": ["escalation_notification"]}
+
+
 # --- Orchestrator (conditional edge) ----------------------------------------
 
 
@@ -425,11 +448,33 @@ def build_triage_graph(checkpointer=None):
 
     # Assessment goes to evaluator; evaluator loops or exits via refinement router
     builder.add_edge("assessment_worker", "evaluator")
+
+    """
     builder.add_conditional_edges(
         "evaluator",
         refinement_router,  # existing from Week 3
         {"refine": "increment_refinement", "end": END},
     )
+    """
+    builder.add_node("escalation_notification", escalation_notification_node)
+
+    def _pass_through(state):
+        return {}
+
+    builder.add_node("post_eval", _pass_through)
+
+    builder.add_conditional_edges(
+        "evaluator",
+        refinement_router,
+        {"refine": "increment_refinement", "end": "post_eval"},
+    )
+    builder.add_conditional_edges(
+        "post_eval",
+        escalation_router,
+        {"escalated": "escalation_notification", "normal": END},
+    )
+    builder.add_edge("escalation_notification", END)
+
     builder.add_edge("increment_refinement", "supervisor")
 
     # The supervisor's routing decision drives everything
@@ -456,3 +501,11 @@ def graph_triage(raw_alert: str) -> IncidentState:
     initial = new_incident_state(raw_alert)
     config: RunnableConfig = {"configurable": {"thread_id": initial["incident_id"]}}
     return cast(IncidentState, triage_graph.invoke(initial, config=config))
+
+
+def graph_triage_streaming(raw_alert: str) -> Iterator[dict]:
+    """Yield state updates as each node completes. Consumer decides what to display."""
+    initial = new_incident_state(raw_alert)
+    config: RunnableConfig = {"configurable": {"thread_id": initial["incident_id"]}}
+    for update in triage_graph.stream(initial, config=config, stream_mode="updates"):
+        yield update
