@@ -488,11 +488,12 @@ def build_triage_graph(checkpointer=None):
 
     # Flow: START → guardrail_check -> router → supervisor → (worker | assessment | end)
     builder.add_node("guardrail_check", guardrail_check_node)
+    builder.add_node("guardrail_quarantine", guardrail_quarantine_node)  # NEW
     builder.add_edge(START, "guardrail_check")
     builder.add_conditional_edges(
         "guardrail_check",
         guardrail_router,
-        {"clear": "router", "flagged": "escalation_notification"},
+        {"clear": "router", "flagged": "guardrail_quarantine"},
     )
     builder.add_edge("router", "supervisor")
 
@@ -517,6 +518,7 @@ def build_triage_graph(checkpointer=None):
     )
 
     builder.add_edge("escalation_notification", END)
+    builder.add_edge("guardrail_quarantine", END)
 
     builder.add_edge("increment_refinement", "supervisor")
 
