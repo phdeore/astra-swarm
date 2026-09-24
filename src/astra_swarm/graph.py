@@ -428,6 +428,17 @@ def escalation_notification_node(state: IncidentState) -> dict:
     return {"workers_run": ["escalation_notification"]}
 
 
+def guardrail_check_node(state: IncidentState) -> dict:
+    """First node in the graph. Routes flagged inputs directly to escalation."""
+    return {}  # pass-through; the router below reads state["guardrail_flagged"]
+
+
+def guardrail_router(state: IncidentState) -> str:
+    if state.get("guardrail_flagged"):
+        return "flagged"
+    return "clear"
+
+
 # --- Orchestrator (conditional edge) ----------------------------------------
 
 
@@ -531,14 +542,3 @@ def graph_triage_streaming(raw_alert: str) -> Iterator[dict]:
     config: RunnableConfig = {"configurable": {"thread_id": initial["incident_id"]}}
     for update in triage_graph.stream(initial, config=config, stream_mode="updates"):
         yield update
-
-
-def guardrail_check_node(state: IncidentState) -> dict:
-    """First node in the graph. Routes flagged inputs directly to escalation."""
-    return {}  # pass-through; the router below reads state["guardrail_flagged"]
-
-
-def guardrail_router(state: IncidentState) -> str:
-    if state.get("guardrail_flagged"):
-        return "flagged"
-    return "clear"
