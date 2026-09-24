@@ -6,6 +6,9 @@ privilege escalation, and dormant-account reactivation.
 
 from __future__ import annotations
 
+from astra_swarm.guardrails import filtered_tool_schemas
+from astra_swarm.tools import ALL_TOOL_SCHEMAS
+
 from .agent_loop import run_with_tools_structured
 
 ITDR_SYSTEM_PROMPT = """You are a senior identity-and-access security specialist with deep
@@ -67,11 +70,13 @@ def itdr_specialist_node(state) -> dict:
         alert_class=state["routing"].alert_class.value,
         enrichment_summary=enrichment_summary,
     )
+    tools_for_this_agent = filtered_tool_schemas("itdr_specialist", ALL_TOOL_SCHEMAS)
 
     try:
         findings = run_with_tools_structured(
             prompt,
             output_model=ITDRFindings,
+            tools=tools_for_this_agent,
             system=ITDR_SYSTEM_PROMPT,
             max_rounds=10,
             max_tokens=2500,

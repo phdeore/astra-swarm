@@ -7,9 +7,11 @@ from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
 from langchain_core.runnables import RunnableConfig
 from pydantic import BaseModel, Field, field_validator
 
+from astra_swarm.agent_loop import run_with_tools_structured
 from astra_swarm.itdr import itdr_specialist_node
 
 from .alerts import _ask_structured
+from .guardrails import GuardrailVerdict, validate_alert_input, filtered_tool_schemas
 from .react_agent import AgentInvestigation, react_triage
 from .router import RoutingDecision, classify_alert
 from .schemas import (
@@ -18,6 +20,7 @@ from .schemas import (
     IdentitySignals,
     ThreatIntelBrief,
 )
+from .tools import ALL_TOOL_SCHEMAS
 
 # Renamed and versioned. Version field lets Week 5's eval harness detect
 # whether a persisted incident was produced by an older graph.
@@ -41,6 +44,7 @@ _ALLOWED_MODULES = [
 ]
 
 setattr(JsonPlusSerializer, "allowed_msgpack_modules", tuple(_ALLOWED_MODULES))
+tools_for_this_agent = filtered_tool_schemas("itdr_specialist", ALL_TOOL_SCHEMAS)
 
 
 class InvestigationEvaluation(BaseModel):
@@ -107,6 +111,10 @@ class IncidentState(TypedDict, total=False):
 
     # Escalation flag (set by conditional edge on high-severity)
     escalated: bool
+
+    # Guardrails
+    guardrail_flagged: bool
+    guardrail_reason: str
 
 
 class EnrichmentResult(BaseModel):
@@ -216,7 +224,15 @@ def soc_analyst_worker_node(state: IncidentState) -> dict:
     Alert: {state["raw"]}
     Enriched techniques: {[t.model_dump() for t in state.get("enrichment", [])]}
     """
-    brief = _ask_structured(prompt, ThreatIntelBrief, max_tokens=800)
+    tools_for_this_agent = filtered_tool_schemas("soc_analyst_worker", ALL_TOOL_SCHEMAS)
+    # brief = _ask_structured(prompt, ThreatIntelBrief, max_tokens=800)
+    brief = run_with_tools_structured(
+        prompt,
+        output_model=ThreatIntelBrief,
+        tools=tools_for_this_agent,
+        max_rounds=6,
+        max_tokens=1500,
+    )
     return {"threat_intel": brief, "workers_run": ["soc_analyst"]}
 
 
@@ -237,8 +253,8 @@ def supervisor_router(state: IncidentState) -> str:
 
 
 def new_incident_state(raw_alert: str) -> IncidentState:
-    """Build a fresh state with required fields populated."""
-    return {
+    verdict = validate_alert_input(raw_alert)
+    state: IncidentState = {
         "state_version": STATE_VERSION,
         "raw": raw_alert,
         "incident_id": f"INC-{uuid.uuid4().hex[:8]}",
@@ -246,6 +262,11 @@ def new_incident_state(raw_alert: str) -> IncidentState:
         "workers_run": [],
         "supervisor_decisions": [],
     }
+    if not verdict.passed:
+        # Mark the state so downstream nodes can decide what to do
+        state["guardrail_flagged"] = True  # add this field to IncidentState
+        state["guardrail_reason"] = verdict.reason
+    return state
 
 
 def router_node(state: IncidentState) -> dict:
@@ -312,10 +333,12 @@ def enrichment_worker(state: IncidentState) -> dict:
     # Reuse the run_with_tools_structured path but with a narrower schema
     from .agent_loop import run_with_tools_structured
 
+    tools_for_this_agent = filtered_tool_schemas("enrichment_worker", ALL_TOOL_SCHEMAS)
     try:
         result = run_with_tools_structured(
             prompt,
             output_model=EnrichmentResult,
+            tools=tools_for_this_agent,
             max_rounds=8,
             max_tokens=1200,
         )
@@ -442,8 +465,14 @@ def build_triage_graph(checkpointer=None):
     builder.add_node("escalation_notification", escalation_notification_node)
     builder.add_node("post_eval", _pass_through)
 
-    # Flow: START → router → supervisor → (worker | assessment | end)
-    builder.add_edge(START, "router")
+    # Flow: START → guardrail_check -> router → supervisor → (worker | assessment | end)
+    builder.add_node("guardrail_check", guardrail_check_node)
+    builder.add_edge(START, "guardrail_check")
+    builder.add_conditional_edges(
+        "guardrail_check",
+        guardrail_router,
+        {"clear": "router", "flagged": "escalation_notification"},
+    )
     builder.add_edge("router", "supervisor")
 
     # Every worker returns to the supervisor for the next decision
@@ -502,3 +531,14 @@ def graph_triage_streaming(raw_alert: str) -> Iterator[dict]:
     config: RunnableConfig = {"configurable": {"thread_id": initial["incident_id"]}}
     for update in triage_graph.stream(initial, config=config, stream_mode="updates"):
         yield update
+
+
+def guardrail_check_node(state: IncidentState) -> dict:
+    """First node in the graph. Routes flagged inputs directly to escalation."""
+    return {}  # pass-through; the router below reads state["guardrail_flagged"]
+
+
+def guardrail_router(state: IncidentState) -> str:
+    if state.get("guardrail_flagged"):
+        return "flagged"
+    return "clear"
