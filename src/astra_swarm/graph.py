@@ -416,13 +416,14 @@ def escalation_router(state: IncidentState) -> str:
 
 
 def escalation_notification_node(state: IncidentState) -> dict:
-    """Log or notify — for now, just marks the state. Week 6 wires HITL here."""
+    """Terminal node for high-severity post-assessment incidents."""
     assert (
         "investigation" in state
-    ), "escalation_notification_node requires assessment_worker to have run first"
+    ), "escalation_notification requires assessment_worker to have run first"
+    inv = state["investigation"]
     print(
         f"[ESCALATION] Incident {state['incident_id']} flagged: "
-        f"severity={state['investigation'].severity.value}, "
+        f"severity={inv.severity.value}, "
         f"itdr_escalated={state.get('escalated', False)}"
     )
     return {"workers_run": ["escalation_notification"]}
@@ -431,6 +432,15 @@ def escalation_notification_node(state: IncidentState) -> dict:
 def guardrail_check_node(state: IncidentState) -> dict:
     """First node in the graph. Routes flagged inputs directly to escalation."""
     return {}  # pass-through; the router below reads state["guardrail_flagged"]
+
+
+def guardrail_quarantine_node(state: IncidentState) -> dict:
+    """Terminal node for guardrail-flagged inputs — no investigation happened."""
+    print(
+        f"[GUARDRAIL] Incident {state['incident_id']} quarantined: "
+        f"reason={state.get('guardrail_reason', 'unspecified')}"
+    )
+    return {"workers_run": ["guardrail_quarantine"]}
 
 
 def guardrail_router(state: IncidentState) -> str:
