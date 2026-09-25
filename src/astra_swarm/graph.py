@@ -420,11 +420,16 @@ def escalation_notification_node(state: IncidentState) -> dict:
     assert (
         "investigation" in state
     ), "escalation_notification requires assessment_worker to have run first"
+    assert (
+        "routing" in state
+    ), "escalation_notification requires router_node to have run first"
     inv = state["investigation"]
     print(
         f"[ESCALATION] Incident {state['incident_id']} flagged: "
         f"raw={state['raw'][:30]}..., "
         f"severity={inv.severity.value}, "
+        f"routing={state['routing'].alert_class.value}, "
+        f"supervisor_calls={state.get('supervisor_call_count', 0)}, "
         f"itdr_escalated={state.get('escalated', False)}"
     )
     return {
