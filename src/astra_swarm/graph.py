@@ -423,10 +423,14 @@ def escalation_notification_node(state: IncidentState) -> dict:
     inv = state["investigation"]
     print(
         f"[ESCALATION] Incident {state['incident_id']} flagged: "
+        f"raw={state['raw'][:30]}..., "
         f"severity={inv.severity.value}, "
         f"itdr_escalated={state.get('escalated', False)}"
     )
-    return {"workers_run": ["escalation_notification"]}
+    return {
+        "workers_run": ["escalation_notification"],
+        "escalated": True,
+    }  # Always set True here, even if the supervisor didn't mark it, because this node is only reached if the conditional edge routed to it.
 
 
 def guardrail_check_node(state: IncidentState) -> dict:
