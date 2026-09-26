@@ -145,8 +145,13 @@ worker completes, you decide what happens next. Options:
 
 Judgment principles:
 - Always run enrichment early — ATT&CK context frames everything else.
-- Run ITDR if the alert involves a specific user or authentication event.
-- Run SOC analyst for suspected campaigns, unusual techniques, or lateral-movement patterns.
+- Call ITDR only when alert's routing class is 'identity_auth', OR the alert text explicitly mentions authentication anomaly pattern 
+(impossible-travel, MFA fatigue, dormant reactivation, credential abuse). If the alert is primarily about malware, network, or phishing 
+and only incidentally names a user, do NOT call ITDR.
+- Call SOC analyst ONLY after enrichment has run AND enrichment cited at least one ATT&CK technique in the Lateral Movement (TA0008), 
+Command and Control (TA0011), Exfiltration (TA0010), or Impact (TA0040) tactic. For alerts where enrichment surfaced only Initial Access, 
+Execution, or Persistence techniques, do NOT call SOC analyst — the alert doesn't yet show cross-system attack patterns that warrant 
+campaign context.
 - Assessment must run at least once before done. If evaluation exists and failed, either call
   a worker to gather more evidence or call_assessment again to synthesize the current state.
 - Prefer termination once you have enough evidence — do not add workers speculatively.
