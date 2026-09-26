@@ -5,7 +5,7 @@
     "expected_severity": "low",
     "expected_escalation": false,
     "expected_workers_contains": [
-      "enrichment_worker"
+      "enrichment"
     ],
     "label_notes": "Routine firewall traffic denial with internal source and destination requires standard enrichment only."
   },
@@ -15,8 +15,8 @@
     "expected_severity": "critical",
     "expected_escalation": true,
     "expected_workers_contains": [
-      "enrichment_worker",
-      "soc_analyst_worker"
+      "enrichment",
+      "soc_analyst"
     ],
     "label_notes": "Hidden PowerShell execution downloading remote payload is clear malware execution requiring immediate escalation and campaign analysis."
   },
@@ -26,7 +26,7 @@
     "expected_severity": "low",
     "expected_escalation": false,
     "expected_workers_contains": [
-      "enrichment_worker"
+      "enrichment"
     ],
     "label_notes": "Blocked SSH connection attempt from external IP warrants medium severity and enrichment to determine threat context."
   },
@@ -36,7 +36,7 @@
     "expected_severity": "medium",
     "expected_escalation": false,
     "expected_workers_contains": [
-      "enrichment_worker"
+      "enrichment"
     ],
     "label_notes": "SQL injection attempt successfully blocked by WAF requires enrichment to identify attacker source and patterns."
   },
@@ -46,7 +46,7 @@
     "expected_severity": "medium",
     "expected_escalation": false,
     "expected_workers_contains": [
-      "enrichment_worker",
+      "enrichment",
       "itdr_specialist"
     ],
     "label_notes": "Account locked after failed login attempts requires identity specialist to determine if account compromise or legitimate lockout."
@@ -57,8 +57,8 @@
     "expected_severity": "high",
     "expected_escalation": true,
     "expected_workers_contains": [
-      "enrichment_worker",
-      "soc_analyst_worker"
+      "enrichment",
+      "soc_analyst"
     ],
     "label_notes": "High-severity trojan detection requires immediate escalation and campaign investigation to identify scope."
   },
@@ -68,8 +68,8 @@
     "expected_severity": "critical",
     "expected_escalation": true,
     "expected_workers_contains": [
-      "enrichment_worker",
-      "soc_analyst_worker"
+      "enrichment",
+      "soc_analyst"
     ],
     "label_notes": "Suspicious Run registry modification on database server by SYSTEM is persistence technique requiring immediate escalation."
   },
@@ -79,8 +79,8 @@
     "expected_severity": "low",
     "expected_escalation": false,
     "expected_workers_contains": [
-      "enrichment_worker",
-      "soc_analyst_worker"
+      "enrichment",
+      "soc_analyst"
     ],
     "label_notes": "XSS attack on e-commerce platform quarantined requires escalation to investigate potential account takeover or data theft campaign."
   },
@@ -90,7 +90,7 @@
     "expected_severity": "medium",
     "expected_escalation": false,
     "expected_workers_contains": [
-      "enrichment_worker"
+      "enrichment"
     ],
     "label_notes": "RDP connection from sanctioned country (North Korea) violates geofence policy and requires immediate escalation."
   },
@@ -100,8 +100,8 @@
     "expected_severity": "high",
     "expected_escalation": true,
     "expected_workers_contains": [
-      "enrichment_worker",
-      "soc_analyst_worker"
+      "enrichment",
+      "soc_analyst"
     ],
     "label_notes": "EDR terminated svchost with behavioral threat requires immediate escalation to determine malware family and campaign scope."
   },
@@ -111,7 +111,7 @@
     "expected_severity": "medium",
     "expected_escalation": false,
     "expected_workers_contains": [
-      "enrichment_worker"
+      "enrichment"
     ],
     "label_notes": "Path traversal attack attempt blocked requires enrichment to assess attacker sophistication and source."
   },
@@ -121,7 +121,7 @@
     "expected_severity": "low",
     "expected_escalation": false,
     "expected_workers_contains": [
-      "enrichment_worker",
+      "enrichment",
       "itdr_specialist"
     ],
     "label_notes": "Isolated Kerberos authentication failures require identity specialist to determine if user error or targeted attack attempt."
@@ -132,8 +132,8 @@
     "expected_severity": "high",
     "expected_escalation": true,
     "expected_workers_contains": [
-      "enrichment_worker",
-      "soc_analyst_worker"
+      "enrichment",
+      "soc_analyst"
     ],
     "label_notes": "Attempted access to sensitive admin files by non-admin user blocked by DLP requires escalation for insider threat investigation."
   },
@@ -143,8 +143,8 @@
     "expected_severity": "critical",
     "expected_escalation": true,
     "expected_workers_contains": [
-      "enrichment_worker",
-      "soc_analyst_worker"
+      "enrichment",
+      "soc_analyst"
     ],
     "label_notes": "Botnet C2 communication with 98% confidence requires immediate escalation and full campaign investigation."
   },
@@ -154,8 +154,8 @@
     "expected_severity": "critical",
     "expected_escalation": true,
     "expected_workers_contains": [
-      "enrichment_worker",
-      "soc_analyst_worker"
+      "enrichment",
+      "soc_analyst"
     ],
     "label_notes": "Financial document exfiltration attempt by named user requires immediate escalation for insider threat or account compromise investigation."
   },
@@ -165,8 +165,8 @@
     "expected_severity": "high",
     "expected_escalation": true,
     "expected_workers_contains": [
-      "enrichment_worker",
-      "soc_analyst_worker"
+      "enrichment",
+      "soc_analyst"
     ],
     "label_notes": "Generic trojan detected on application server with 94% confidence requires immediate escalation for containment and campaign analysis."
   },
@@ -176,8 +176,8 @@
     "expected_severity": "medium",
     "expected_escalation": false,
     "expected_workers_contains": [
-      "enrichment_worker",
-      "soc_analyst_worker"
+      "enrichment",
+      "soc_analyst"
     ],
     "label_notes": "HTTPS connection from threat intelligence flagged IP requires escalation to determine if targeted reconnaissance or attack."
   },
@@ -187,8 +187,8 @@
     "expected_severity": "medium",
     "expected_escalation": false,
     "expected_workers_contains": [
-      "enrichment_worker",
-      "soc_analyst_worker"
+      "enrichment",
+      "soc_analyst"
     ],
     "label_notes": "Command injection attempt on admin API downloading malware requires immediate escalation for threat hunt and campaign analysis."
   },
@@ -198,8 +198,8 @@
     "expected_severity": "high",
     "expected_escalation": true,
     "expected_workers_contains": [
-      "enrichment_worker",
-      "soc_analyst_worker"
+      "enrichment",
+      "soc_analyst"
     ],
     "label_notes": "DNS query to known C2 domain by user device requires immediate escalation for malware investigation and lateral movement assessment."
   },
@@ -209,9 +209,9 @@
     "expected_severity": "high",
     "expected_escalation": true,
     "expected_workers_contains": [
-      "enrichment_worker",
+      "enrichment",
       "itdr_specialist",
-      "soc_analyst_worker"
+      "soc_analyst"
     ],
     "label_notes": "Impossible travel anomaly with account authentication warrants identity specialist review and escalation for account compromise investigation."
   }

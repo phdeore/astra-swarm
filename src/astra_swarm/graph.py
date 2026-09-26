@@ -429,7 +429,7 @@ def escalation_notification_node(state: IncidentState) -> dict:
         f"raw={state['raw'][:30]}..., "
         f"severity={inv.severity.value}, "
         f"routing={state['routing'].alert_class.value}, "
-        f"supervisor_calls={state.get('supervisor_call_count', 0)}, "
+        f"supervisor_decisions={state.get('supervisor_decisions', [])}, "
         f"itdr_escalated={state.get('escalated', False)}"
     )
     return {
