@@ -6,6 +6,9 @@ from typing import Any
 from langsmith.evaluation import EvaluationResult
 from langsmith.schemas import Run, Example
 
+# Structural workers that don't reflect supervisor decisions
+_STRUCTURAL_WORKERS = {"assessment", "escalation_notification", "guardrail_quarantine"}
+
 
 def routing_correctness(run: Run, example: Example) -> EvaluationResult:
     if run.outputs is None or example.outputs is None:
@@ -50,29 +53,37 @@ def severity_correctness(run: Run, example: Example) -> EvaluationResult:
 
 
 def trajectory_correctness(run: Run, example: Example) -> EvaluationResult:
-    """Did the supervisor call the workers we expected?"""
     if run.outputs is None or example.outputs is None:
         return EvaluationResult(
             key="trajectory_correctness", score=0.0, comment="missing outputs"
         )
 
-    workers_run = set(run.outputs.get("workers_run", []))
-    expected = set(example.outputs.get("expected_workers_contains", []))
+    # Only compare specialist workers — structural ones always run
+    workers = {
+        w.split(":")[0] for w in run.outputs.get("workers_run", [])
+    } - _STRUCTURAL_WORKERS
+    required = (
+        set(example.outputs.get("expected_workers_contains", [])) - _STRUCTURAL_WORKERS
+    )
 
-    if not expected:
+    if not required:
         return EvaluationResult(
-            key="trajectory_correctness", score=1.0, comment="no requirements"
+            key="trajectory_correctness", score=1.0, comment="no requirement"
         )
 
-    matched = expected & {
-        w.split(":")[0] for w in workers_run
-    }  # strip :degraded suffix
-    score = len(matched) / len(expected)
+    # Jaccard: penalizes both misses and unnecessary extras
+    intersection = required & workers
+    union = required | workers
+    score = len(intersection) / len(union) if union else 0.0
 
     return EvaluationResult(
         key="trajectory_correctness",
         score=score,
-        comment=f"matched={sorted(matched)} required={sorted(expected)}",
+        comment=(
+            f"matched={sorted(intersection)} "
+            f"extra={sorted(workers - required)} "
+            f"missing={sorted(required - workers)}"
+        ),
     )
 
 
