@@ -102,3 +102,11 @@ def escalation_correctness(run: Run, example: Example) -> EvaluationResult:
         score=1.0 if predicted == expected else 0.0,
         comment=f"predicted={predicted} expected={expected}",
     )
+
+
+ALL_EVALUATORS = [
+    routing_correctness,
+    severity_correctness,
+    trajectory_correctness,
+    escalation_correctness,
+]
