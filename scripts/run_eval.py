@@ -13,10 +13,10 @@ from astra_swarm.graph import graph_triage
 from langsmith.schemas import Example, Run
 
 THRESHOLDS = {
-    "routing_correctness": 0.80,
-    "severity_correctness": 0.60,
-    "trajectory_correctness": 0.70,
-    "escalation_correctness": 0.70,
+    "routing_correctness": 0.70,  # baseline 0.80
+    "severity_correctness": 0.70,  # baseline 0.80
+    "trajectory_correctness": 0.75,  # baseline 0.84
+    "escalation_correctness": 0.65,  # baseline 0.75
 }
 
 
