@@ -5,6 +5,12 @@ on:
     branches: [main]
   workflow_dispatch:
 
+env:
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
+  LANGSMITH_TRACING: "true"
+  LANGSMITH_PROJECT: "astra-swarm-ci-${{ github.sha }}"
+
 jobs:
   eval:
     runs-on: ubuntu-latest
