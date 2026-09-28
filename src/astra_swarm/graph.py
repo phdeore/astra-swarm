@@ -1,6 +1,8 @@
 from operator import add
 from typing import Annotated, Iterator, Optional, Required, TypedDict, Literal, cast
 import uuid
+import sqlite3
+from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import END, START, StateGraph
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
@@ -46,6 +48,8 @@ _ALLOWED_MODULES = [
 
 setattr(JsonPlusSerializer, "allowed_msgpack_modules", tuple(_ALLOWED_MODULES))
 tools_for_this_agent = filtered_tool_schemas("itdr_specialist", ALL_TOOL_SCHEMAS)
+_conn = sqlite3.connect("checkpoints.db", check_same_thread=False)
+_checkpointer = SqliteSaver(_conn)
 
 
 class InvestigationEvaluation(BaseModel):
