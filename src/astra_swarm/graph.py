@@ -4,6 +4,7 @@ import uuid
 from langgraph.graph import END, START, StateGraph
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
+from langgraph.types import interrupt
 from langchain_core.runnables import RunnableConfig
 from pydantic import BaseModel, Field, field_validator
 
@@ -111,6 +112,8 @@ class IncidentState(TypedDict, total=False):
 
     # Escalation flag (set by conditional edge on high-severity)
     escalated: bool
+
+    approval_decision: dict  # {"approved": bool, "note": str}
 
     # Guardrails
     guardrail_flagged: bool
@@ -443,6 +446,58 @@ def escalation_notification_node(state: IncidentState) -> dict:
     }  # Always set True here, even if the supervisor didn't mark it, because this node is only reached if the conditional edge routed to it.
 
 
+def escalation_approval_node(state: IncidentState) -> dict:
+    """Human approval gate. The graph pauses here; caller must resume with a decision."""
+    # interrupt() pauses execution and returns whatever the caller provides on resume
+    assert (
+        "investigation" in state
+    ), "escalation_approval_node requires assessment_worker to have run first"
+    decision = interrupt(
+        {
+            "incident_id": state["incident_id"],
+            "reason": (
+                "guardrail_flagged"
+                if state.get("guardrail_flagged")
+                else f"severity={state['investigation'].severity.value}"
+            ),
+            "workers_run": state.get("workers_run", []),
+            "investigation_summary": (
+                state["investigation"].key_findings[:500]
+                if state.get("investigation")
+                else None
+            ),
+            "requires": "approve or deny",
+        }
+    )
+
+    approved = bool(decision.get("approved", False))
+    approver_note = decision.get("note", "")
+
+    return {
+        "approval_decision": {
+            "approved": approved,
+            "note": approver_note,
+        },
+    }
+
+
+def approval_router(state: IncidentState) -> str:
+    """Route based on the operator's decision."""
+    decision = state.get("approval_decision") or {}
+    if decision.get("approved"):
+        return "approved"
+    return "denied"
+
+
+def escalation_denied_node(state: IncidentState) -> dict:
+    """Terminal node for denied escalations — logged but no notification fires."""
+    print(
+        f"[DENIED] Incident {state['incident_id']} escalation denied by operator: "
+        f"{(state.get('approval_decision') or {}).get('note', '')}"
+    )
+    return {"workers_run": ["escalation_denied"]}
+
+
 def guardrail_check_node(state: IncidentState) -> dict:
     """First node in the graph. Routes flagged inputs directly to escalation."""
     return {}  # pass-through; the router below reads state["guardrail_flagged"]
@@ -503,11 +558,19 @@ def build_triage_graph(checkpointer=None):
     # Flow: START → guardrail_check -> router → supervisor → (worker | assessment | end)
     builder.add_node("guardrail_check", guardrail_check_node)
     builder.add_node("guardrail_quarantine", guardrail_quarantine_node)  # NEW
+
+    # Week 6
+    builder.add_node("escalation_approval", escalation_approval_node)
+    builder.add_node("escalation_denied", escalation_denied_node)
+
     builder.add_edge(START, "guardrail_check")
     builder.add_conditional_edges(
         "guardrail_check",
         guardrail_router,
-        {"clear": "router", "flagged": "guardrail_quarantine"},
+        {
+            "clear": "router",
+            "flagged": "escalation_approval",
+        },  # Keep original routing to guardrail_quarantine if you want auto-quarantine without approval (faster)
     )
     builder.add_edge("router", "supervisor")
 
@@ -528,8 +591,21 @@ def build_triage_graph(checkpointer=None):
     builder.add_conditional_edges(
         "post_eval",
         escalation_router,
-        {"escalated": "escalation_notification", "normal": END},
+        {
+            "escalated": "escalation_approval",
+            "normal": END,
+        },
     )
+
+    builder.add_conditional_edges(
+        "escalation_approval",
+        approval_router,
+        {
+            "approved": "escalation_notification",
+            "denied": "escalation_denied",
+        },
+    )
+    builder.add_edge("escalation_denied", END)
 
     builder.add_edge("escalation_notification", END)
     builder.add_edge("guardrail_quarantine", END)
