@@ -1,0 +1,12 @@
+.git
+.github
+notebooks
+evals
+docs
+__pycache__
+*.pyc
+.pytest_cache
+.venv
+venv
+checkpoints.db
+*.pkl
