@@ -561,37 +561,38 @@ def build_triage_graph(checkpointer=None):
     def _pass_through(state):
         return {}
 
-    # Existing nodes (Week 3, renamed/repurposed)
+    # ---------------------------------------------------------
+    # 1. Node Definitions
+    # ---------------------------------------------------------
+
+    # Ingestion & Guardrail nodes
+    builder.add_node("guardrail_check", guardrail_check_node)
+    builder.add_node("guardrail_approval", guardrail_approval_node)
+    builder.add_node("guardrail_quarantine", guardrail_quarantine_node)
     builder.add_node("router", router_node)
+
+    # Orchestration & Specialist workers
+    builder.add_node("supervisor", supervisor_node)
     builder.add_node("enrichment_worker", enrichment_worker)
+    builder.add_node("itdr_specialist", itdr_specialist_node)
+    builder.add_node("soc_analyst_worker", soc_analyst_worker_node)
+
+    # Assessment & Evaluation loop
     builder.add_node("assessment_worker", assessment_worker)
     builder.add_node("evaluator", evaluator_node)
     builder.add_node("increment_refinement", increment_refinement_node)
-
-    # NEW Week 4 nodes
-    builder.add_node("supervisor", supervisor_node)
-    builder.add_node("itdr_specialist", itdr_specialist_node)  # Section 3
-    builder.add_node("soc_analyst_worker", soc_analyst_worker_node)  # below
-    builder.add_node("escalation_notification", escalation_notification_node)
     builder.add_node("post_eval", _pass_through)
+
+    # Escalation & Approval workflow
     builder.add_node("escalation_approval", escalation_approval_node)
-    builder.add_node("guardrail_approval", guardrail_approval_node)  # NEW
+    builder.add_node("escalation_notification", escalation_notification_node)
     builder.add_node("escalation_denied", escalation_denied_node)
 
-    # Flow: START → guardrail_check -> router → supervisor → (worker | assessment | end)
-    builder.add_node("guardrail_check", guardrail_check_node)
-    builder.add_node("guardrail_quarantine", guardrail_quarantine_node)  # NEW
+    # ---------------------------------------------------------
+    # 2. Graph Edges & Flow
+    # ---------------------------------------------------------
 
-    # Week 6
-    builder.add_node("escalation_approval", escalation_approval_node)
-    builder.add_node("escalation_denied", escalation_denied_node)
-
-    builder.add_conditional_edges(
-        "post_eval",
-        escalation_router,
-        {"escalated": "escalation_approval", "normal": END},
-    )
-
+    # START -> Initial Guardrail Check
     builder.add_edge(START, "guardrail_check")
     builder.add_conditional_edges(
         "guardrail_check",
@@ -602,54 +603,23 @@ def build_triage_graph(checkpointer=None):
         },
     )
 
-    builder.add_edge("router", "supervisor")
-
-    # Every worker returns to the supervisor for the next decision
-    builder.add_edge("enrichment_worker", "supervisor")
-    builder.add_edge("itdr_specialist", "supervisor")
-    builder.add_edge("soc_analyst_worker", "supervisor")
-
-    # Assessment goes to evaluator; evaluator loops or exits via refinement router
-    builder.add_edge("assessment_worker", "evaluator")
-
-    builder.add_conditional_edges(
-        "evaluator",
-        refinement_router,
-        {"refine": "increment_refinement", "end": "post_eval"},
-    )
-
-    builder.add_conditional_edges(
-        "post_eval",
-        escalation_router,
-        {
-            "escalated": "escalation_approval",
-            "normal": END,
-        },
-    )
-
-    # Both approvals route through the same approval_router → notification/denied
-    builder.add_conditional_edges(
-        "escalation_approval",
-        approval_router,
-        {"approved": "escalation_notification", "denied": "escalation_denied"},
-    )
+    # Guardrail Approval Branch
     builder.add_conditional_edges(
         "guardrail_approval",
         approval_router,
         {
             "approved": "guardrail_quarantine",
-            "denied": "router",
-        },  # denied → let it run normal triage
+            "denied": "router",  # Denied approval proceeds to normal triage
+        },
     )
 
-    builder.add_edge("escalation_denied", END)
-
-    builder.add_edge("escalation_notification", END)
+    # Guardrail Quarantine -> Terminate
     builder.add_edge("guardrail_quarantine", END)
 
-    builder.add_edge("increment_refinement", "supervisor")
+    # Main Pipeline Entry
+    builder.add_edge("router", "supervisor")
 
-    # The supervisor's routing decision drives everything
+    # Supervisor Loop: Worker delegation & exit
     builder.add_conditional_edges(
         "supervisor",
         supervisor_router,
@@ -661,6 +631,50 @@ def build_triage_graph(checkpointer=None):
             "__end__": END,
         },
     )
+
+    # Specialist Workers return control to supervisor
+    builder.add_edge("enrichment_worker", "supervisor")
+    builder.add_edge("itdr_specialist", "supervisor")
+    builder.add_edge("soc_analyst_worker", "supervisor")
+
+    # Assessment -> Evaluator
+    builder.add_edge("assessment_worker", "evaluator")
+
+    # Evaluation Loop: Refine or advance to post-evaluation
+    builder.add_conditional_edges(
+        "evaluator",
+        refinement_router,
+        {
+            "refine": "increment_refinement",
+            "end": "post_eval",
+        },
+    )
+    builder.add_edge("increment_refinement", "supervisor")
+
+    # Post-Evaluation: Normal completion or escalation review
+    builder.add_conditional_edges(
+        "post_eval",
+        escalation_router,
+        {
+            "escalated": "escalation_approval",
+            "normal": END,
+        },
+    )
+
+    # Escalation Approval Branch
+    builder.add_conditional_edges(
+        "escalation_approval",
+        approval_router,
+        {
+            "approved": "escalation_notification",
+            "denied": "escalation_denied",
+        },
+    )
+
+    # Escalation Terminations
+    builder.add_edge("escalation_notification", END)
+    builder.add_edge("escalation_denied", END)
+
     return builder.compile(checkpointer=checkpointer)
 
 
