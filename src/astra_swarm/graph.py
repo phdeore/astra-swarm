@@ -457,35 +457,24 @@ def escalation_notification_node(state: IncidentState) -> dict:
 
 def escalation_approval_node(state: IncidentState) -> dict:
     """Human approval gate. The graph pauses here; caller must resume with a decision."""
-    # interrupt() pauses execution and returns whatever the caller provides on resume
     assert (
         "investigation" in state
     ), "escalation_approval_node requires assessment_worker to have run first"
+    # interrupt() pauses execution and returns whatever the caller provides on resume
+    inv = state["investigation"]
     decision = interrupt(
         {
             "incident_id": state["incident_id"],
-            "reason": (
-                "guardrail_flagged"
-                if state.get("guardrail_flagged")
-                else f"severity={state['investigation'].severity.value}"
-            ),
+            "reason": f"severity={inv.severity.value}",
             "workers_run": state.get("workers_run", []),
-            "investigation_summary": (
-                state["investigation"].key_findings[:500]
-                if state.get("investigation")
-                else None
-            ),
-            "requires": "approve or deny",
+            "investigation_summary": inv.key_findings[:500],
+            "requires": "approve to escalate, deny to skip notification",
         }
     )
-
-    approved = bool(decision.get("approved", False))
-    approver_note = decision.get("note", "")
-
     return {
         "approval_decision": {
-            "approved": approved,
-            "note": approver_note,
+            "approved": bool(decision.get("approved", False)),
+            "note": decision.get("note", ""),
         },
     }
 
@@ -510,6 +499,28 @@ def escalation_denied_node(state: IncidentState) -> dict:
 def guardrail_check_node(state: IncidentState) -> dict:
     """First node in the graph. Routes flagged inputs directly to escalation."""
     return {}  # pass-through; the router below reads state["guardrail_flagged"]
+
+
+def guardrail_approval_node(state: IncidentState) -> dict:
+    """Guardrail-flagged input approval. Only reached when input was flagged."""
+    assert state.get(
+        "guardrail_flagged"
+    ), "guardrail_approval requires guardrail_flagged=True in state"
+    decision = interrupt(
+        {
+            "incident_id": state["incident_id"],
+            "reason": "guardrail_flagged",
+            "guardrail_reason": state.get("guardrail_reason", "unspecified"),
+            "workers_run": state.get("workers_run", []),
+            "requires": "approve to quarantine, deny to release for normal processing",
+        }
+    )
+    return {
+        "approval_decision": {
+            "approved": bool(decision.get("approved", False)),
+            "note": decision.get("note", ""),
+        },
+    }
 
 
 def guardrail_quarantine_node(state: IncidentState) -> dict:
@@ -563,6 +574,9 @@ def build_triage_graph(checkpointer=None):
     builder.add_node("soc_analyst_worker", soc_analyst_worker_node)  # below
     builder.add_node("escalation_notification", escalation_notification_node)
     builder.add_node("post_eval", _pass_through)
+    builder.add_node("escalation_approval", escalation_approval_node)
+    builder.add_node("guardrail_approval", guardrail_approval_node)  # NEW
+    builder.add_node("escalation_denied", escalation_denied_node)
 
     # Flow: START → guardrail_check -> router → supervisor → (worker | assessment | end)
     builder.add_node("guardrail_check", guardrail_check_node)
@@ -572,15 +586,22 @@ def build_triage_graph(checkpointer=None):
     builder.add_node("escalation_approval", escalation_approval_node)
     builder.add_node("escalation_denied", escalation_denied_node)
 
+    builder.add_conditional_edges(
+        "post_eval",
+        escalation_router,
+        {"escalated": "escalation_approval", "normal": END},
+    )
+
     builder.add_edge(START, "guardrail_check")
     builder.add_conditional_edges(
         "guardrail_check",
         guardrail_router,
         {
             "clear": "router",
-            "flagged": "escalation_approval",
-        },  # Keep original routing to guardrail_quarantine if you want auto-quarantine without approval (faster)
+            "flagged": "guardrail_approval",
+        },
     )
+
     builder.add_edge("router", "supervisor")
 
     # Every worker returns to the supervisor for the next decision
@@ -606,14 +627,21 @@ def build_triage_graph(checkpointer=None):
         },
     )
 
+    # Both approvals route through the same approval_router → notification/denied
     builder.add_conditional_edges(
         "escalation_approval",
         approval_router,
-        {
-            "approved": "escalation_notification",
-            "denied": "escalation_denied",
-        },
+        {"approved": "escalation_notification", "denied": "escalation_denied"},
     )
+    builder.add_conditional_edges(
+        "guardrail_approval",
+        approval_router,
+        {
+            "approved": "guardrail_quarantine",
+            "denied": "router",
+        },  # denied → let it run normal triage
+    )
+
     builder.add_edge("escalation_denied", END)
 
     builder.add_edge("escalation_notification", END)
