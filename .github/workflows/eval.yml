@@ -1,15 +1,20 @@
 name: Astra-Swarm Eval
 
+# Runs on every PR with NO credentials: the eval replays Claude responses recorded in
+# evals/cassettes/ (see record-eval.yml), so it costs nothing and is safe for PRs from
+# forks. If a change alters prompts, tool output or graph flow, replay misses and the
+# job fails with exit code 2 — re-record the cassettes and commit them.
+
 on:
   pull_request:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 env:
-  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-  LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
-  LANGSMITH_TRACING: "true"
-  LANGSMITH_PROJECT: "astra-swarm-ci-${{ github.sha }}"
+  ASTRA_ATTACK_CACHE_DIR: ${{ github.workspace }}/.cache/attack
 
 jobs:
   eval:
@@ -25,14 +30,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.lock
           pip install --no-deps -e .
-      - name: Run evaluation
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          ASTRA_CASSETTE_DIR: /tmp/cassettes
-        run: python scripts/run_eval.py
+          pip install "pytest>=8"
+      - name: Cache ATT&CK bundle
+        uses: actions/cache@v4
+        with:
+          path: .cache/attack
+          key: attack-${{ hashFiles('src/astra_swarm/attack_kb.py') }}
+      - name: Unit tests
+        run: pytest -q
+      - name: Run evaluation (replay, no API calls)
+        run: python scripts/run_eval.py --mode replay
       - name: Upload eval report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: eval-report
           path: eval_report.json
+          if-no-files-found: ignore

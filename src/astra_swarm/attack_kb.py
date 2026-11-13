@@ -4,37 +4,64 @@ Loads the Enterprise ATT&CK STIX 2.1 bundle and exposes:
   - lookup_by_id(technique_id)
   - search_by_keyword(keyword, limit=5)
 
-The bundle is ~30 MB. First call downloads and caches to /tmp; subsequent calls
-in the same process are in-memory. The 'master' URL below is the always-latest
-pointer maintained by MITRE.
+The bundle is ~55 MB. First call downloads and caches it on disk; subsequent calls
+in the same process are in-memory.
+
+The bundle is pinned to a tagged ATT&CK release and verified by SHA-256, so tool
+results are reproducible (recorded eval cassettes depend on this) and a tampered or
+changed download is rejected. To upgrade: bump _ATTACK_VERSION, update
+_ATTACK_SHA256, and re-record the eval cassettes.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
+import os
+import tempfile
 import urllib.request
 from pathlib import Path
 from typing import Any
 
+_ATTACK_VERSION = "20.0"
+_ATTACK_SHA256 = "2339a3c36353d5ee2c07e98af3fafbf00761e0e3979ede06402657445b7b4278"
 _STIX_URL = (
     "https://raw.githubusercontent.com/mitre-attack/attack-stix-data/"
-    "master/enterprise-attack/enterprise-attack.json"
+    f"v{_ATTACK_VERSION}/enterprise-attack/enterprise-attack-{_ATTACK_VERSION}.json"
 )
-_CACHE_PATH = Path("/tmp/astra_swarm_enterprise_attack.json")
 
 # In-process caches — built once per Python session.
 _tech_by_id: dict[str, dict] | None = None
 _tactic_by_shortname: dict[str, str] | None = None
 
 
+def _cache_path() -> Path:
+    """Versioned on-disk cache; directory overridable via ASTRA_ATTACK_CACHE_DIR."""
+    cache_dir = Path(os.environ.get("ASTRA_ATTACK_CACHE_DIR", tempfile.gettempdir()))
+    return cache_dir / f"astra_swarm_enterprise_attack_{_ATTACK_VERSION}.json"
+
+
+def _verified(data: bytes) -> bool:
+    return hashlib.sha256(data).hexdigest() == _ATTACK_SHA256
+
+
 def _download_bundle() -> dict:
-    if _CACHE_PATH.exists() and _CACHE_PATH.stat().st_size > 1_000_000:
-        return json.loads(_CACHE_PATH.read_text())
-    print(f"[attack_kb] fetching enterprise-attack STIX bundle...")
-    with urllib.request.urlopen(_STIX_URL, timeout=60) as r:
+    cache_path = _cache_path()
+    if cache_path.exists():
+        data = cache_path.read_bytes()
+        if _verified(data):
+            return json.loads(data)
+        print(f"[attack_kb] cached bundle at {cache_path} failed checksum; re-downloading")
+    print(f"[attack_kb] fetching enterprise-attack STIX bundle v{_ATTACK_VERSION}...")
+    with urllib.request.urlopen(_STIX_URL, timeout=120) as r:
         data = r.read()
-    _CACHE_PATH.write_bytes(data)
-    print(f"[attack_kb] cached {len(data) / 1_048_576:.1f} MB at {_CACHE_PATH}")
+    if not _verified(data):
+        raise RuntimeError(
+            f"ATT&CK bundle v{_ATTACK_VERSION} failed SHA-256 verification; refusing to use it"
+        )
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    cache_path.write_bytes(data)
+    print(f"[attack_kb] cached {len(data) / 1_048_576:.1f} MB at {cache_path}")
     return json.loads(data)
 
 
