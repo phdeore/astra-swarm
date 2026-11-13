@@ -45,6 +45,46 @@ Eval scorecard on 20-alert human-reviewed golden set:
 
 CI regression gate runs on every PR; thresholds set 10pp below baseline.
 
+## Evaluation and CI
+
+| Workflow | Trigger | Calls Claude? | Credentials |
+|---|---|---|---|
+| `Astra-Swarm Eval` (`eval.yml`) | every PR | No: replays `evals/cassettes/` | None |
+| `Record eval cassettes` (`record-eval.yml`) | manual, approval-gated | Yes (one eval run) | Workload Identity Federation, no API key |
+
+PR runs replay recorded Claude responses, so they cost nothing and are safe for PRs
+from forks. When a change alters prompts, tool output or graph flow, replay misses and
+the job fails with exit code 2. Re-record, review and commit the cassettes:
+
+    gh workflow run record-eval.yml --ref <your-branch>   # then approve it in the Actions tab
+    gh run download <run-id> -n eval-cassettes              # puts evals/cassettes/ in place
+    git add evals/cassettes && git commit -m "Re-record eval cassettes"
+
+Locally: `python scripts/run_eval.py` (replay, default), `--mode record`, or `--mode live`.
+
+### One-time setup for recording
+
+1. **GitHub environment (do this first):** Settings → Environments → New environment
+   `ci-eval` → enable **Required reviewers** (add yourself). If the workflow runs before
+   this exists, GitHub creates the environment automatically *without* the approval gate.
+2. **Claude Console** (needs admin/owner): Settings → Workload identity → **Connect
+   workload** → **GitHub Actions**, with:
+   - issuer `https://token.actions.githubusercontent.com` (discovery)
+   - rule subject `repo:phdeore/astra-swarm:environment:ci-eval` (exact, no `*`),
+     audience `https://api.anthropic.com`, claims `repository_owner: phdeore`
+   - scope `workspace:developer`, token lifetime 600 s; add the new service account to
+     the workspace that should be billed
+3. **GitHub variables** (Settings → Secrets and variables → Actions → *Variables*, not
+   secrets; these IDs are not sensitive): `ANTHROPIC_FEDERATION_RULE_ID`,
+   `ANTHROPIC_ORGANIZATION_ID`, `ANTHROPIC_SERVICE_ACCOUNT_ID`, and
+   `ANTHROPIC_WORKSPACE_ID` if the rule spans more than one workspace.
+4. Delete any `ANTHROPIC_API_KEY` repository secret: CI no longer reads one.
+
+Reproducibility inputs: the ATT&CK bundle is pinned to a tagged release and
+SHA-256-verified (`attack_kb.py`), and auth-log lookback windows are measured from the
+newest log entry rather than the wall clock (override with
+`ASTRA_AUTH_LOG_REFERENCE_TIME`). Changing either requires re-recording.
+
 ## Design highlights
 
 - **Dynamic supervisor** — LangGraph state machine with a dynamic supervisor node deciding
