@@ -32,7 +32,8 @@ jobs:
       ANTHROPIC_ORGANIZATION_ID: ${{ vars.ANTHROPIC_ORGANIZATION_ID }}
       ANTHROPIC_SERVICE_ACCOUNT_ID: ${{ vars.ANTHROPIC_SERVICE_ACCOUNT_ID }}
       ANTHROPIC_WORKSPACE_ID: ${{ vars.ANTHROPIC_WORKSPACE_ID }}
-      ANTHROPIC_IDENTITY_TOKEN_FILE: ${{ runner.temp }}/gha-oidc-token
+      # ANTHROPIC_IDENTITY_TOKEN_FILE is exported by the token step (runner.temp isn't
+      # available in job-level env).
       ASTRA_ATTACK_CACHE_DIR: ${{ github.workspace }}/.cache/attack
     steps:
       - uses: actions/checkout@v4
@@ -69,6 +70,8 @@ jobs:
         # recording run can take longer. Re-fetch every 2 minutes; the SDK re-reads the file
         # each time it refreshes its Anthropic token.
         run: |
+          export ANTHROPIC_IDENTITY_TOKEN_FILE="$RUNNER_TEMP/gha-oidc-token"
+          echo "ANTHROPIC_IDENTITY_TOKEN_FILE=$ANTHROPIC_IDENTITY_TOKEN_FILE" >> "$GITHUB_ENV"
           fetch_token() {
             curl -sSf -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
               "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=https://api.anthropic.com" \

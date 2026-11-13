@@ -64,8 +64,9 @@ Locally: `python scripts/run_eval.py` (replay, default), `--mode record`, or `--
 
 ### One-time setup for recording
 
-1. **GitHub environment:** Settings → Environments → New environment `ci-eval` →
-   enable **Required reviewers** (add yourself).
+1. **GitHub environment (do this first):** Settings → Environments → New environment
+   `ci-eval` → enable **Required reviewers** (add yourself). If the workflow runs before
+   this exists, GitHub creates the environment automatically *without* the approval gate.
 2. **Claude Console** (needs admin/owner): Settings → Workload identity → **Connect
    workload** → **GitHub Actions**, with:
    - issuer `https://token.actions.githubusercontent.com` (discovery)
