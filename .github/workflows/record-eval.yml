@@ -1,0 +1,96 @@
+name: Record eval cassettes
+
+# Manually triggered only. Calls the real Claude API (this is the only workflow that
+# costs money) and uploads fresh cassettes for you to review and commit.
+#
+# Authentication is Workload Identity Federation — there is no API key anywhere:
+#   * the job runs in the `ci-eval` environment, which requires your approval;
+#   * GitHub issues an OIDC token whose subject is
+#     repo:<owner>/<repo>:environment:ci-eval, and the Anthropic federation rule
+#     accepts only that subject;
+#   * the Anthropic SDK exchanges it for a short-lived token automatically.
+# Setup: see "Evaluation and CI" in README.md.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: record-eval
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    environment: ci-eval
+    timeout-minutes: 45
+    env:
+      ANTHROPIC_FEDERATION_RULE_ID: ${{ vars.ANTHROPIC_FEDERATION_RULE_ID }}
+      ANTHROPIC_ORGANIZATION_ID: ${{ vars.ANTHROPIC_ORGANIZATION_ID }}
+      ANTHROPIC_SERVICE_ACCOUNT_ID: ${{ vars.ANTHROPIC_SERVICE_ACCOUNT_ID }}
+      ANTHROPIC_WORKSPACE_ID: ${{ vars.ANTHROPIC_WORKSPACE_ID }}
+      # ANTHROPIC_IDENTITY_TOKEN_FILE is exported by the token step (runner.temp isn't
+      # available in job-level env).
+      ASTRA_ATTACK_CACHE_DIR: ${{ github.workspace }}/.cache/attack
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check federation configuration
+        run: |
+          missing=0
+          for v in ANTHROPIC_FEDERATION_RULE_ID ANTHROPIC_ORGANIZATION_ID ANTHROPIC_SERVICE_ACCOUNT_ID; do
+            if [ -z "${!v}" ]; then echo "::error::Variable $v is not set (repo or ci-eval environment variables)"; missing=1; fi
+          done
+          # An API key would silently take precedence over federation.
+          if [ -n "${ANTHROPIC_API_KEY+x}" ] || [ -n "${ANTHROPIC_AUTH_TOKEN+x}" ]; then
+            echo "::error::ANTHROPIC_API_KEY/ANTHROPIC_AUTH_TOKEN must not be set; this workflow uses federation only"; missing=1
+          fi
+          exit $missing
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.lock
+          pip install --no-deps -e .
+
+      - name: Cache ATT&CK bundle
+        uses: actions/cache@v4
+        with:
+          path: .cache/attack
+          key: attack-${{ hashFiles('src/astra_swarm/attack_kb.py') }}
+
+      - name: Keep a fresh GitHub OIDC token on disk
+        # GitHub OIDC tokens live ~5 min and Anthropic accepts each one only once, while a
+        # recording run can take longer. Re-fetch every 2 minutes; the SDK re-reads the file
+        # each time it refreshes its Anthropic token.
+        run: |
+          export ANTHROPIC_IDENTITY_TOKEN_FILE="$RUNNER_TEMP/gha-oidc-token"
+          echo "ANTHROPIC_IDENTITY_TOKEN_FILE=$ANTHROPIC_IDENTITY_TOKEN_FILE" >> "$GITHUB_ENV"
+          fetch_token() {
+            curl -sSf -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+              "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=https://api.anthropic.com" \
+              | jq -r .value > "$ANTHROPIC_IDENTITY_TOKEN_FILE.tmp" \
+              && mv "$ANTHROPIC_IDENTITY_TOKEN_FILE.tmp" "$ANTHROPIC_IDENTITY_TOKEN_FILE"
+          }
+          fetch_token
+          nohup bash -c "$(declare -f fetch_token); while sleep 120; do fetch_token; done" \
+            > "$RUNNER_TEMP/oidc-refresh.log" 2>&1 &
+
+      - name: Record cassettes (real API calls)
+        run: python scripts/run_eval.py --mode record
+
+      - name: Upload cassettes and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-cassettes
+          path: |
+            evals/cassettes/
+            eval_report.json
+          if-no-files-found: warn

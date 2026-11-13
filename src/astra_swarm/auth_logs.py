@@ -4,19 +4,24 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
+# Repo layout: <root>/src/astra_swarm/auth_logs.py -> <root>/data/synthetic/auth_logs.json
+_DEFAULT_LOG_PATH = Path(__file__).resolve().parents[2] / "data" / "synthetic" / "auth_logs.json"
+
 
 def _log_path() -> Path:
-    """Lazy-resolved to honor an env var override (matches cassette pattern)."""
-    return Path(
-        os.environ.get(
-            "ASTRA_AUTH_LOG_PATH",
-            "/content/astra-swarm/data/synthetic/auth_logs.json",
-        )
-    )
+    """Lazy-resolved so ASTRA_AUTH_LOG_PATH can override the bundled fixture."""
+    return Path(os.environ.get("ASTRA_AUTH_LOG_PATH", str(_DEFAULT_LOG_PATH)))
+
+
+def _parse_ts(ts: str) -> datetime | None:
+    try:
+        return datetime.fromisoformat(ts.replace("Z", "+00:00"))
+    except ValueError:
+        return None
 
 
 _logs_cache: list[dict] | None = None
@@ -30,16 +35,35 @@ def _load() -> list[dict]:
     return _logs_cache
 
 
+def _reference_time(logs: list[dict]) -> datetime:
+    """The 'now' that lookback windows are measured from.
+
+    The logs are a static fixture, so measuring from the wall clock makes every query
+    drift to "no activity" as the fixture ages (and makes recorded evals
+    non-reproducible). Use ASTRA_AUTH_LOG_REFERENCE_TIME if set (ISO-8601), otherwise
+    the newest timestamp in the log file.
+    """
+    override = os.environ.get("ASTRA_AUTH_LOG_REFERENCE_TIME")
+    if override:
+        ref = _parse_ts(override)
+        if ref is None:
+            raise ValueError(f"ASTRA_AUTH_LOG_REFERENCE_TIME is not ISO-8601: {override!r}")
+        return ref
+    stamps = [t for t in (_parse_ts(l.get("ts", "")) for l in logs) if t is not None]
+    if not stamps:
+        raise ValueError(f"no parseable timestamps in {_log_path()}")
+    return max(stamps)
+
+
 def query_auth_logs(user: str, hours: int = 24) -> dict[str, Any]:
-    """Return recent authentication activity for a user."""
+    """Return authentication activity for a user in the `hours` before the reference time."""
     logs = _load()
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=hours)
+    reference = _reference_time(logs)
+    cutoff = reference - timedelta(hours=hours)
 
     def _within(ts: str) -> bool:
-        try:
-            return datetime.fromisoformat(ts.replace("Z", "+00:00")) >= cutoff
-        except ValueError:
-            return False
+        parsed = _parse_ts(ts)
+        return parsed is not None and cutoff <= parsed <= reference
 
     user_logs = [l for l in logs if l["user"] == user and _within(l["ts"])]
     if not user_logs:

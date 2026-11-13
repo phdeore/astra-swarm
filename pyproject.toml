@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "astra-swarm"
+version = "1.0.0"
+description = "Multi-agent SOC + ITDR alert triage on LangGraph and Claude, with human-in-the-loop approval"
+readme = "README.md"
+license = { file = "LICENSE" }
+# graph.py uses typing.Required (3.11+); the Docker image and CI run 3.12.
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic>=0.122,<3",
+    "pydantic>=2.13,<3",
+    "langchain-core>=1.0,<2",
+    "langgraph>=1.0,<2",
+    "langgraph-checkpoint>=4.0,<5",
+    "langgraph-checkpoint-sqlite>=3.0,<4",
+    "langsmith>=0.4,<1",
+    "fastapi>=0.115,<1",
+    "uvicorn[standard]>=0.32,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+    "mypy>=1.11",
+]
+notebooks = [
+    "ipython>=8",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
