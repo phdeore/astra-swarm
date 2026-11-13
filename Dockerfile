@@ -6,12 +6,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-COPY pyproject.toml README.md ./
+COPY pyproject.toml requirements.lock README.md LICENSE ./
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.lock
+
 COPY src ./src
 COPY data ./data
-
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -e .
+RUN pip install --no-cache-dir --no-deps -e .
 
 # Create the non-root user
 RUN useradd -m -u 1000 astra
