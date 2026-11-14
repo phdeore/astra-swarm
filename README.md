@@ -84,11 +84,19 @@ public repos on a personal account. (On a private repo they need GitHub Pro/Team
 3. **Claude Console workload** (needs admin/owner): Settings → Workload identity →
    **Connect workload** → **GitHub Actions**:
    - issuer `https://token.actions.githubusercontent.com` (discovery)
-   - rule subject `repo:phdeore/astra-swarm:environment:ci-eval` (exact, no `*`),
-     audience `https://api.anthropic.com`
-   - claims: `repository_owner: phdeore`, `repository_id: 1331674356` and, optionally,
-     `repository_owner_id: 9942420`. Don't add `ref`/`job_workflow_ref`: they contain
-     the branch name and would block feature-branch recordings.
+   - rule subject, exact (no `*`):
+     `repo:phdeore@9942420/astra-swarm@1331674356:environment:ci-eval`
+     (audience `https://api.anthropic.com`).
+     This repo uses GitHub's *immutable* subject format, which embeds the owner and
+     repo numeric IDs. These keep the rule working after a rename and stop a new repo
+     with the same name from matching it. Check the prefix with
+     `gh api repos/<owner>/<repo>/actions/oidc/customization/sub` (`sub_claim_prefix`).
+     If it shows `use_immutable_subject: false`, the subject is
+     `repo:<owner>/<repo>:environment:ci-eval` instead. A subject that doesn't match
+     shows as `match_subject_prefix` in the Console's authentication events.
+   - claims: `repository_owner: phdeore` (optional with the immutable subject, which
+     already pins the owner and repo IDs). Don't add `ref`/`job_workflow_ref`: they
+     contain the branch name and would block feature-branch recordings.
    - *Where can workloads authenticate?* Only the workspace from step 2.
    - scope `workspace:developer` (inference only, not admin); token lifetime 600 s.
    - Make sure the new service account is a member of that workspace.
