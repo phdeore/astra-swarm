@@ -1,6 +1,6 @@
 # .github/workflows/anthropic-wif-test.yml
 name: anthropic-wif-test
-on: push
+on: workflow_dispatch
 permissions:
   id-token: write
   contents: read
@@ -17,8 +17,9 @@ jobs:
             core.setSecret(token);
             core.exportVariable('JWT', token);
       - name: Exchange for an Anthropic access token
+        shell: bash  # implies -o pipefail, so a curl failure fails the step
         run: |
-          curl -sS https://api.anthropic.com/v1/oauth/token \
+          curl -sS --fail-with-body https://api.anthropic.com/v1/oauth/token \
             -H "content-type: application/json" \
             --data @- <<JSON | jq 'with_entries(if (.key | test("token$")) then .value = "<redacted>" else . end)'
           {
