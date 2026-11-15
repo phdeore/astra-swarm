@@ -16,6 +16,12 @@ jobs:
             const token = await core.getIDToken('https://api.anthropic.com');
             core.setSecret(token);
             core.exportVariable('JWT', token);
+            // Print the claims a federation rule matches on (not the signed token itself),
+            // so the rule's subject/audience/issuer can be compared field by field.
+            const c = JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString());
+            const pick = ['sub', 'aud', 'iss', 'repository', 'repository_id',
+                          'repository_owner', 'repository_owner_id', 'environment', 'ref'];
+            core.info(JSON.stringify(Object.fromEntries(pick.map(k => [k, c[k]])), null, 2));
       - name: Exchange for an Anthropic access token
         shell: bash  # implies -o pipefail, so a curl failure fails the step
         run: |
