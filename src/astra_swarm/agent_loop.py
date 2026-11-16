@@ -5,14 +5,14 @@ from __future__ import annotations
 import json
 import copy as _copy
 
-from anthropic import Anthropic
+from .client import client
 from pydantic import BaseModel, ValidationError
 from typing import Any, TypeVar
 
 from .tools import ALL_TOOL_SCHEMAS, dispatch_tool
 from .schemas import to_strict_schema
 
-_client = Anthropic()
+_client = client
 _MODEL = "claude-haiku-4-5-20251001"
 _M = TypeVar("_M", bound=BaseModel)
 
