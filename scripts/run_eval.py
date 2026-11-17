@@ -52,7 +52,10 @@ def run_and_score(alert: str, expected: dict) -> dict:
         "routing": routing.model_dump() if routing else None,
         "investigation": inv.model_dump() if inv else None,
         "workers_run": result.get("workers_run", []),
-        "escalated": result.get("escalated", False),
+        # High/critical incidents pause at escalation_approval (interrupt) for an operator
+        # decision the eval never gives, so `escalated` is only set after approval. The
+        # pending approval is the system's escalation decision, so count it.
+        "escalated": bool(result.get("escalated")) or "__interrupt__" in result,
         "guardrail_flagged": result.get("guardrail_flagged", False),  # for debugging
     }
     # Local stand-ins for LangSmith objects; only .outputs is read by the evaluators.

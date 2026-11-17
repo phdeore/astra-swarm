@@ -410,6 +410,20 @@ def assessment_worker(state: IncidentState) -> dict:
     Identity signals: {state.get('identity')}
 
     Produce an AgentInvestigation with severity, rationale, confidence, and response. Set attack_techniques to the enrichment above, identity_signals to what identity found.
+
+    Severity scale (high and critical are escalated to an on-call human, so do not inflate):
+    - low: routine noise — ordinary denied traffic or scans with no attack payload or threat-intel hit.
+    - medium: an attack attempt from outside that a control stopped at the perimeter (action
+      blocked/denied/dropped/quarantined, or the account locked), with no sign that any internal
+      host or account was affected. A malicious payload or bad-reputation source alone does not
+      make it high.
+    - high: activity on or from an internal host or account — malware or persistence on an
+      endpoint, an internal host attempting C2 or exfiltration (even if blocked), suspicious access
+      to sensitive data, or an anomalous sign-in pattern such as impossible travel — OR an attack
+      with no evidence that a control stopped it.
+    - critical: high, plus confirmed malicious execution, active C2 communication, or sensitive
+      data leaving the organization.
+    The vendor's own severity field in the alert is a hint, not the answer; apply this scale.
     """
     inv = _ask_structured(prompt, AgentInvestigation, max_tokens=1500)
     # Fill in the pieces the assessment prompt might have skipped
