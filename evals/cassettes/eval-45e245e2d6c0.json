@@ -1,0 +1,668 @@
+{
+ "0344ff7664f381be": [
+  {
+   "container": null,
+   "content": [
+    {
+     "caller": {
+      "type": "direct"
+     },
+     "id": "toolu_014LUqt3wdr4XUDBT3ZJCxhL",
+     "input": {
+      "keyword": "staged data collection",
+      "limit": 3
+     },
+     "name": "search_attack_techniques",
+     "toolset_name": null,
+     "type": "tool_use"
+    }
+   ],
+   "diagnostics": null,
+   "id": "msg_011Ch9xjUacCchUrw61yVaFY",
+   "model": "claude-haiku-4-5-20251001",
+   "role": "assistant",
+   "stop_details": null,
+   "stop_reason": "tool_use",
+   "stop_sequence": null,
+   "type": "message",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "not_available",
+    "input_tokens": 5604,
+    "output_tokens": 74,
+    "output_tokens_details": null,
+    "server_tool_use": null,
+    "service_tier": "standard",
+    "speed": "standard"
+   }
+  }
+ ],
+ "1ac881bd88d9741c": [
+  {
+   "container": null,
+   "content": [
+    {
+     "caller": {
+      "type": "direct"
+     },
+     "id": "toolu_019rMGXncDLmstBtTddNNsSU",
+     "input": {
+      "technique_id": "T1041"
+     },
+     "name": "lookup_attack_technique_by_id",
+     "toolset_name": null,
+     "type": "tool_use"
+    }
+   ],
+   "diagnostics": null,
+   "id": "msg_011Ch9xjY7BoCQ7B1YSFW3rZ",
+   "model": "claude-haiku-4-5-20251001",
+   "role": "assistant",
+   "stop_details": null,
+   "stop_reason": "tool_use",
+   "stop_sequence": null,
+   "type": "message",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "not_available",
+    "input_tokens": 5721,
+    "output_tokens": 63,
+    "output_tokens_details": null,
+    "server_tool_use": null,
+    "service_tier": "standard",
+    "speed": "standard"
+   }
+  }
+ ],
+ "3965f52ff8607737": [
+  {
+   "container": null,
+   "content": [
+    {
+     "citations": null,
+     "text": "{\"techniques\": [{\"id\": \"T1567\", \"name\": \"Exfiltration Over Web Service\", \"tactics\": [\"Exfiltration\"], \"why_relevant\": \"The alert detects a critical file transfer of sensitive financial data (financial_report_2026.xlsx) to an external email server, which represents data exfiltration over a web-based service.\"}, {\"id\": \"T1020\", \"name\": \"Automated Exfiltration\", \"tactics\": [\"Exfiltration\"], \"why_relevant\": \"The DLP (Data Loss Prevention) alert indicates an automated detection and prevention mechanism triggered by systematic data transfer of a sensitive file, suggesting automated exfiltration activity.\"}, {\"id\": \"T1041\", \"name\": \"Exfiltration Over C2 Channel\", \"tactics\": [\"Exfiltration\"], \"why_relevant\": \"The transfer of a sensitive financial document from internal user bwilson to an external email server indicates potential data exfiltration through an established communication channel.\"}]}",
+     "type": "text"
+    }
+   ],
+   "diagnostics": null,
+   "id": "msg_011Ch9xjbULW4dhMsnGZuDZD",
+   "model": "claude-haiku-4-5-20251001",
+   "role": "assistant",
+   "stop_details": null,
+   "stop_reason": "end_turn",
+   "stop_sequence": null,
+   "type": "message",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "not_available",
+    "input_tokens": 5933,
+    "output_tokens": 231,
+    "output_tokens_details": null,
+    "server_tool_use": null,
+    "service_tier": "standard",
+    "speed": "standard"
+   }
+  }
+ ],
+ "3d26a75011d7615b": [
+  {
+   "container": null,
+   "content": [
+    {
+     "caller": {
+      "type": "direct"
+     },
+     "id": "toolu_01KJMBttCuw2AfreZnb5hssF",
+     "input": {
+      "keyword": "exfiltration",
+      "limit": 5
+     },
+     "name": "search_attack_techniques",
+     "toolset_name": null,
+     "type": "tool_use"
+    },
+    {
+     "caller": {
+      "type": "direct"
+     },
+     "id": "toolu_018fC6VENexpsZEwc8xZGuFT",
+     "input": {
+      "keyword": "data transfer",
+      "limit": 5
+     },
+     "name": "search_attack_techniques",
+     "toolset_name": null,
+     "type": "tool_use"
+    }
+   ],
+   "diagnostics": null,
+   "id": "msg_011Ch9xjE4VMq7qn3jcCaRRo",
+   "model": "claude-haiku-4-5-20251001",
+   "role": "assistant",
+   "stop_details": null,
+   "stop_reason": "tool_use",
+   "stop_sequence": null,
+   "type": "message",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "not_available",
+    "input_tokens": 1839,
+    "output_tokens": 131,
+    "output_tokens_details": null,
+    "server_tool_use": null,
+    "service_tier": "standard",
+    "speed": "standard"
+   }
+  }
+ ],
+ "3d3b813177701abc": [
+  {
+   "container": null,
+   "content": [
+    {
+     "caller": {
+      "type": "direct"
+     },
+     "id": "toolu_01D7UtNShD39mGov2LVNjrEW",
+     "input": {
+      "technique_id": "T1567"
+     },
+     "name": "lookup_attack_technique_by_id",
+     "toolset_name": null,
+     "type": "tool_use"
+    },
+    {
+     "caller": {
+      "type": "direct"
+     },
+     "id": "toolu_01CuHrJcNbL7bYLWisYXWyUo",
+     "input": {
+      "technique_id": "T1020"
+     },
+     "name": "lookup_attack_technique_by_id",
+     "toolset_name": null,
+     "type": "tool_use"
+    },
+    {
+     "caller": {
+      "type": "direct"
+     },
+     "id": "toolu_01LgYqwBs8fAmpsMn1BZkKe7",
+     "input": {
+      "technique_id": "T1041"
+     },
+     "name": "lookup_attack_technique_by_id",
+     "toolset_name": null,
+     "type": "tool_use"
+    }
+   ],
+   "diagnostics": null,
+   "id": "msg_011Ch9xjtexBekh3tj2gnTMC",
+   "model": "claude-haiku-4-5-20251001",
+   "role": "assistant",
+   "stop_details": null,
+   "stop_reason": "tool_use",
+   "stop_sequence": null,
+   "type": "message",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "not_available",
+    "input_tokens": 1687,
+    "output_tokens": 155,
+    "output_tokens_details": null,
+    "server_tool_use": null,
+    "service_tier": "standard",
+    "speed": "standard"
+   }
+  }
+ ],
+ "47cc3ae323dd2707": [
+  {
+   "container": null,
+   "content": [
+    {
+     "caller": {
+      "type": "direct"
+     },
+     "id": "toolu_01ECmwtx6oFTVwRXmybWBUJu",
+     "input": {
+      "keyword": "data exfiltration file transfer",
+      "limit": 3
+     },
+     "name": "search_attack_techniques",
+     "toolset_name": null,
+     "type": "tool_use"
+    },
+    {
+     "caller": {
+      "type": "direct"
+     },
+     "id": "toolu_01AecqYxr9vZfonV7p4AreFX",
+     "input": {
+      "keyword": "exfiltration email",
+      "limit": 3
+     },
+     "name": "search_attack_techniques",
+     "toolset_name": null,
+     "type": "tool_use"
+    },
+    {
+     "caller": {
+      "type": "direct"
+     },
+     "id": "toolu_01186gDRrEu4MBoKMhKnq1e3",
+     "input": {
+      "keyword": "lateral movement command control",
+      "limit": 3
+     },
+     "name": "search_attack_techniques",
+     "toolset_name": null,
+     "type": "tool_use"
+    }
+   ],
+   "diagnostics": null,
+   "id": "msg_011Ch9xj77XK8xVGksYSfYW5",
+   "model": "claude-haiku-4-5-20251001",
+   "role": "assistant",
+   "stop_details": null,
+   "stop_reason": "tool_use",
+   "stop_sequence": null,
+   "type": "message",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "not_available",
+    "input_tokens": 1442,
+    "output_tokens": 196,
+    "output_tokens_details": null,
+    "server_tool_use": null,
+    "service_tier": "standard",
+    "speed": "standard"
+   }
+  }
+ ],
+ "6713bbf308398f8a": [
+  {
+   "container": null,
+   "content": [
+    {
+     "citations": null,
+     "text": "{\"related_campaigns\": [], \"kill_chain_stage\": \"exfiltration\", \"prior_alert_context\": \"This alert represents the final stage of a data exfiltration attack. Preceding alerts would typically show initial access (phishing, compromised credentials), privilege escalation, and lateral movement to reach a privileged user account (bwilson). The DLP alert firing on a sensitive financial document transfer indicates either an insider threat or a compromised user account being leveraged for data theft. Watch for correlating alerts on credential compromise, lateral movement, or unusual user activity from this account in the hours or days prior.\", \"threat_severity_hint\": \"critical\"}",
+     "type": "text"
+    }
+   ],
+   "diagnostics": null,
+   "id": "msg_011Ch9xk3xYdVPtZT6wovXff",
+   "model": "claude-haiku-4-5-20251001",
+   "role": "assistant",
+   "stop_details": null,
+   "stop_reason": "end_turn",
+   "stop_sequence": null,
+   "type": "message",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "not_available",
+    "input_tokens": 2501,
+    "output_tokens": 146,
+    "output_tokens_details": null,
+    "server_tool_use": null,
+    "service_tier": "standard",
+    "speed": "standard"
+   }
+  }
+ ],
+ "6811ee6c6ac7fc22": [
+  {
+   "container": null,
+   "content": [
+    {
+     "caller": {
+      "type": "direct"
+     },
+     "id": "toolu_013PPRUCpDer2XuzaP2T2riK",
+     "input": {
+      "technique_id": "T1567"
+     },
+     "name": "lookup_attack_technique_by_id",
+     "toolset_name": null,
+     "type": "tool_use"
+    },
+    {
+     "caller": {
+      "type": "direct"
+     },
+     "id": "toolu_01SzeoeQJfJDWmpmpYKcfCRS",
+     "input": {
+      "technique_id": "T1020"
+     },
+     "name": "lookup_attack_technique_by_id",
+     "toolset_name": null,
+     "type": "tool_use"
+    },
+    {
+     "caller": {
+      "type": "direct"
+     },
+     "id": "toolu_01Qq6J3LLuVjQZA1MzWfCQBH",
+     "input": {
+      "keyword": "email attachment",
+      "limit": 3
+     },
+     "name": "search_attack_techniques",
+     "toolset_name": null,
+     "type": "tool_use"
+    }
+   ],
+   "diagnostics": null,
+   "id": "msg_011Ch9xjJhYMVgNrFmGZ2qvT",
+   "model": "claude-haiku-4-5-20251001",
+   "role": "assistant",
+   "stop_details": null,
+   "stop_reason": "tool_use",
+   "stop_sequence": null,
+   "type": "message",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "not_available",
+    "input_tokens": 3886,
+    "output_tokens": 165,
+    "output_tokens_details": null,
+    "server_tool_use": null,
+    "service_tier": "standard",
+    "speed": "standard"
+   }
+  }
+ ],
+ "70369eedb1e6f3c1": [
+  {
+   "container": null,
+   "content": [
+    {
+     "citations": null,
+     "text": "{\"alert_class\": \"other\", \"rationale\": \"This is a Data Loss Prevention (DLP) alert detecting potential unauthorized data exfiltration through email, which does not clearly fit the identity_auth, malware, network, or phishing categories as it represents a data protection/insider threat event.\", \"confidence\": 0.72}",
+     "type": "text"
+    }
+   ],
+   "diagnostics": null,
+   "id": "msg_011Ch9xiw2JQhJo56JijJwKk",
+   "model": "claude-haiku-4-5-20251001",
+   "role": "assistant",
+   "stop_details": null,
+   "stop_reason": "end_turn",
+   "stop_sequence": null,
+   "type": "message",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "not_available",
+    "input_tokens": 575,
+    "output_tokens": 76,
+    "output_tokens_details": null,
+    "server_tool_use": null,
+    "service_tier": "standard",
+    "speed": "standard"
+   }
+  }
+ ],
+ "76dc60b49a2ec17d": [
+  {
+   "container": null,
+   "content": [
+    {
+     "citations": null,
+     "text": "{\"attack_techniques\": [{\"id\": \"T1567\", \"name\": \"Exfiltration Over Web Service\", \"tactics\": [\"Exfiltration\"], \"why_relevant\": \"The alert detects a critical file transfer of sensitive financial data (financial_report_2026.xlsx) to an external email server, which represents data exfiltration over a web-based service.\"}, {\"id\": \"T1020\", \"name\": \"Automated Exfiltration\", \"tactics\": [\"Exfiltration\"], \"why_relevant\": \"The DLP (Data Loss Prevention) alert indicates an automated detection and prevention mechanism triggered by systematic data transfer of a sensitive file, suggesting automated exfiltration activity.\"}, {\"id\": \"T1041\", \"name\": \"Exfiltration Over C2 Channel\", \"tactics\": [\"Exfiltration\"], \"why_relevant\": \"The transfer of a sensitive financial document from internal user bwilson to an external email server indicates potential data exfiltration through an established communication channel.\"}], \"identity_signals\": null, \"key_findings\": \"User bwilson attempted to exfiltrate a sensitive financial document (financial_report_2026.xlsx) to an external email server, which was detected and blocked by FortiGate DLP controls. The activity demonstrates clear intent to move confidential 2026 financial planning data outside the organization through web-based email infrastructure. No evidence indicates the exfiltration succeeded or that the user account has been compromised by malware.\", \"severity\": \"high\", \"severity_rationale\": \"This alert meets the high-severity threshold as it represents activity from an internal account attempting exfiltration of sensitive data, even though the FortiGate DLP control blocked the action. The target file contains financial planning information (2026 financial report) that would qualify as sensitive corporate data. While the control prevented successful data loss, the attempted exfiltration from an authenticated internal user indicates either credential compromise, insider threat, or account takeover that requires immediate investigation.\", \"confidence\": 0.85, \"recommended_response\": \"Immediately interview user bwilson to determine if the exfiltration attempt was authorized or accidental. Verify bwilson's account has not been compromised by checking recent sign-in activity, device location, and access patterns. If unauthorized, isolate the user's account and endpoints, reset credentials, and conduct forensic analysis of bwilson's workstation for malware or lateral movement artifacts. Review FortiGate logs for any successful data transfers from this user in the past 30 days. Determine if financial_report_2026.xlsx was accessed by other users recently and restrict access to that file pending investigation conclusion.\", \"rounds_used\": 0}",
+     "type": "text"
+    }
+   ],
+   "diagnostics": null,
+   "id": "msg_011Ch9xkTPhmyjLuMUey5MWh",
+   "model": "claude-haiku-4-5-20251001",
+   "role": "assistant",
+   "stop_details": null,
+   "stop_reason": "end_turn",
+   "stop_sequence": null,
+   "type": "message",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "not_available",
+    "input_tokens": 1931,
+    "output_tokens": 607,
+    "output_tokens_details": null,
+    "server_tool_use": null,
+    "service_tier": "standard",
+    "speed": "standard"
+   }
+  }
+ ],
+ "91d5c924a1f145f9": [
+  {
+   "container": null,
+   "content": [
+    {
+     "citations": null,
+     "text": "{\"completeness\": 0.85, \"citation_quality\": 0.65, \"severity_defensibility\": 0.75, \"overall_pass\": true, \"feedback\": \"The investigation demonstrates solid coverage of the alert's core aspects\u2014user identity, target file, detection control, and recommended next steps are all addressed. However, citation quality is slightly weak: T1567 and T1020 are reasonable fits, but T1041 (Exfiltration Over C2 Channel) is questionable here since the alert explicitly identifies email/web-based exfiltration with no C2 indicators; the analyst should either remove T1041 or provide explicit justification for why C2 exfiltration is suspected. Severity defensibility is acceptable but could be stronger\u2014the analyst correctly notes the DLP control blocked the attempt, which should lower severity relative to successful exfiltration, yet rates it 'high'; consider whether 'medium-high' or 'medium' is more appropriate given the successful prevention by controls, unless there's evidence of prior successful transfers. The response plan is thorough and appropriate, but adding a timeline for credential reset and specifying which 30-day logs to prioritize would strengthen urgency and clarity.\"}",
+     "type": "text"
+    }
+   ],
+   "diagnostics": null,
+   "id": "msg_011Ch9xkx9q5UdjNfBouuQ9c",
+   "model": "claude-haiku-4-5-20251001",
+   "role": "assistant",
+   "stop_details": null,
+   "stop_reason": "end_turn",
+   "stop_sequence": null,
+   "type": "message",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "not_available",
+    "input_tokens": 1078,
+    "output_tokens": 272,
+    "output_tokens_details": null,
+    "server_tool_use": null,
+    "service_tier": "standard",
+    "speed": "standard"
+   }
+  }
+ ],
+ "a53fb5d9815b0f94": [
+  {
+   "container": null,
+   "content": [
+    {
+     "citations": null,
+     "text": "{\"next_action\": \"call_enrichment\", \"rationale\": \"Enrichment must run first to establish ATT&CK context for this DLP alert, which appears to involve data exfiltration and may map to techniques under Exfiltration or Impact tactics.\"}",
+     "type": "text"
+    }
+   ],
+   "diagnostics": null,
+   "id": "msg_011Ch9xj1vUtYqXpPUiCVz1b",
+   "model": "claude-haiku-4-5-20251001",
+   "role": "assistant",
+   "stop_details": null,
+   "stop_reason": "end_turn",
+   "stop_sequence": null,
+   "type": "message",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "not_available",
+    "input_tokens": 943,
+    "output_tokens": 64,
+    "output_tokens_details": null,
+    "server_tool_use": null,
+    "service_tier": "standard",
+    "speed": "standard"
+   }
+  }
+ ],
+ "c2c78c79d7308f30": [
+  {
+   "container": null,
+   "content": [
+    {
+     "caller": {
+      "type": "direct"
+     },
+     "id": "toolu_01Avur6L2A5NoWp1Q82EJwMB",
+     "input": {
+      "keyword": "data staging collection sensitive information",
+      "limit": 3
+     },
+     "name": "search_attack_techniques",
+     "toolset_name": null,
+     "type": "tool_use"
+    }
+   ],
+   "diagnostics": null,
+   "id": "msg_011Ch9xjQWHerEwqqaw3REiR",
+   "model": "claude-haiku-4-5-20251001",
+   "role": "assistant",
+   "stop_details": null,
+   "stop_reason": "tool_use",
+   "stop_sequence": null,
+   "type": "message",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "not_available",
+    "input_tokens": 5481,
+    "output_tokens": 76,
+    "output_tokens_details": null,
+    "server_tool_use": null,
+    "service_tier": "standard",
+    "speed": "standard"
+   }
+  }
+ ],
+ "da1c92d2eab52de6": [
+  {
+   "container": null,
+   "content": [
+    {
+     "citations": null,
+     "text": "{\"next_action\": \"call_soc_analyst\", \"rationale\": \"Enrichment has identified 3 techniques; if any are in Lateral Movement, Command and Control, Exfiltration, or Impact tactics (which is likely for a DLP/data exfiltration alert), SOC analyst should provide threat-intel and campaign context before assessment.\"}",
+     "type": "text"
+    }
+   ],
+   "diagnostics": null,
+   "id": "msg_011Ch9xjnpxg5DaBeWMNKL91",
+   "model": "claude-haiku-4-5-20251001",
+   "role": "assistant",
+   "stop_details": null,
+   "stop_reason": "end_turn",
+   "stop_sequence": null,
+   "type": "message",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "not_available",
+    "input_tokens": 946,
+    "output_tokens": 83,
+    "output_tokens_details": null,
+    "server_tool_use": null,
+    "service_tier": "standard",
+    "speed": "standard"
+   }
+  }
+ ],
+ "ebe6c3bbf7e03222": [
+  {
+   "container": null,
+   "content": [
+    {
+     "citations": null,
+     "text": "{\"next_action\": \"call_assessment\", \"rationale\": \"Enrichment has provided ATT&CK context (3 techniques cited) and SOC analyst has supplied threat-intel/campaign context; sufficient evidence is gathered to synthesize findings into a final verdict before determining if the investigation is complete.\"}",
+     "type": "text"
+    }
+   ],
+   "diagnostics": null,
+   "id": "msg_011Ch9xkHkWzn9TuBxPvuNsb",
+   "model": "claude-haiku-4-5-20251001",
+   "role": "assistant",
+   "stop_details": null,
+   "stop_reason": "end_turn",
+   "stop_sequence": null,
+   "type": "message",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "not_available",
+    "input_tokens": 952,
+    "output_tokens": 69,
+    "output_tokens_details": null,
+    "server_tool_use": null,
+    "service_tier": "standard",
+    "speed": "standard"
+   }
+  }
+ ]
+}

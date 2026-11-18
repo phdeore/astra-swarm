@@ -1,0 +1,2133 @@
+{
+  "mode": "record",
+  "aggregates": {
+    "routing_correctness": 0.65,
+    "severity_correctness": 0.825,
+    "trajectory_correctness": 0.8416666666666666,
+    "escalation_correctness": 0.85
+  },
+  "thresholds": {
+    "routing_correctness": 0.7,
+    "severity_correctness": 0.7,
+    "trajectory_correctness": 0.75,
+    "escalation_correctness": 0.65
+  },
+  "threshold_failures": [
+    "routing_correctness"
+  ],
+  "per_example": [
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "network",
+          "rationale": "This is a firewall traffic denial alert from Palo Alto Networks indicating blocked network traffic between internal hosts, which is a network-layer security event.",
+          "confidence": 0.95
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1071",
+              "name": "Application Layer Protocol",
+              "tactics": [
+                "Command and Control"
+              ],
+              "why_relevant": "The denied TCP traffic on port 443 (HTTPS) suggests potential command and control communication attempts using application layer protocols that may have been blocked."
+            },
+            {
+              "id": "T1090",
+              "name": "Proxy",
+              "tactics": [
+                "Command and Control"
+              ],
+              "why_relevant": "The connection from internal source to external destination could indicate an attempt to establish a proxy connection for command and control traffic that was subsequently denied by the firewall."
+            },
+            {
+              "id": "T1567",
+              "name": "Exfiltration Over Web Service",
+              "tactics": [
+                "Exfiltration"
+              ],
+              "why_relevant": "The blocked HTTPS traffic (port 443) to an external IP may represent an attempt to exfiltrate data over a web service that was prevented by network controls."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "An internal host (192.168.1.45) attempted outbound HTTPS communication to an external IP (10.0.0.5) on port 443, which was denied by the firewall. While the enrichment suggests potential C2 or exfiltration activity, the firewall successfully blocked the traffic at the perimeter. No identity anomalies or successful lateral movement have been detected.",
+          "severity": "medium",
+          "severity_rationale": "This represents an attack attempt originating from an internal host that was blocked by network controls before any communication could be established. Although the ATT&CK techniques suggest possible C2 or exfiltration intent, there is no evidence of successful compromise, data loss, or account abuse. The threat was contained at the network perimeter.",
+          "confidence": 0.65,
+          "recommended_response": "Isolate host 192.168.1.45 and conduct forensic analysis to determine the source of the outbound connection attempt. Review process execution logs and network artifacts to identify what triggered the connection. Query threat intelligence on destination IP 10.0.0.5 for known malicious activity. Scan the host for malware or unauthorized software. If legitimate, restore and whitelist; if suspicious, escalate to incident response.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment",
+          "soc_analyst",
+          "assessment"
+        ],
+        "escalated": false,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.NETWORK expected=network",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 0.5,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.MEDIUM expected=low diff=1",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 0.5,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment'] extra=['soc_analyst'] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=False expected=False",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "malware",
+          "rationale": "EDR detected suspicious PowerShell process execution with obfuscated command-line attempting to download and execute remote code from an external URL, indicating malware delivery behavior.",
+          "confidence": 0.95
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1059.001",
+              "name": "PowerShell",
+              "tactics": [
+                "Execution"
+              ],
+              "why_relevant": "The alert shows PowerShell.exe being executed with specific flags (-NoProfile, -WindowStyle Hidden) to run the IEX command for remote code execution."
+            },
+            {
+              "id": "T1105",
+              "name": "Ingress Tool Transfer",
+              "tactics": [
+                "Command and Control"
+              ],
+              "why_relevant": "The command downloads a payload from an external malicious URL using Net.WebClient.DownloadString(), which is a common method for fetching tools or malware into the system."
+            },
+            {
+              "id": "T1071",
+              "name": "Application Layer Protocol",
+              "tactics": [
+                "Command and Control"
+              ],
+              "why_relevant": "The malware uses HTTP protocol to communicate with and download code from the remote malicious.com C2 server, blending the malicious traffic with normal web traffic."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "PowerShell was executed on WORKSTATION-07 with obfuscation flags (-NoProfile, -WindowStyle Hidden) to download and execute code from a malicious external URL using IEX. The command line demonstrates classic fileless malware deployment via remote code execution. No identity signals were detected, but the endpoint activity itself constitutes confirmed malicious execution on an internal host.",
+          "severity": "high",
+          "severity_rationale": "This alert represents activity on an internal endpoint (WORKSTATION-07) where a user account executed a known malicious payload delivery pattern. The command demonstrates confirmed PowerShell-based RCE with intent to download additional malware, meeting the threshold of 'malware on an endpoint' and 'malicious execution on an internal host.' While there is no evidence of C2 communication completion or data exfiltration yet, the execution itself\u2014not blocked\u2014on an internal system elevates this to high severity.",
+          "confidence": 0.92,
+          "recommended_response": "Immediately isolate WORKSTATION-07 from the network to prevent C2 callback and lateral movement. Collect full process memory and disk artifacts for forensics. Review endpoint logs for signs of payload execution and persistence mechanisms. Identify what was actually downloaded and executed from malicious.com. Assess whether domain\\jsmith's account has been compromised or if the host was already infected. Reset credentials for jsmith and review their recent access patterns. Scan all systems on the same network segment for similar indicators of compromise.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment"
+        ],
+        "escalated": true,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.MALWARE expected=malware",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 0.5,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.HIGH expected=critical diff=1",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment', 'soc_analyst'] extra=[] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=True expected=True",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "network",
+          "rationale": "This is a firewall log showing a blocked inbound TCP connection attempt to SSH port 22 from an external IP address, which is a typical network-level intrusion detection event.",
+          "confidence": 0.95
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1595",
+              "name": "Active Scanning",
+              "tactics": [
+                "Reconnaissance"
+              ],
+              "why_relevant": "The blocked inbound SYN packet on port 22 represents an active network probe from an external IP attempting to scan or probe the target system."
+            },
+            {
+              "id": "T1021",
+              "name": "Remote Services",
+              "tactics": [
+                "Lateral Movement"
+              ],
+              "why_relevant": "The connection attempt to port 22 (SSH) indicates potential unauthorized access to a remote service on the target system."
+            },
+            {
+              "id": "T1133",
+              "name": "External Remote Services",
+              "tactics": [
+                "Persistence",
+                "Initial Access"
+              ],
+              "why_relevant": "The inbound connection attempt from an external IP to SSH port 22 suggests reconnaissance or exploitation of externally-facing remote service access."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "An external IP (203.0.113.77) attempted a TCP connection to SSH port 22 on an internal host (192.168.1.100), which was blocked by the firewall (UFW). This represents routine reconnaissance activity consistent with port scanning, with no evidence of payload delivery, internal compromise, or successful authentication. No identity anomalies were detected.",
+          "severity": "low",
+          "severity_rationale": "The firewall rule successfully blocked the inbound connection attempt at the perimeter before any interaction with the target system could occur. This is routine denied traffic from an external scanner with no indication of successful exploitation, internal host compromise, or account activity. The activity aligns with ordinary network reconnaissance noise.",
+          "confidence": 0.92,
+          "recommended_response": "No immediate action required. Document the blocked scan as routine perimeter defense activity. Verify SSH firewall rules are functioning as intended and continue normal monitoring for any subsequent suspicious patterns from this or related sources.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment",
+          "assessment"
+        ],
+        "escalated": false,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.NETWORK expected=network",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.LOW expected=low diff=0",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 0.5,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment'] extra=['soc_analyst'] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=False expected=False",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "network",
+          "rationale": "This is a WAF (Web Application Firewall) detection of a SQL injection attack attempt, which represents a network-layer security event involving malicious HTTP traffic.",
+          "confidence": 0.85
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1190",
+              "name": "Exploit Public-Facing Application",
+              "tactics": [
+                "Initial Access"
+              ],
+              "why_relevant": "The SQL injection payload targeting the login endpoint of a public-facing API demonstrates an attempt to exploit a vulnerability in an Internet-facing application."
+            },
+            {
+              "id": "T1078",
+              "name": "Valid Accounts",
+              "tactics": [
+                "Initial Access",
+                "Persistence",
+                "Privilege Escalation",
+                "Stealth"
+              ],
+              "why_relevant": "The SQL injection attack using 'admin' OR '1'='1' is an attempt to bypass authentication and gain unauthorized access using valid or forged credentials to the application."
+            },
+            {
+              "id": "T1212",
+              "name": "Exploitation for Credential Access",
+              "tactics": [
+                "Credential Access"
+              ],
+              "why_relevant": "The SQL injection attack on the login endpoint attempts to exploit application vulnerabilities to bypass authentication and potentially extract or access credentials."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "A SQL injection attack was detected and blocked at the WAF targeting the login endpoint of a public-facing API (api.company.com) with the classic 'admin' OR '1'='1' payload. The attack was successfully stopped by the WAF control, returning a 403 Forbidden response, with no evidence of internal compromise or account takeover. This represents a typical opportunistic exploitation attempt against Internet-facing applications from an external source (198.51.100.42).",
+          "severity": "medium",
+          "severity_rationale": "This is an attack attempt from an external source that was blocked at the perimeter by the WAF. The malicious SQL injection payload was detected and the request was denied (HTTP 403), preventing any potential unauthorized access. No identity signals indicate internal account compromise, and no evidence suggests the attack bypassed security controls or affected internal resources.",
+          "confidence": 0.92,
+          "recommended_response": "Acknowledge and document the attack attempt. Review WAF logs for patterns from this source IP (198.51.100.42) to determine if this is part of a coordinated campaign. Ensure the application's input validation and parameterized queries are properly implemented to prevent SQL injection. Consider rate-limiting login attempts and monitoring for similar payloads. No immediate escalation required as the control functioned as designed.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment",
+          "assessment"
+        ],
+        "escalated": false,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 0.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.NETWORK expected=other",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.MEDIUM expected=medium diff=0",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 0.5,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment'] extra=['soc_analyst'] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=False expected=False",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "identity_auth",
+          "rationale": "Multiple failed LDAP login attempts for user alopez resulted in account lockout, indicating potential credential compromise or unauthorized access attempt.",
+          "confidence": 0.95
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1110",
+              "name": "Brute Force",
+              "tactics": [
+                "Credential Access"
+              ],
+              "why_relevant": "The alert shows 5 failed login attempts against a single account, which is consistent with brute force attack patterns attempting to gain unauthorized access."
+            },
+            {
+              "id": "T1110.001",
+              "name": "Password Guessing",
+              "tactics": [
+                "Credential Access"
+              ],
+              "why_relevant": "Multiple failed LDAP authentication attempts indicate an adversary systematically guessing passwords to compromise the alopez account, a tactic explicitly mentioned in this technique."
+            },
+            {
+              "id": "T1078",
+              "name": "Valid Accounts",
+              "tactics": [
+                "Initial Access",
+                "Persistence",
+                "Privilege Escalation",
+                "Stealth"
+              ],
+              "why_relevant": "The alert targets a valid domain account (alopez) that could be leveraged for initial access or privilege escalation if compromised through the failed login attempts."
+            }
+          ],
+          "identity_signals": {
+            "impossible_travel": false,
+            "mfa_fatigue": false,
+            "privilege_escalation": false
+          },
+          "key_findings": "An external source (172.16.0.88) attempted a brute force attack against the valid domain account alopez with 5 failed LDAP login attempts, triggering account lockout. The attack was contained by the account lockout mechanism and no identity anomalies were detected. No evidence indicates the attacker gained internal access or account compromise.",
+          "severity": "medium",
+          "severity_rationale": "This is a blocked credential access attack from an external source (172.16.0.88). The account lockout control successfully prevented further unauthorized access attempts, and no internal compromise or identity anomalies were detected. While this represents a credible attack attempt, the defensive control functioned as intended and contained the threat at the perimeter.",
+          "confidence": 0.85,
+          "recommended_response": "1) Verify the source IP 172.16.0.88 for malicious reputation and determine if it should be blocked at the perimeter. 2) Confirm the account lockout was triggered by this brute force attempt and not legitimate failed logins by alopez. 3) Contact user alopez to verify they did not attempt these logins and advise them to verify their last successful login time. 4) After verification, unlock the account and monitor for any additional suspicious login attempts. 5) Consider implementing rate limiting on LDAP authentication or enforcing account lockout policies if not already in place.",
+          "rounds_used": 1
+        },
+        "workers_run": [
+          "itdr_specialist",
+          "enrichment",
+          "soc_analyst",
+          "assessment"
+        ],
+        "escalated": false,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.IDENTITY_AUTH expected=identity_auth",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.MEDIUM expected=medium diff=0",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 0.6666666666666666,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment', 'itdr_specialist'] extra=['soc_analyst'] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=False expected=False",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "malware",
+          "rationale": "CrowdStrike Falcon detected a file with a known malware hash (trojan.exe) on the endpoint, which is a direct malware detection signal.",
+          "confidence": 0.95
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1204",
+              "name": "User Execution",
+              "tactics": [
+                "Execution"
+              ],
+              "why_relevant": "The detected trojan.exe file represents malicious code that requires or was likely executed through user interaction (opening/running the file)."
+            },
+            {
+              "id": "T1203",
+              "name": "Exploitation for Client Execution",
+              "tactics": [
+                "Execution"
+              ],
+              "why_relevant": "The trojan executable may have exploited a vulnerability in a client application to achieve code execution on the Windows system."
+            },
+            {
+              "id": "T1105",
+              "name": "Ingress Tool Transfer",
+              "tactics": [
+                "Command and Control"
+              ],
+              "why_relevant": "The trojan.exe file detected on the system (10.20.30.40) likely arrived through transfer from an external source as part of an attack chain."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "CrowdStrike detected a trojan executable (trojan.exe, hash: e99a18c428cb38d5f260853678922e03) on internal host 10.20.30.40 belonging to user mchen. The malware presence indicates either user execution or client-side exploitation succeeded on an internal system, representing a confirmed threat on endpoint. No identity anomalies (impossible travel, MFA fatigue, privilege escalation, or account reactivation) were detected during the investigation window.",
+          "severity": "high",
+          "severity_rationale": "This meets high-severity criteria due to malware detected and present on an internal host (10.20.30.40). The endpoint threat is active on a system where code execution has occurred or is likely, indicating the control did not prevent initial infection or execution. While there is no evidence yet of confirmed command-and-control communication or data exfiltration, the presence of a trojan on an internal endpoint warrants immediate investigation and response.",
+          "confidence": 0.92,
+          "recommended_response": "Isolate host 10.20.30.40 from the network immediately to prevent potential lateral movement or C2 communication. Conduct forensic analysis to determine infection timeline, execution status, and any lateral movement or persistence mechanisms. Review mchen's recent activity, email, and file access for delivery vector (phishing, watering hole, etc.). Check for similar malware hash detections across the environment. Coordinate with the security team to determine if the trojan has achieved persistence or established C2 communication before fully remediation.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment",
+          "assessment"
+        ],
+        "escalated": true,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.MALWARE expected=malware",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.HIGH expected=high diff=0",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment', 'soc_analyst'] extra=[] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=True expected=True",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "malware",
+          "rationale": "Registry modification in the Windows Run key with suspicious svchost.exe entry is a classic malware persistence technique detected by EDR.",
+          "confidence": 0.85
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1547.001",
+              "name": "Registry Run Keys / Startup Folder",
+              "tactics": [
+                "Persistence",
+                "Privilege Escalation"
+              ],
+              "why_relevant": "The alert directly indicates modification of HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run registry key, which is a classic persistence mechanism using Windows run keys."
+            },
+            {
+              "id": "T1036",
+              "name": "Masquerading",
+              "tactics": [
+                "Stealth"
+              ],
+              "why_relevant": "The suspicious svchost.exe entry may represent masquerading by using a legitimate system service name to disguise malicious execution."
+            },
+            {
+              "id": "T1547",
+              "name": "Boot or Logon Autostart Execution",
+              "tactics": [
+                "Persistence",
+                "Privilege Escalation"
+              ],
+              "why_relevant": "The registry modification targets autostart execution paths to achieve persistence by automatically running code at system boot or logon."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "A suspicious modification to the HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run registry key was detected on SERVER-DB-02, with a potentially masqueraded svchost.exe entry designed for persistence. This represents a direct attempt to establish boot-time execution of code, which is a hallmark of malware persistence tactics. No identity-based anomalies or authentication irregularities were detected in associated auth logs.",
+          "severity": "high",
+          "severity_rationale": "This alert indicates active malware persistence activity on an internal database server (SERVER-DB-02) through registry modification\u2014a classic endpoint compromise indicator. The modification of autostart registry keys combined with masquerading of a system service name demonstrates clear malicious intent to establish persistent execution. This meets the high threshold because it represents activity on an internal host with no evidence that controls stopped the modification, requiring immediate investigation to determine if the payload executed.",
+          "confidence": 0.85,
+          "recommended_response": "Immediately isolate SERVER-DB-02 from the network if the registry modification was not remediated. Perform forensic acquisition of the host to determine if svchost.exe was actually executed, check for additional persistence mechanisms, and review recent process execution logs. Query EDR telemetry for child processes spawned from the registry run key entry. Review access logs for the past 7 days to identify lateral movement attempts. Escalate to incident response for containment and eradication.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment"
+        ],
+        "escalated": true,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.MALWARE expected=malware",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.HIGH expected=high diff=0",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment', 'soc_analyst'] extra=[] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=True expected=True",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "network",
+          "rationale": "This is a Web Application Firewall (WAF) detection of a cross-site scripting (XSS) attack attempt against a web application, which falls under network-based intrusion prevention and application layer security monitoring.",
+          "confidence": 0.85
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1189",
+              "name": "Drive-by Compromise",
+              "tactics": [
+                "Initial Access"
+              ],
+              "why_relevant": "The XSS payload detected in the WAF alert is an example of malicious script injection into a web application, which is a delivery mechanism for drive-by compromise attacks against users visiting the compromised website."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "A WAF-detected XSS injection attempt against the shop.example.com search parameter was successfully quarantined before execution. The attack originates from a known Tor exit node (185.220.101.45), indicating deliberate obfuscation but no evidence of internal compromise or user impact. No identity anomalies or internal access patterns suggest lateral movement or account abuse.",
+          "severity": "medium",
+          "severity_rationale": "This is an attack attempt originating from outside the organization's network that was stopped at the perimeter by the WAF control (quarantined action). The malicious payload was blocked before reaching any internal host or user browser, and no identity signals indicate successful exploitation or account compromise. While the source reputation and attack type are concerning, the defensive control prevented any potential impact.",
+          "confidence": 0.92,
+          "recommended_response": "Confirm WAF rule effectiveness and monitor for repeat attempts from the same IP or similar XSS patterns. Review web application security controls and consider updating WAF signatures if new variations are detected. Document the Tor-originated attack for threat intelligence tracking. No immediate incident response escalation required unless repeat attempts indicate active reconnaissance.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment"
+        ],
+        "escalated": false,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 0.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.NETWORK expected=other",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.MEDIUM expected=medium diff=0",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment', 'soc_analyst'] extra=[] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=False expected=False",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "network",
+          "rationale": "Firewall denial of RDP traffic (port 3389) from a geofenced location (North Korea) represents a network-level security event involving protocol restrictions and geographic controls.",
+          "confidence": 0.95
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1133",
+              "name": "External Remote Services",
+              "tactics": [
+                "Persistence",
+                "Initial Access"
+              ],
+              "why_relevant": "The alert shows an inbound connection attempt to port 3389 (RDP), a remote service commonly exploited for initial access to internal networks from external locations."
+            },
+            {
+              "id": "T1078",
+              "name": "Valid Accounts",
+              "tactics": [
+                "Stealth",
+                "Persistence",
+                "Privilege Escalation",
+                "Initial Access"
+              ],
+              "why_relevant": "Attackers connecting to RDP (port 3389) typically require valid credentials, making account abuse a likely prerequisite for successful exploitation of this remote service."
+            },
+            {
+              "id": "T1190",
+              "name": "Exploit Public-Facing Application",
+              "tactics": [
+                "Initial Access"
+              ],
+              "why_relevant": "The connection attempt to an exposed RDP service may represent reconnaissance or exploitation activity targeting a publicly accessible service to gain initial network access."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "An external RDP connection attempt from a North Korean IP address (203.0.113.129) to internal host 10.50.60.70 was blocked by the checkpoint firewall due to geofence violation. The source IP is from a high-risk geography with no legitimate business justification for RDP access. No internal host or account compromise has been detected.",
+          "severity": "medium",
+          "severity_rationale": "The connection attempt to RDP (port 3389) represents a known attack vector (T1133, T1078), and the source IP from North Korea combined with geofence policy indicates malicious intent. However, the firewall successfully denied the traffic at the perimeter before reaching the internal network, and there is no evidence of successful authentication, payload delivery, or internal host compromise. The control functioned as intended, preventing the attack from progressing beyond the initial access stage.",
+          "confidence": 0.82,
+          "recommended_response": "Monitor the source IP 203.0.113.129 and similar geofenced traffic for patterns of reconnaissance activity. Verify that RDP services on internal hosts are not unnecessarily exposed externally; consider network segmentation and VPN-only access policies. If RDP must be internet-accessible, enforce strong MFA and monitor authentication logs for failed login attempts from this or similar high-risk sources.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment"
+        ],
+        "escalated": false,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.NETWORK expected=network",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.MEDIUM expected=medium diff=0",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 0.5,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment'] extra=['soc_analyst'] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=False expected=False",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "malware",
+          "rationale": "EDR detected and terminated svchost.exe due to behavioral threat indicators, suggesting malicious process activity.",
+          "confidence": 0.78
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1569.002",
+              "name": "Service Execution",
+              "tactics": [
+                "Execution"
+              ],
+              "why_relevant": "Attackers abuse Windows service control manager (services.exe) to execute malicious payloads, as indicated by the svchost.exe process spawned from services.exe detected as a behavioral threat."
+            },
+            {
+              "id": "T1543.003",
+              "name": "Windows Service",
+              "tactics": [
+                "Persistence",
+                "Privilege Escalation"
+              ],
+              "why_relevant": "Malware may create or modify Windows services like svchost.exe to persist on the system and potentially escalate privileges, which aligns with the malicious behavioral threat detected."
+            },
+            {
+              "id": "T1055",
+              "name": "Process Injection",
+              "tactics": [
+                "Stealth",
+                "Privilege Escalation"
+              ],
+              "why_relevant": "The svchost.exe process exhibiting behavioral threat characteristics suggests potential code injection into this legitimate system process for evasion and privilege escalation."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "EDR detected and terminated a svchost.exe process spawned by services.exe exhibiting behavioral threat indicators on an internal endpoint (DESKTOP-KRAMER). The malicious process was successfully blocked through EDR intervention before it could establish persistence or execute further payloads. The activity aligns with service-based execution techniques commonly used for privilege escalation and persistence.",
+          "severity": "high",
+          "severity_rationale": "This qualifies as high severity due to activity on an internal host with confirmed malware detection and behavioral threat indicators. While the EDR control successfully terminated the process, the presence of a malicious service-based execution attempt on an endpoint represents active compromise activity that warrants immediate investigation. The process was executing via legitimate Windows service infrastructure, indicating a sophisticated attack attempting to leverage trusted system mechanisms.",
+          "confidence": 0.85,
+          "recommended_response": "1. Initiate endpoint isolation and forensic imaging of DESKTOP-KRAMER immediately. 2. Retrieve full process memory dump and behavioral logs from the EDR to analyze the svchost.exe process and identify its origin (download, lateral movement, local execution). 3. Scan the endpoint and connected systems for indicators of compromise, checking for persistence mechanisms in service registry entries and startup folders. 4. Review the user dcosta's recent activities and authentication logs for lateral movement, privilege escalation, or data access attempts. 5. If additional malicious services are discovered, escalate to critical and initiate incident response procedures including threat hunting across the environment.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment"
+        ],
+        "escalated": true,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.MALWARE expected=malware",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.HIGH expected=high diff=0",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment', 'soc_analyst'] extra=[] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=True expected=True",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "network",
+          "rationale": "This is an application-layer attack detected by a WAF/IDS system attempting path traversal, which represents a network-based intrusion prevention alert.",
+          "confidence": 0.75
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1190",
+              "name": "Exploit Public-Facing Application",
+              "tactics": [
+                "Initial Access"
+              ],
+              "why_relevant": "The path traversal attack on the web application running on port 8443 represents an attempt to exploit a vulnerability in a public-facing web application."
+            },
+            {
+              "id": "T1003",
+              "name": "OS Credential Dumping",
+              "tactics": [
+                "Credential Access"
+              ],
+              "why_relevant": "The attacker's attempt to access /etc/passwd through path traversal is aimed at obtaining credential material and user account information from the system."
+            },
+            {
+              "id": "T1083",
+              "name": "File and Directory Discovery",
+              "tactics": [
+                "Discovery"
+              ],
+              "why_relevant": "The path traversal attack using directory traversal sequences (../) attempts to discover and access files and directories outside the intended application directory."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "An external source (192.0.2.150) launched a path traversal attack against a public-facing web application on port 8443, attempting to access /etc/passwd through directory traversal sequences. The F5 ASM platform detected and blocked the malicious request, preventing access to the sensitive system file. No evidence of successful exploitation or internal compromise was identified.",
+          "severity": "medium",
+          "severity_rationale": "This is a classic perimeter attack that was detected and blocked by the application security control (F5 ASM). The attacker originated externally and the malicious payload was denied before reaching the target system. While the attack demonstrates clear malicious intent toward credential and file discovery, there is no indication that any internal host or account was affected, and the control successfully prevented the attack from proceeding.",
+          "confidence": 0.92,
+          "recommended_response": "Review the F5 ASM logs for additional attack patterns from this source (192.0.2.150) and determine if it is known malicious infrastructure. Verify that the web application on port 8443 is fully patched and that path traversal protections are properly configured. Consider implementing rate limiting or IP-based restrictions if this source continues to generate attack traffic. Document the incident as a blocked attack attempt and monitor for any follow-up exploitation attempts from other sources.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment",
+          "soc_analyst",
+          "soc_analyst",
+          "assessment"
+        ],
+        "escalated": false,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 0.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.NETWORK expected=other",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 0.5,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.MEDIUM expected=high diff=1",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 0.5,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment'] extra=['soc_analyst'] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 0.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=False expected=True",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "identity_auth",
+          "rationale": "Failed Kerberos authentication with invalid credentials indicates a credential-related authentication anomaly.",
+          "confidence": 0.95
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1110",
+              "name": "Brute Force",
+              "tactics": [
+                "Credential Access"
+              ],
+              "why_relevant": "The alert shows multiple failed authentication attempts (attempt=3) with invalid credentials, which is consistent with brute force attack patterns against valid accounts."
+            },
+            {
+              "id": "T1078",
+              "name": "Valid Accounts",
+              "tactics": [
+                "Stealth",
+                "Persistence",
+                "Privilege Escalation",
+                "Initial Access"
+              ],
+              "why_relevant": "The alert indicates targeting of a specific username (rthompson) through repeated authentication attempts, suggesting an adversary is attempting to abuse or compromise a valid account."
+            },
+            {
+              "id": "T1133",
+              "name": "External Remote Services",
+              "tactics": [
+                "Persistence",
+                "Initial Access"
+              ],
+              "why_relevant": "The failed Kerberos authentication attempts from an external IP address suggest targeting of authentication services that could provide initial access to the network."
+            }
+          ],
+          "identity_signals": {
+            "impossible_travel": false,
+            "mfa_fatigue": false,
+            "privilege_escalation": false
+          },
+          "key_findings": "Three failed Kerberos authentication attempts detected against user rthompson from external IP 198.51.100.88 using invalid credentials, consistent with a brute force attack. The authentication failures were stopped by the authentication control, preventing account compromise. No identity anomalies or internal host activity was observed.",
+          "severity": "medium",
+          "severity_rationale": "This is an authentication attack attempt from an external IP address that was denied by the Kerberos authentication control. No successful authentication, account lockout, or internal compromise occurred. The attack was stopped at the perimeter with no evidence of control bypass or internal impact.",
+          "confidence": 0.75,
+          "recommended_response": "Review firewall/IP reputation data for 198.51.100.88 to determine if blocking is warranted. Consider implementing rate limiting on authentication attempts if not already in place. Notify rthompson of the failed access attempts and recommend password review as a precaution. Continue standard monitoring for any further attempts from this or related IPs.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "itdr_specialist",
+          "enrichment",
+          "soc_analyst",
+          "assessment",
+          "assessment"
+        ],
+        "escalated": false,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.IDENTITY_AUTH expected=identity_auth",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.MEDIUM expected=medium diff=0",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 0.6666666666666666,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment', 'itdr_specialist'] extra=['soc_analyst'] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=False expected=False",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "malware",
+          "rationale": "EDR detected and blocked a suspicious file access attempt on a sensitive file by a non-Administrator user, indicating potential data exfiltration or malicious process behavior.",
+          "confidence": 0.72
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1041",
+              "name": "Exfiltration Over C2 Channel",
+              "tactics": [
+                "Exfiltration"
+              ],
+              "why_relevant": "The alert's data_exfiltration_prevention block reason indicates an attempt to access sensitive files that would typically be exfiltrated over command and control channels."
+            },
+            {
+              "id": "T1074.001",
+              "name": "Local Data Staging",
+              "tactics": [
+                "Collection"
+              ],
+              "why_relevant": "The user accessed a sensitive Excel file from the Administrator's AppData folder, which may indicate staging of collected data prior to exfiltration."
+            },
+            {
+              "id": "T1560",
+              "name": "Archive Collected Data",
+              "tactics": [
+                "Collection"
+              ],
+              "why_relevant": "The alert shows attempted access to a sensitive data file that could be part of a process to archive and prepare data for exfiltration."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "User erodriguez attempted to read a sensitive Excel file (sensitive_data.xlsx) from the Administrator's AppData folder, which was blocked by data exfiltration prevention controls. The access pattern suggests potential staging of sensitive data for exfiltration, though the action was successfully denied by the EDR control.",
+          "severity": "high",
+          "severity_rationale": "This alert meets high severity criteria because it represents suspicious activity on an internal host attempting to access sensitive data with apparent exfiltration intent. Although the access was blocked by controls, the attempt to read Administrator-owned sensitive files from a non-Administrator user account indicates either compromised credentials or insider threat behavior. The data exfiltration prevention block confirms the system detected exfiltration risk, warranting escalation.",
+          "confidence": 0.78,
+          "recommended_response": "Immediately isolate LAPTOP-JENKINS from the network pending investigation. Verify whether erodriguez has legitimate access rights to Administrator AppData folders. Review all file access attempts by erodriguez in the past 24 hours, check for lateral movement or privilege escalation activity, and examine EDR logs for signs of malware execution or unusual process behavior. Conduct a credential review and consider resetting erodriguez's credentials if compromise is suspected. Preserve forensic evidence including memory dump and file system artifacts from the timestamp of the alert.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment",
+          "assessment"
+        ],
+        "escalated": true,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 0.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.MALWARE expected=other",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.HIGH expected=high diff=0",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment', 'soc_analyst'] extra=[] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=True expected=True",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "network",
+          "rationale": "Firewall rule detection of blocked TCP traffic to a known botnet C2 domain on port 8080 represents a network-layer threat indicator.",
+          "confidence": 0.95
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1071",
+              "name": "Application Layer Protocol",
+              "tactics": [
+                "Command and Control"
+              ],
+              "why_relevant": "The botnet C2 communication over TCP port 8080 to a malicious domain represents command and control traffic using application layer protocols to blend with legitimate network traffic."
+            },
+            {
+              "id": "T1095",
+              "name": "Non-Application Layer Protocol",
+              "tactics": [
+                "Command and Control"
+              ],
+              "why_relevant": "The blocked network traffic with high confidence score (0.98) indicates potential command and control communication that may use non-standard protocols for C2 purposes."
+            },
+            {
+              "id": "T1133",
+              "name": "External Remote Services",
+              "tactics": [
+                "Persistence",
+                "Initial Access"
+              ],
+              "why_relevant": "The malware attempting to reach an external IP address (91.199.77.122) on port 8080 suggests adversary use of external services to maintain persistent command and control connectivity."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "An internal host (10.100.50.25) attempted outbound communication to a known malicious C2 domain (malware.botnet.ru) on port 8080, indicating potential malware infection with botnet characteristics. The firewall rule blocked the communication with 0.98 confidence, preventing successful C2 contact. However, the mere presence of an internal host initiating C2 traffic\u2014even if blocked\u2014indicates a compromised endpoint requiring immediate investigation.",
+          "severity": "high",
+          "severity_rationale": "This alert represents suspicious activity originating from an internal host attempting C2 communication with a known malicious domain. Per the severity scale, internal host activity involving malware or C2 attempts qualifies as high severity, particularly given the high confidence score (0.98) and the presence of threat intelligence indicating a known botnet C2 domain. While the firewall blocked the outbound connection, the fact that an internal asset is attempting to communicate with a malicious destination suggests endpoint compromise that requires urgent investigation and remediation.",
+          "confidence": 0.95,
+          "recommended_response": "Isolate the internal host (10.100.50.25) from the network immediately to prevent further C2 communication attempts. Conduct forensic analysis on the endpoint to identify the malware, its execution chain, and persistence mechanisms. Review endpoint logs for lateral movement, privilege escalation, or data exfiltration attempts. Query host-based logs and EDR data for related malicious processes and network connections. Scan the affected host with updated malware signatures and conduct full system remediation or rebuild if compromise is confirmed. Brief security team for escalation to on-call incident response.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment",
+          "assessment"
+        ],
+        "escalated": true,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 0.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.NETWORK expected=malware",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 0.5,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.HIGH expected=critical diff=1",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment', 'soc_analyst'] extra=[] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=True expected=True",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "other",
+          "rationale": "This is a Data Loss Prevention (DLP) alert detecting potential unauthorized data exfiltration through email, which does not clearly fit the identity_auth, malware, network, or phishing categories as it represents a data protection/insider threat event.",
+          "confidence": 0.72
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1567",
+              "name": "Exfiltration Over Web Service",
+              "tactics": [
+                "Exfiltration"
+              ],
+              "why_relevant": "The alert detects a critical file transfer of sensitive financial data (financial_report_2026.xlsx) to an external email server, which represents data exfiltration over a web-based service."
+            },
+            {
+              "id": "T1020",
+              "name": "Automated Exfiltration",
+              "tactics": [
+                "Exfiltration"
+              ],
+              "why_relevant": "The DLP (Data Loss Prevention) alert indicates an automated detection and prevention mechanism triggered by systematic data transfer of a sensitive file, suggesting automated exfiltration activity."
+            },
+            {
+              "id": "T1041",
+              "name": "Exfiltration Over C2 Channel",
+              "tactics": [
+                "Exfiltration"
+              ],
+              "why_relevant": "The transfer of a sensitive financial document from internal user bwilson to an external email server indicates potential data exfiltration through an established communication channel."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "User bwilson attempted to exfiltrate a sensitive financial document (financial_report_2026.xlsx) to an external email server, which was detected and blocked by FortiGate DLP controls. The activity demonstrates clear intent to move confidential 2026 financial planning data outside the organization through web-based email infrastructure. No evidence indicates the exfiltration succeeded or that the user account has been compromised by malware.",
+          "severity": "high",
+          "severity_rationale": "This alert meets the high-severity threshold as it represents activity from an internal account attempting exfiltration of sensitive data, even though the FortiGate DLP control blocked the action. The target file contains financial planning information (2026 financial report) that would qualify as sensitive corporate data. While the control prevented successful data loss, the attempted exfiltration from an authenticated internal user indicates either credential compromise, insider threat, or account takeover that requires immediate investigation.",
+          "confidence": 0.85,
+          "recommended_response": "Immediately interview user bwilson to determine if the exfiltration attempt was authorized or accidental. Verify bwilson's account has not been compromised by checking recent sign-in activity, device location, and access patterns. If unauthorized, isolate the user's account and endpoints, reset credentials, and conduct forensic analysis of bwilson's workstation for malware or lateral movement artifacts. Review FortiGate logs for any successful data transfers from this user in the past 30 days. Determine if financial_report_2026.xlsx was accessed by other users recently and restrict access to that file pending investigation conclusion.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment"
+        ],
+        "escalated": true,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.OTHER expected=other",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 0.5,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.HIGH expected=critical diff=1",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment', 'soc_analyst'] extra=[] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=True expected=True",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "malware",
+          "rationale": "EDR detection from Windows Defender identified a suspicious registry query on a service account associated with a trojan malware family with high confidence.",
+          "confidence": 0.94
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1574.011",
+              "name": "Services Registry Permissions Weakness",
+              "tactics": [
+                "Stealth",
+                "Execution"
+              ],
+              "why_relevant": "The alert detected a registry query on HKLM\\System\\CurrentControlSet\\Services\\ which is the exact registry location where service configurations are stored and which malware can hijack for execution and persistence."
+            },
+            {
+              "id": "T1543.003",
+              "name": "Windows Service",
+              "tactics": [
+                "Persistence",
+                "Privilege Escalation"
+              ],
+              "why_relevant": "Trojans commonly create or modify Windows services by querying and modifying the Services registry to establish persistence and execute malicious payloads on startup."
+            },
+            {
+              "id": "T1012",
+              "name": "Query Registry",
+              "tactics": [
+                "Discovery"
+              ],
+              "why_relevant": "The alert shows an active registry_query event on the Services registry path, which is a direct indicator of information gathering about system services for reconnaissance purposes."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "Windows Defender detected a malware process (trojan.Generic, 94% confidence) executing a registry query on the Windows Services configuration hive from a service account on SERVER-APP-03. The query targets a critical persistence mechanism\u2014the Services registry\u2014indicating reconnaissance for lateral movement or privilege escalation. The action was blocked, preventing unauthorized service enumeration or modification.",
+          "severity": "high",
+          "severity_rationale": "This alert represents activity on an internal host from a potentially compromised service account attempting to access a registry location commonly used for persistence and privilege escalation. Although the action was blocked by Windows Defender, the detection of malware with high confidence (94%) on an endpoint attempting to interact with a critical system registry hive constitutes a significant threat. Service account compromise could enable lateral movement and persistence across the environment. This exceeds medium severity due to the presence of confirmed malware on an internal host and the strategic nature of the targeted registry location.",
+          "confidence": 0.92,
+          "recommended_response": "Immediately isolate SERVER-APP-03 from the network and perform a full forensic analysis to determine the scope of the trojan infection. Revoke and rotate credentials for svc_account and any accounts that accessed it. Scan all systems where this service account is used for similar malware indicators. Review service registry modifications and Windows event logs on the endpoint for signs of successful persistence mechanisms. Escalate to IR team and security leadership for potential incident declaration.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment"
+        ],
+        "escalated": true,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.MALWARE expected=malware",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.HIGH expected=high diff=0",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment', 'soc_analyst'] extra=[] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=True expected=True",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "network",
+          "rationale": "This is a network-based IDS/IPS alert indicating a firewall drop action triggered by threat intelligence matching on a suspicious connection attempt.",
+          "confidence": 0.92
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1071",
+              "name": "Application Layer Protocol",
+              "tactics": [
+                "Command and Control"
+              ],
+              "why_relevant": "The alert shows traffic on port 443 (HTTPS) between two IPs, which is consistent with adversaries using application layer protocols to communicate with command and control servers."
+            },
+            {
+              "id": "T1041",
+              "name": "Exfiltration Over C2 Channel",
+              "tactics": [
+                "Exfiltration"
+              ],
+              "why_relevant": "The threat intelligence match and high severity severity suggest potential malicious communication that could be used to exfiltrate data over an established command and control channel."
+            },
+            {
+              "id": "T1571",
+              "name": "Non-Standard Port",
+              "tactics": [
+                "Command and Control"
+              ],
+              "why_relevant": "The connection uses port 60912 on the source side, which may indicate non-standard port usage for command and control communications to bypass network filtering."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "An outbound connection from internal source 198.51.100.67 to external destination 203.0.113.88 matched a threat intelligence indicator (TI-001834), suggesting potential C2 or data exfiltration activity. The IPS successfully blocked the traffic with a DROP action, preventing any data transfer. The use of non-standard source port 60912 combined with standard HTTPS port 443 is consistent with evasion techniques.",
+          "severity": "high",
+          "severity_rationale": "Although the IPS action was DROP (blocking the connection), the alert indicates an internal host (198.51.100.67) initiated contact with a known malicious external destination. This represents an active C2 communication attempt from an internal asset, which qualifies as high severity per the scale\u2014the threat actor behavior originated from within the network perimeter, even though the control prevented data transfer. The threat intelligence match corroborates malicious intent.",
+          "confidence": 0.82,
+          "recommended_response": "Isolate source host 198.51.100.67 from the network immediately and initiate forensic imaging. Scan the host for malware, rootkits, and persistence mechanisms. Review process execution logs and network connections for the timeframe around 2026-09-25T14:36:02Z to identify what triggered the outbound connection. Query threat intelligence for any known C2 infrastructure associated with TI-001834. If the host is user-facing, interview the user about recent activity and check for credential compromise. Escalate to incident response team and security leadership.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment",
+          "enrichment",
+          "assessment"
+        ],
+        "escalated": true,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.NETWORK expected=network",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 0.5,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.HIGH expected=medium diff=1",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment', 'soc_analyst'] extra=[] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 0.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=True expected=False",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "malware",
+          "rationale": "A command injection attempt detected in a web request parameter attempting to execute shell commands and download a malicious script indicates malware delivery activity.",
+          "confidence": 0.85
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1190",
+              "name": "Exploit Public-Facing Application",
+              "tactics": [
+                "Initial Access"
+              ],
+              "why_relevant": "The alert shows an attempt to exploit a web application vulnerability through command injection in an API endpoint parameter."
+            },
+            {
+              "id": "T1059",
+              "name": "Command and Scripting Interpreter",
+              "tactics": [
+                "Execution"
+              ],
+              "why_relevant": "The attacker is attempting to execute shell commands (cat /etc/passwd) through the injection of command interpreter syntax."
+            },
+            {
+              "id": "T1105",
+              "name": "Ingress Tool Transfer",
+              "tactics": [
+                "Command and Control"
+              ],
+              "why_relevant": "The injected payload includes a wget command to download malware from an external source, exemplifying tool transfer into the target environment."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "A command injection attack targeting the /admin/execute API endpoint was detected and blocked by WAF-PROD-02, with the attacker attempting to execute arbitrary shell commands and download malware. The malicious payload included reconnaissance (cat /etc/passwd) followed by a tool transfer command (wget malware.sh), indicating a multi-stage attack chain. The WAF signature-based detection successfully denied the request at the perimeter with no evidence of internal compromise.",
+          "severity": "medium",
+          "severity_rationale": "This is a perimeter attack that was blocked by controls before reaching internal systems. Although the payload is malicious and sophisticated (reconnaissance + tool transfer), the action is 'denied' and there is no evidence of internal host or account compromise. The attack was successfully stopped at the WAF layer, meeting the criteria for medium severity rather than high.",
+          "confidence": 0.92,
+          "recommended_response": "Confirm the WAF rule that blocked this attack is properly tuned and active. Investigate the source IP 192.0.2.201 for reputation and patterns of similar attacks. Review access logs for the /admin/execute endpoint over the past 24-48 hours to identify any other injection attempts. Consider implementing rate limiting and additional input validation on the cmd parameter. If the source IP is external, standard DDoS/threat intel mitigation applies; if internal, escalate to incident response.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment"
+        ],
+        "escalated": false,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 0.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.MALWARE expected=other",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.MEDIUM expected=medium diff=0",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment', 'soc_analyst'] extra=[] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=False expected=False",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "network",
+          "rationale": "DNS query to a known suspicious C2 domain flagged by DNS sinkhole indicates potential malicious network communication.",
+          "confidence": 0.85
+        },
+        "investigation": {
+          "attack_techniques": [
+            {
+              "id": "T1071.004",
+              "name": "Application Layer Protocol: DNS",
+              "tactics": [
+                "Command and Control"
+              ],
+              "why_relevant": "The alert shows DNS queries to a suspicious C2 domain, which is a common command and control technique using DNS as an application layer protocol for adversary communications."
+            },
+            {
+              "id": "T1572",
+              "name": "Protocol Tunneling",
+              "tactics": [
+                "Command and Control"
+              ],
+              "why_relevant": "DNS traffic to suspicious domains may be used to tunnel commands and exfiltrate data within DNS protocol packets while blending with legitimate DNS traffic."
+            },
+            {
+              "id": "T1568",
+              "name": "Dynamic Resolution",
+              "tactics": [
+                "Command and Control"
+              ],
+              "why_relevant": "The suspicious domain query detected by the DNS sinkhole could indicate use of dynamic resolution for C2 infrastructure discovery and communication."
+            }
+          ],
+          "identity_signals": null,
+          "key_findings": "User mgarcia initiated a DNS query from internal IP 10.75.30.15 to a known suspicious C2 domain (suspicious-c2-domain.xyz), which was detected and sinkholed by the DNS security tool. This represents a potential command-and-control communication attempt using DNS as the protocol layer, suggesting possible malware infection or adversary control of the internal host.",
+          "severity": "high",
+          "severity_rationale": "The alert indicates suspicious activity originating from an internal host (10.75.30.15) attempting to communicate with a known malicious C2 domain. Even though the DNS sinkhole blocked the query, an internal system attempting to reach a C2 domain indicates potential malware presence or compromise, which meets the high-severity threshold of activity on an internal host with indicators of malware or C2 communication.",
+          "confidence": 0.78,
+          "recommended_response": "Immediately isolate or quarantine the internal host at 10.75.30.15 pending forensic analysis. Conduct memory and disk forensics to identify any malware or persistence mechanisms. Review process execution logs and network connections from this host for the past 24-48 hours. Query user mgarcia's recent authentication events and account activity. If forensics confirms malware, escalate to incident response and begin threat hunting for lateral movement or additional compromised hosts on the network.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "enrichment",
+          "soc_analyst",
+          "assessment"
+        ],
+        "escalated": true,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 0.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.NETWORK expected=malware",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.HIGH expected=high diff=0",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment', 'soc_analyst'] extra=[] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=True expected=True",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    },
+    {
+      "predicted": {
+        "routing": {
+          "alert_class": "identity_auth",
+          "rationale": "This alert detects impossible travel anomaly indicating a user account accessed from geographically distant locations within an impossible timeframe, which is a classic identity and authentication risk indicator.",
+          "confidence": 0.95
+        },
+        "investigation": {
+          "attack_techniques": [],
+          "identity_signals": {
+            "impossible_travel": false,
+            "mfa_fatigue": false,
+            "privilege_escalation": false
+          },
+          "key_findings": "An impossible travel alert was triggered for user jlee between New York and Tokyo with a 127-minute time delta. However, identity system investigation found no supporting evidence in authentication logs and returned zero confidence (0.0), suggesting the alert may be a false positive or based on unreliable geolocation data. Direct user contact and identity provider log verification are needed to confirm the alert's validity.",
+          "severity": "medium",
+          "severity_rationale": "While the alert describes an anomalous sign-in pattern (impossible travel), the identity investigation found zero confidence and no corroborating evidence in authentication logs. The alert appears to originate from geolocation inference rather than confirmed malicious activity or confirmed unauthorized access. Without evidence of actual compromise, internal host impact, or successful account takeover, this does not meet the threshold for high severity. This is a medium-severity suspected false positive requiring validation.",
+          "confidence": 0.1,
+          "recommended_response": "Contact jlee directly to confirm their actual location and travel plans during the flagged time window. Query the identity provider's authentication logs independently to verify login timestamps and source IPs. If the user confirms legitimate travel or the logs show no actual authentication event, close as false positive. If the user denies the travel or activity, escalate to incident response for account compromise investigation including password reset, MFA review, and session review.",
+          "rounds_used": 0
+        },
+        "workers_run": [
+          "itdr_specialist",
+          "enrichment:degraded",
+          "soc_analyst",
+          "assessment",
+          "assessment"
+        ],
+        "escalated": false,
+        "guardrail_flagged": false
+      },
+      "scores": [
+        {
+          "key": "routing_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=AlertClass.IDENTITY_AUTH expected=identity_auth",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "severity_correctness",
+          "score": 0.5,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=Severity.MEDIUM expected=high diff=1",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "trajectory_correctness",
+          "score": 1.0,
+          "value": null,
+          "metadata": null,
+          "comment": "matched=['enrichment', 'itdr_specialist', 'soc_analyst'] extra=[] missing=[]",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        },
+        {
+          "key": "escalation_correctness",
+          "score": 0.0,
+          "value": null,
+          "metadata": null,
+          "comment": "predicted=False expected=True",
+          "correction": null,
+          "evaluator_info": {},
+          "feedback_config": null,
+          "source_run_id": null,
+          "target_run_id": null,
+          "extra": null
+        }
+      ]
+    }
+  ],
+  "crashed_examples": [],
+  "total_examples": 20,
+  "successful_examples": 20
+}
