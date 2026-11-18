@@ -11,9 +11,14 @@ Usage:
     with cassette("day05_alert3", mode="auto"):
         result = triage_chain(alert)   # replay if cassette exists, else record
 
-Cassettes are plain JSON ({fingerprint: Message as JSON}), never pickle: they are
+Cassettes are plain JSON ({fingerprint: [Message as JSON, ...]}), never pickle: they are
 committed to the repo and loaded in CI, so a cassette from an untrusted pull
 request must not be able to execute code when it is read.
+
+A fingerprint maps to a *list* of responses, replayed in recording order. The graph can
+send the identical request more than once (e.g. the supervisor re-runs enrichment after a
+failed evaluation) and Claude may answer differently each time; keeping only one answer
+per fingerprint would make replay take a different path from the recording.
 """
 
 from __future__ import annotations
@@ -64,13 +69,17 @@ def _fingerprint(kwargs: dict) -> str:
     return hashlib.sha256(blob).hexdigest()[:16]
 
 
-def _load(path: Path) -> dict[str, Message]:
+def _load(path: Path) -> dict[str, list[Message]]:
     raw = json.loads(path.read_text())
-    return {fp: Message.model_validate(msg) for fp, msg in raw.items()}
+    # Older cassettes stored a single response per fingerprint.
+    return {
+        fp: [Message.model_validate(m) for m in (msgs if isinstance(msgs, list) else [msgs])]
+        for fp, msgs in raw.items()
+    }
 
 
-def _save(path: Path, cache: dict[str, Message]) -> None:
-    data = {fp: msg.model_dump(mode="json") for fp, msg in sorted(cache.items())}
+def _save(path: Path, cache: dict[str, list[Message]]) -> None:
+    data = {fp: [m.model_dump(mode="json") for m in msgs] for fp, msgs in sorted(cache.items())}
     path.write_text(json.dumps(data, indent=1, sort_keys=True) + "\n")
 
 
@@ -86,24 +95,31 @@ def cassette(name: str, mode: str = "auto"):
         raise ValueError(f"cassette mode must be one of {MODES}, got {mode!r}")
     cache_dir = _cassette_dir()  # resolved every call
     cache_path = cache_dir / f"{name}.json"
-    cache: dict[str, Message] = {}
+    cache: dict[str, list[Message]] = {}
     if cache_path.exists() and mode in ("replay", "auto"):
         cache = _load(cache_path)
+    seen: dict[str, int] = {}  # how many times each fingerprint was requested so far
     hits = misses = 0
 
     def _wrapped(self, **kwargs):
         nonlocal hits, misses
         fp = _fingerprint(kwargs)
-        if fp in cache and mode in ("replay", "auto"):
+        n = seen.get(fp, 0)
+        seen[fp] = n + 1
+        recorded = cache.get(fp, [])
+        if n < len(recorded) and mode in ("replay", "auto"):
             hits += 1
-            return cache[fp]
+            return recorded[n]
         if mode == "replay":
-            raise CassetteMiss(
-                f"no recorded response in cassette {name!r} for request fingerprint {fp}"
+            detail = (
+                f"request repeated {n + 1} times but only {len(recorded)} response(s) recorded"
+                if recorded
+                else "no recorded response"
             )
+            raise CassetteMiss(f"{detail} in cassette {name!r} for request fingerprint {fp}")
         misses += 1
         response = _original_create(self, **kwargs)
-        cache[fp] = response
+        cache.setdefault(fp, []).append(response)
         cache_dir.mkdir(parents=True, exist_ok=True)
         _save(cache_path, cache)
         return response

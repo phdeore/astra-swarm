@@ -97,6 +97,36 @@ def test_fingerprint_stable_for_replayed_content_blocks():
     )
 
 
+def test_repeated_request_replays_each_recorded_answer_in_order(client, monkeypatch, tmp_path):
+    """The graph can send an identical request twice (e.g. re-running enrichment) and get
+    different answers; replay must return them in the same order, not the last one twice."""
+    answers = iter(["first answer", "second answer"])
+    monkeypatch.setattr(
+        cassette_mod, "_original_create", lambda self, **kw: _fake_message(next(answers))
+    )
+    with cassette("repeat", mode="record"):
+        client.messages.create(**REQUEST)
+        client.messages.create(**REQUEST)
+
+    with cassette("repeat", mode="replay"):
+        first = client.messages.create(**REQUEST)
+        second = client.messages.create(**REQUEST)
+    assert [first.content[0].text, second.content[0].text] == ["first answer", "second answer"]
+
+    with pytest.raises(CassetteMiss, match="repeated 3 times"), cassette("repeat", mode="replay"):
+        for _ in range(3):
+            client.messages.create(**REQUEST)
+
+
+def test_single_response_cassette_format_still_loads(client, tmp_path):
+    fp = cassette_mod._fingerprint(REQUEST)
+    (tmp_path / "old.json").write_text(
+        json.dumps({fp: _fake_message("old format").model_dump(mode="json")})
+    )
+    with cassette("old", mode="replay"):
+        assert client.messages.create(**REQUEST).content[0].text == "old format"
+
+
 def test_invalid_mode_rejected():
     with pytest.raises(ValueError), cassette("x", mode="bogus"):
         pass
