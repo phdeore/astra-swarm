@@ -73,10 +73,17 @@ def classify_alert(raw: str) -> RoutingDecision:
     """Cheap Haiku classifier — one strict-schema call, no tools."""
     prompt = f"""Classify this raw security alert into one of these classes based on threat type:
 - identity_auth: login anomalies, MFA issues, credential events, IAM changes
-- malware: process/file signals, EDR detections, known-bad hashes, malware beaconing
-- network: firewall, IDS/IPS, unusual protocols, egress alerts
+- malware: process/file signals, EDR malware detections, known-bad hashes, persistence, and
+  an internal host contacting command-and-control (C2) or botnet infrastructure, whichever
+  sensor reported it (firewall, DNS, proxy, EDR)
+- network: firewall, IDS/IPS, unusual protocols, egress alerts, including inbound traffic
+  blocked on a threat-intel or geo rule, when nothing indicates an infected internal host
 - phishing: email, malicious links or attachments, user-reported suspicious mail
-- other: doesn't clearly fit above
+- other: web-application attacks reported by a WAF/ASM (SQL injection, XSS, path
+  traversal, command injection), data-access or data-loss events (DLP, blocked access to
+  sensitive files) with no malware named, and anything that doesn't clearly fit above
+
+Classify by the threat, not by the tool that reported it.
 
 Return your classification with a one-sentence rationale and a confidence score.
 
