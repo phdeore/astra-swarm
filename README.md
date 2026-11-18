@@ -127,6 +127,7 @@ the exchange without calling Claude. It's useful when setting up the rule, but
 `record-eval.yml` never depends on it.
 
 **Troubleshooting** (`status.reason` in the error or the Console's authentication events):
+
 - `match_subject_prefix` / `match_claim_value_mismatch`: a rule condition doesn't match
   the token. `anthropic-wif-test` prints the token's claims; compare them with the rule
   field by field.
