@@ -51,6 +51,7 @@ CI regression gate runs on every PR; thresholds set 10pp below baseline.
 |---|---|---|---|
 | `Astra-Swarm Eval` (`eval.yml`) | every PR | No: replays `evals/cassettes/` | None |
 | `Record eval cassettes` (`record-eval.yml`) | manual, approval-gated | Yes (one eval run) | Workload Identity Federation, no API key |
+| `anthropic-wif-test` (`anthropic-wif-test.yml`) | manual, approval-gated | No: token exchange only | Same federation setup; optional diagnostic |
 
 PR runs replay recorded Claude responses, so they cost nothing and are safe for PRs
 from forks. When a change alters prompts, tool output or graph flow, replay misses and
@@ -109,6 +110,29 @@ public repos on a personal account. (On a private repo they need GitHub Pro/Team
    workspace.
 5. Delete any `ANTHROPIC_API_KEY` repository secret. CI no longer reads one, and the
    record job fails if a key is present, because a key would override federation.
+
+### How a recording run authenticates
+
+Nothing is stored or carried over between runs; every run mints its own token:
+
+1. `permissions: id-token: write` lets the job request a GitHub OIDC token for that run.
+2. A background loop fetches one (audience `https://api.anthropic.com`) into
+   `$RUNNER_TEMP` and refreshes it every 2 minutes. GitHub tokens live about 5 minutes.
+3. The Anthropic SDK exchanges the token for a short-lived Anthropic access token
+   (about 10 minutes) and re-reads the file whenever that access token expires.
+
+The rule matches on `sub`, which depends only on the repo and the `ci-eval`
+environment, so it is the same for every workflow and branch. `anthropic-wif-test` does
+the exchange without calling Claude. It's useful when setting up the rule, but
+`record-eval.yml` never depends on it.
+
+**Troubleshooting** (`status.reason` in the error or the Console's authentication events):
+- `match_subject_prefix` / `match_claim_value_mismatch`: a rule condition doesn't match
+  the token. `anthropic-wif-test` prints the token's claims; compare them with the rule
+  field by field.
+- `jti_reused`: Anthropic accepts each GitHub token only once. Keep a single
+  `Anthropic()` client (`src/astra_swarm/client.py`). Each client exchanges the token on
+  its own.
 
 **Local recording (optional):** `--mode record`/`--mode live` on your machine needs an
 API key. Create it in the same capped workspace and export it only in your shell
