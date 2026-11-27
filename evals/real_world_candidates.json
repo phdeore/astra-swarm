@@ -1,0 +1,1752 @@
+[
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:57:04.532Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Credential Manager Enumerated\", \"level\": \"low\", \"host\": \"DC01.pandalab.com\", \"channel\": \"Security\", \"event_id\": 5379, \"mitre\": [\"T1555.004\"], \"details\": {\"CredsReturned\": 1, \"LID\": \"0x627b7\", \"PID\": 3680, \"ReturnCode\": 0, \"SrcSID\": \"S-1-5-21-477444970-2264162048-1418806404-500\", \"SrcUser\": \"Administrator\", \"Tgt\": \"WindowsLive:target=virtualapp/didlogical\"}, \"occurrences\": 1, \"rule_id\": \"d8e3afc5-fa0a-4063-a4af-55e014eb1936\", \"rule_author\": \"Zach Mathis\"}",
+    "expected_routing": "malware",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'Credential Manager Enumerated' on OTRF 'Dumping NTDS.dit using NinjaCopy' (ATT&CK T1003.003); background activity in the lab capture; the rule is unrelated to the simulated technique.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/empire_ninjacopy_dumping_ntds_dit_file",
+      "archive": "datasets/atomic/windows/credential_access/host/empire_ninjacopy_dumping_ntds_dit_file.zip",
+      "otrf_id": "SDWIN-230720004300",
+      "tool": "hayabusa",
+      "rule": "Credential Manager Enumerated",
+      "rule_id": "d8e3afc5-fa0a-4063-a4af-55e014eb1936",
+      "rule_author": "Zach Mathis",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 100851842
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T12:00:00.000Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"DMP/HDMP File Creation\", \"level\": \"low\", \"host\": \"WORKSTATION5\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 11, \"mitre\": [], \"details\": {\"PGUID\": \"{39e4a257-d4ad-5f8c-3303-000000000700}\", \"PID\": 4824, \"Path\": \"C:\\\\Users\\\\wardog\\\\AppData\\\\Local\\\\Temp\\\\lsass-comsvcs.dmp\", \"Proc\": \"C:\\\\Windows\\\\System32\\\\rundll32.exe\"}, \"occurrences\": 1, \"rule_id\": \"0d311f59-a4ce-b5d9-02eb-b1ccff977b6f\", \"rule_author\": \"Nasreddine Bencherchali (Nextron Systems)\"}",
+    "expected_routing": "malware",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'DMP/HDMP File Creation' on OTRF 'Lsass Memory Dump via Comsvcs.dll' (ATT&CK T1003.001); rule has no ATT&CK tag, so it could not be matched to the simulation: check whether it is part of the attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/psh_lsass_memory_dump_comsvcs",
+      "archive": "datasets/atomic/windows/credential_access/host/psh_lsass_memory_dump_comsvcs.zip",
+      "otrf_id": "SDWIN-201018195009",
+      "tool": "hayabusa",
+      "rule": "DMP/HDMP File Creation",
+      "rule_id": "0d311f59-a4ce-b5d9-02eb-b1ccff977b6f",
+      "rule_author": "Nasreddine Bencherchali (Nextron Systems)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 1790596800
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:57:27.458Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Local Accounts Discovery\", \"level\": \"low\", \"host\": \"WORKSTATION5.theshire.local\", \"channel\": \"Security\", \"event_id\": 4688, \"mitre\": [\"T1033\", \"T1087.001\"], \"details\": {\"Cmdline\": \"\\\"C:\\\\windows\\\\system32\\\\whoami.exe\\\" /user\\\"\", \"LID\": \"0x2ba622\", \"PID\": 7716, \"Proc\": \"C:\\\\Windows\\\\System32\\\\whoami.exe\", \"User\": \"pgustavo\"}, \"occurrences\": 1, \"rule_id\": \"70d8efc3-4098-d71c-be3c-59f75ccb6019\", \"rule_author\": \"Timur Zinniatullin, Daniil Yugoslavskiy, oscd.community\"}",
+    "expected_routing": "malware",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'Local Accounts Discovery' on OTRF 'Empire Mimikatz Lsadump LSA Patch' (ATT&CK T1003.001); background activity in the lab capture; the rule is unrelated to the simulated technique.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/empire_mimikatz_lsadump_patch",
+      "archive": "datasets/atomic/windows/credential_access/host/empire_mimikatz_lsadump_patch.zip",
+      "otrf_id": "SDWIN-200807103913",
+      "tool": "hayabusa",
+      "rule": "Local Accounts Discovery",
+      "rule_id": "70d8efc3-4098-d71c-be3c-59f75ccb6019",
+      "rule_author": "Timur Zinniatullin, Daniil Yugoslavskiy, oscd.community",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 193785468
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:57:01.361Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Network Connection Initiated By PowerShell Process\", \"level\": \"low\", \"host\": \"WORKSTATION5.theshire.local\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 3, \"mitre\": [\"T1059.001\"], \"details\": {\"Initiated\": true, \"PGUID\": \"{297bc33e-65d0-5f2d-8207-000000000400}\", \"PID\": 1648, \"Proc\": \"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\", \"Proto\": \"tcp\", \"SrcHost\": \"-\", \"SrcIP\": \"172.18.39.5\", \"SrcPort\": 65372, \"TgtHost\": \"-\", \"TgtIP\": \"10.10.10.5\", \"TgtPort\": 80, \"User\": \"THESHIRE\\\\pgustavo\"}, \"occurrences\": 35, \"rule_id\": \"30030033-0a85-0cb9-bbc0-999b656bddcc\", \"rule_author\": \"Florian Roth (Nextron Systems)\"}",
+    "expected_routing": "malware",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'Network Connection Initiated By PowerShell Process' on OTRF 'Empire Mimikatz LogonPasswords' (ATT&CK T1003.001); background activity in the lab capture; the rule is unrelated to the simulated technique.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/empire_mimikatz_logonpasswords",
+      "archive": "datasets/atomic/windows/credential_access/host/empire_mimikatz_logonpasswords.zip",
+      "otrf_id": "SDWIN-190518202151",
+      "tool": "hayabusa",
+      "rule": "Network Connection Initiated By PowerShell Process",
+      "rule_id": "30030033-0a85-0cb9-bbc0-999b656bddcc",
+      "rule_author": "Florian Roth (Nextron Systems)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 35,
+      "time_offset_seconds": 193785875
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:13.829Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Password Policy Discovery With Get-AdDefaultDomainPasswordPolicy\", \"level\": \"low\", \"host\": \"MORDORDC.theshire.local\", \"channel\": \"Microsoft-Windows-PowerShell/Operational\", \"event_id\": 4104, \"mitre\": [\"T1201\"], \"details\": {\"ScriptBlock\": \"e -Message ($localizedString.MembershipCountMismatch -f $Members.Count, $ExistingMembers.Count);\\n return $false;\\n }\\n\\n foreach ($member in $Members)\\n {\\n if ($member -notin $ExistingMembers)\\n {\\n Write-Verbose -Message ($localizedString.MemberNotInDesiredState -f $member);\\n return $false;\\n }\\n }\\n } #end…\"}, \"occurrences\": 1, \"rule_id\": \"3c8ea56a-ad16-8598-c24e-3fdd6b345dda\", \"rule_author\": \"frack113\"}",
+    "expected_routing": "malware",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'Password Policy Discovery With Get-AdDefaultDomainPasswordPolicy' on OTRF 'Empire Invoke WMI' (ATT&CK T1047); background activity in the lab capture; the rule is unrelated to the simulated technique.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/empire_wmi_dcerpc_wmi_IWbemServices_ExecMethod",
+      "archive": "datasets/atomic/windows/lateral_movement/host/empire_wmi_dcerpc_wmi_IWbemServices_ExecMethod.zip",
+      "otrf_id": "SDWIN-200921001437",
+      "tool": "hayabusa",
+      "rule": "Password Policy Discovery With Get-AdDefaultDomainPasswordPolicy",
+      "rule_id": "3c8ea56a-ad16-8598-c24e-3fdd6b345dda",
+      "rule_author": "frack113",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 189935038
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:49.975Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Possible LOLBIN\", \"level\": \"low\", \"host\": \"WORKSTATION5\", \"channel\": \"Security\", \"event_id\": 4688, \"mitre\": [], \"details\": {\"Cmdline\": \"\\\"C:\\\\windows\\\\system32\\\\cmstp.exe\\\" /s C:\\\\ProgramData\\\\T1218.003_uacbypass.inf /au\\\"\", \"LID\": \"0xc61d9\", \"PID\": 9456, \"Proc\": \"C:\\\\Windows\\\\System32\\\\cmstp.exe\", \"User\": \"wardog\"}, \"occurrences\": 2, \"rule_id\": \"6c34b782-a5b5-4298-80f3-1918caf1f558\", \"rule_author\": \"Zach Mathis\"}",
+    "expected_routing": "malware",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'Possible LOLBIN' on OTRF 'CMSTP Proxy Execution' (ATT&CK T1218.003); rule has no ATT&CK tag, so it could not be matched to the simulation: check whether it is part of the attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/psh_cmstp_execution_bypassuac",
+      "archive": "datasets/atomic/windows/defense_evasion/host/psh_cmstp_execution_bypassuac.zip",
+      "otrf_id": "SDWIN-201022015432",
+      "tool": "hayabusa",
+      "rule": "Possible LOLBIN",
+      "rule_id": "6c34b782-a5b5-4298-80f3-1918caf1f558",
+      "rule_author": "Zach Mathis",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 2,
+      "time_offset_seconds": 187265126
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:08.464Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Potential Raspberry Robin Registry Set Internet Settings ZoneMap\", \"level\": \"low\", \"host\": \"Pedro01\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 13, \"mitre\": [\"T1112\"], \"details\": {\"Details\": \"DWORD (0x00000001)\", \"EventType\": \"SetValue\", \"PGUID\": \"{625b42a0-6444-62f1-2806-000000000900}\", \"PID\": 3000, \"Proc\": \"C:\\\\Users\\\\IT01-Pedro\\\\Downloads\\\\payload.exe\", \"RegKey\": \"HKU\\\\S-1-5-21-968647429-258479840-2507984072-1001\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Internet Settings\\\\ZoneMap\\\\ProxyBypass\", \"User\": \"PEDRO01\\\\pedro\"}, \"occurrences\": 8, \"rule_id\": \"3c9b3acb-c42d-d53c-9803-4a000092d6af\", \"rule_author\": \"Swachchhanda Shrawan Poudel\"}",
+    "expected_routing": "malware",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'Potential Raspberry Robin Registry Set Internet Settings ZoneMap' on OTRF 'Stopping Event Log Service after Stopping Depending Services' (ATT&CK T1562.002); background activity in the lab capture; the rule is unrelated to the simulated technique.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/cmd_psh_stop_netprofm_eventlog_before_reboot",
+      "archive": "datasets/atomic/windows/defense_evasion/host/cmd_psh_stop_netprofm_eventlog_before_reboot.zip",
+      "otrf_id": "SDWIN-220708104300",
+      "tool": "hayabusa",
+      "rule": "Potential Raspberry Robin Registry Set Internet Settings ZoneMap",
+      "rule_id": "3c9b3acb-c42d-d53c-9803-4a000092d6af",
+      "rule_author": "Swachchhanda Shrawan Poudel",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 8,
+      "time_offset_seconds": 130634935
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:55:28.251Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Proc Access\", \"level\": \"low\", \"host\": \"WORKSTATION5.theshire.local\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 10, \"mitre\": [], \"details\": {\"Access\": \"0x3000\", \"SrcPGUID\": \"{297bc33e-5c31-5f2b-2b00-000000000400}\", \"SrcPID\": 1784, \"SrcProc\": \"C:\\\\windows\\\\system32\\\\svchost.exe\", \"SrcUser\": \"n/a\", \"TgtPGUID\": \"{297bc33e-6d56-5f2d-bb07-000000000400}\", \"TgtPID\": 304, \"TgtProc\": \"C:\\\\Users\\\\pgustavo\\\\Downloads\\\\mimikatz_trunk\\\\x64\\\\mimikatz.exe\", \"TgtUser\": \"n/a\"}, \"occurrences\": 222, \"rule_id\": \"39503291-25e2-4d79-86d4-fb18804c5f21\", \"rule_author\": \"Zach Mathis\"}",
+    "expected_routing": "malware",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'Proc Access' on OTRF 'host/empire_mimikatz_lsadump_inject_protected_mode' (ATT&CK n/a); rule has no ATT&CK tag, so it could not be matched to the simulation: check whether it is part of the attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/empire_mimikatz_lsadump_inject_protected_mode",
+      "archive": "datasets/atomic/windows/credential_access/host/empire_mimikatz_lsadump_inject_protected_mode.zip",
+      "otrf_id": "",
+      "tool": "hayabusa",
+      "rule": "Proc Access",
+      "rule_id": "39503291-25e2-4d79-86d4-fb18804c5f21",
+      "rule_author": "Zach Mathis",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 222,
+      "time_offset_seconds": 193783870
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:50:20.429Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Renamed Exe File\", \"level\": \"low\", \"host\": \"MKT01.pandalab.com\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 1, \"mitre\": [], \"details\": {\"Cmdline\": \"systeminfo\", \"Company\": \"Microsoft Corporation\", \"Description\": \"Displays system information\", \"Hashes\": \"SHA1=711D6F6394333AE55A06076DEB9189C04846F939,MD5=EE309A9C61511E907D87B10EF226FDCD,SHA256=6F87CAA51BDEA802045BB281FC2686A3C76364C26A3FFE6C2CCAC4AF5F9DB37B,IMPHASH=C7C3DF13F22D7A13802E6509367A5830\", \"LGUID\": \"{ec2b781c-05c5-64f8-b7b7-440100000000}\", \"LID\": \"0x144b7b7\", \"PGUID\": \"{ec2b781c-05de-64f8-be06-000000000500}\", \"PID\": 7500, \"ParentCmdline\": \"C:\\\\Windows\\\\system32\\\\cmd.exe\", \"ParentPGUID\": \"{ec2b781c-05d8-64f8-bb06-000000000500}\", \"ParentPID\": 7376, \"Proc\": \"C:\\\\Windows\\\\System32\\\\systeminfo.exe\", \"Product\": \"Microsoft® Windows® Operating System\", \"User\": \"PANDALAB\\\\pedro.gustavo\"}, \"occurrences\": 2, \"rule_id\": \"cc1b2ee2-e737-47ac-8ef1-d6065b65292b\", \"rule_author\": \"Zach Mathis\"}",
+    "expected_routing": "malware",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'Renamed Exe File' on OTRF 'LSASS Memory - SharpDump' (ATT&CK T1587.001, T1608.001, T1204.002, T1082, T1033, T1012, T1105, T1003.001, T1041); rule has no ATT&CK tag, so it could not be matched to the simulation: check whether it is part of the attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/metasploit_sharpdump_lsass_memory_dump",
+      "archive": "datasets/compound/LSASS_campaign_05/metasploit_sharpdump_lsass_memory_dump.zip",
+      "otrf_id": "89805a26-18b0-4a6a-a54b-d45a4caa09a8",
+      "tool": "hayabusa",
+      "rule": "Renamed Exe File",
+      "rule_id": "cc1b2ee2-e737-47ac-8ef1-d6065b65292b",
+      "rule_author": "Zach Mathis",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 2,
+      "time_offset_seconds": 96688590
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:31.076Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Unusually Long PowerShell CommandLine\", \"level\": \"low\", \"host\": \"WORKSTATION6.theshire.local\", \"channel\": \"Security\", \"event_id\": 4688, \"mitre\": [\"T1059.001\"], \"details\": {\"Cmdline\": \"C:\\\\Windows\\\\System32\\\\WindowsPowershell\\\\v1.0\\\\powershell -noP -sta -w 1 -enc SQBGACgAJABQAFMAVgBFAFIAcwBpAG8ATgBUAGEAQgBMAEUALgBQAFMAVgBFAHIAcwBJAE8AbgAuAE0AYQBqAE8AUgAgAC0AZwBlACAAMwApAHsAJAA2ADgANgA2AD0AWwBSAEUAZgBdAC4AQQBzAHMAZQBNAEIATABZAC4ARwBlAHQAVABZAHAARQAoACcAUwB5AHMAdABlAG0ALgBNAGEAbgBhAGcAZQ…\", \"LID\": \"0x3e7\", \"PID\": 1152, \"Proc\": \"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\", \"User\": \"WORKSTATION6$\"}, \"occurrences\": 1, \"rule_id\": \"9d361072-2d35-e275-87b6-4915aa2beab8\", \"rule_author\": \"oscd.community, Natalia Shornikova\"}",
+    "expected_routing": "malware",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'Unusually Long PowerShell CommandLine' on OTRF 'Empire Invoke SMBExec' (ATT&CK T1021.002); background activity in the lab capture; the rule is unrelated to the simulated technique.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/empire_smbexec_dcerpc_smb_svcctl",
+      "archive": "datasets/atomic/windows/lateral_movement/host/empire_smbexec_dcerpc_smb_svcctl.zip",
+      "otrf_id": "SDWIN-190518210125",
+      "tool": "hayabusa",
+      "rule": "Unusually Long PowerShell CommandLine",
+      "rule_id": "9d361072-2d35-e275-87b6-4915aa2beab8",
+      "rule_author": "oscd.community, Natalia Shornikova",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 190011642
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:52:15.902Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Bad Opsec Powershell Code Artifacts\", \"level\": \"critical\", \"host\": \"IT01.pandalab.com\", \"channel\": \"Microsoft-Windows-PowerShell/Operational\", \"event_id\": 4103, \"mitre\": [\"T1059.001\"], \"details\": {\"Payload\": \"CommandInvocation(Invoke-Expression): \\\"Invoke-Expression\\\"\\nParameterBinding(Invoke-Expression): name=\\\"Command\\\"; value=\\\"function Out-Minidump\\n{\\n<#\\n.SYNOPSIS\\n\\n Generates a full-memory minidump of a process.\\n\\n PowerSploit Function: Out-Minidump\\n Author: Matthew Graeber (@mattifestation)\\n License: BSD 3-…\"}, \"occurrences\": 1, \"rule_id\": \"118c017d-54bd-d0a7-e24e-74482fd67b54\", \"rule_author\": \"ok @securonix invrep_de, oscd.community\"}",
+    "expected_routing": "malware",
+    "expected_severity": "critical",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Bad Opsec Powershell Code Artifacts' on OTRF 'LSASS Memory - Out-Minidump.ps1' (ATT&CK T1587.001, T1608.001, T1204.002, T1082, T1033, T1003.001, T1041); rule tactic Exec matches the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/metasploit_out-minidump_lsass_memory_dump",
+      "archive": "datasets/compound/LSASS_campaign_04/metasploit_out-minidump_lsass_memory_dump.zip",
+      "otrf_id": "e60a2995-bdfb-475a-b509-3ef0d0120a39",
+      "tool": "hayabusa",
+      "rule": "Bad Opsec Powershell Code Artifacts",
+      "rule_id": "118c017d-54bd-d0a7-e24e-74482fd67b54",
+      "rule_author": "ok @securonix invrep_de, oscd.community",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 97490731
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:34.372Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"DPAPI Backup Keys And Certificate Export Activity IOC\", \"level\": \"high\", \"host\": \"WORKSTATION5.theshire.local\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 11, \"mitre\": [\"T1555\", \"T1552.004\"], \"details\": {\"PGUID\": \"{313fa531-ce1c-5f91-a605-000000000400}\", \"PID\": 4380, \"Path\": \"C:\\\\Windows\\\\System32\\\\ntds_capi_0_a0feda20-878f-4e68-ba74-d4df8f0191ab.keyx.rsa.pvk\", \"Proc\": \"C:\\\\windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\"}, \"occurrences\": 3, \"rule_id\": \"667bb66d-a6b1-3981-39bd-cbbb7d7dd438\", \"rule_author\": \"Nounou Mbeiri, Nasreddine Bencherchali (Nextron Systems)\"}",
+    "expected_routing": "malware",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'DPAPI Backup Keys And Certificate Export Activity IOC' on OTRF 'Empire Mimikatz Backup Keys' (ATT&CK T1003); rule tactic CredAccess matches the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/empire_mimikatz_backupkeys_dcerpc_smb_lsarpc",
+      "archive": "datasets/atomic/windows/credential_access/host/empire_mimikatz_backupkeys_dcerpc_smb_lsarpc.zip",
+      "otrf_id": "SDWIN-190518235535",
+      "tool": "hayabusa",
+      "rule": "DPAPI Backup Keys And Certificate Export Activity IOC",
+      "rule_id": "667bb66d-a6b1-3981-39bd-cbbb7d7dd438",
+      "rule_author": "Nounou Mbeiri, Nasreddine Bencherchali (Nextron Systems)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 3,
+      "time_offset_seconds": 187205158
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T12:00:00.000Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"HackTool - Dumpert Process Dumper Default File\", \"level\": \"critical\", \"host\": \"WORKSTATION5\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 11, \"mitre\": [\"T1003.001\"], \"details\": {\"PGUID\": \"{39e4a257-004e-5f8d-4304-000000000700}\", \"PID\": 6772, \"Path\": \"C:\\\\Windows\\\\Temp\\\\dumpert.dmp\", \"Proc\": \"C:\\\\Users\\\\wardog\\\\Desktop\\\\Outflank-Dumpert.exe\"}, \"occurrences\": 1, \"rule_id\": \"09646573-55d9-4211-1d3b-24812e01c127\", \"rule_author\": \"Florian Roth (Nextron Systems)\"}",
+    "expected_routing": "malware",
+    "expected_severity": "critical",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'HackTool - Dumpert Process Dumper Default File' on OTRF 'Lsass Memory Dump via Syscalls' (ATT&CK T1003.001); rule technique matches the simulated T1003.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/cmd_lsass_memory_dumpert_syscalls",
+      "archive": "datasets/atomic/windows/credential_access/host/cmd_lsass_memory_dumpert_syscalls.zip",
+      "otrf_id": "SDWIN-201018225619",
+      "tool": "hayabusa",
+      "rule": "HackTool - Dumpert Process Dumper Default File",
+      "rule_id": "09646573-55d9-4211-1d3b-24812e01c127",
+      "rule_author": "Florian Roth (Nextron Systems)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 1790596800
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:52:05.561Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"HackTool - Dumpert Process Dumper Execution\", \"level\": \"critical\", \"host\": \"MKT01.pandalab.com\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 1, \"mitre\": [\"T1003.001\"], \"details\": {\"Cmdline\": \"C:\\\\Windows\\\\Temp\\\\Outflank-Dumpert.exe\", \"Company\": \"-\", \"Description\": \"-\", \"Hashes\": \"SHA1=C494BBB35B2B53B3A05AEF627710E27C7C800A1F,MD5=69C05093EB542E1C29A556A29E74E99A,SHA256=F323569E5D64A3AA60045BD06C2421E729D1C0D79028ABA9E227D9EEAEEC62E5,IMPHASH=09D278F9DE118EF09163C6140255C690\", \"LGUID\": \"{ec2b781c-11dd-64f8-c0bf-810000000000}\", \"LID\": \"0x81bfc0\", \"PGUID\": \"{ec2b781c-1279-64f8-e503-000000000500}\", \"PID\": 388, \"ParentCmdline\": \"\\\"C:\\\\Users\\\\stevie.marie\\\\Downloads\\\\winx64_payload.exe\\\"\", \"ParentPGUID\": \"{ec2b781c-11de-64f8-cc03-000000000500}\", \"ParentPID\": 5704, \"Proc\": \"C:\\\\Windows\\\\Temp\\\\Outflank-Dumpert.exe\", \"Product\": \"-\", \"User\": \"PANDALAB\\\\pedro.gustavo\"}, \"occurrences\": 1, \"rule_id\": \"fe1dad5f-50cc-7db6-25d5-7199fa5e9e54\", \"rule_author\": \"Florian Roth (Nextron Systems)\"}",
+    "expected_routing": "malware",
+    "expected_severity": "critical",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'HackTool - Dumpert Process Dumper Execution' on OTRF 'LSASS Memory - Outflank Dumpert' (ATT&CK T1587.001, T1608.001, T1204.002, T1082, T1033, T1105, T1003.001, T1041); rule technique matches the simulated T1003, T1033, T1041, T1082, T1105, T1204, T1587, T1608.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/metasploit_outflank-dumpert_lsass_memory_dump",
+      "archive": "datasets/compound/LSASS_campaign_06/metasploit_outflank-dumpert_lsass_memory_dump.zip",
+      "otrf_id": "de69b0f3-324c-40bf-95a7-a51dd1abbd77",
+      "tool": "hayabusa",
+      "rule": "HackTool - Dumpert Process Dumper Execution",
+      "rule_id": "fe1dad5f-50cc-7db6-25d5-7199fa5e9e54",
+      "rule_author": "Florian Roth (Nextron Systems)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 96685468
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:01.133Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"HackTool - Empire PowerShell UAC Bypass\", \"level\": \"critical\", \"host\": \"WORKSTATION5.theshire.local\", \"channel\": \"Security\", \"event_id\": 4688, \"mitre\": [\"T1548.002\"], \"details\": {\"Cmdline\": \"\\\"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\\\" -NoP -NonI -W Hidden -c $x=$((gp HKCU:Software\\\\Microsoft\\\\Windows Update).Update); powershell -NoP -NonI -W Hidden -enc $x\\\"\", \"LID\": \"0xa96e8\", \"PID\": 7820, \"Proc\": \"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\", \"User\": \"pgustavo\"}, \"occurrences\": 1, \"rule_id\": \"5ccc4b5a-ddf6-63e0-3b00-82be3eb56506\", \"rule_author\": \"Ecco\"}",
+    "expected_routing": "malware",
+    "expected_severity": "critical",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'HackTool - Empire PowerShell UAC Bypass' on OTRF 'Invoke BypassUAC FodHelper' (ATT&CK T1548.002); rule technique matches the simulated T1548.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/empire_uac_shellapi_fodhelper",
+      "archive": "datasets/atomic/windows/privilege_escalation/host/empire_uac_shellapi_fodhelper.zip",
+      "otrf_id": "SDWIN-200904032946",
+      "tool": "hayabusa",
+      "rule": "HackTool - Empire PowerShell UAC Bypass",
+      "rule_id": "5ccc4b5a-ddf6-63e0-3b00-82be3eb56506",
+      "rule_author": "Ecco",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 191392126
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T12:00:00.000Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Hacktool Execution - Imphash\", \"level\": \"critical\", \"host\": \"WORKSTATION5\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 1, \"mitre\": [\"T1588.002\", \"T1003\"], \"details\": {\"Cmdline\": \"Outflank-Dumpert.exe\", \"Company\": \"-\", \"Description\": \"-\", \"Hashes\": \"SHA1=98B13ABB701577AC88E360D702BB89160B50E378,MD5=C78D58386504CAF3437EED37FBFF77B5,SHA256=D286348DE31501385A3A8F57A08AF602722913C36AAA4AA9FCB9EE129A7680C0,IMPHASH=E57401FBDADCD4571FF385AB82BD5D6D\", \"LGUID\": \"{39e4a257-f1ac-5f8b-d961-0c0000000000}\", \"LID\": \"0xc61d9\", \"PGUID\": \"{39e4a257-004e-5f8d-4304-000000000700}\", \"PID\": 6772, \"ParentCmdline\": \"\\\"C:\\\\windows\\\\system32\\\\cmd.exe\\\"\", \"ParentPGUID\": \"{39e4a257-ff60-5f8c-2f04-000000000700}\", \"ParentPID\": 3080, \"Proc\": \"C:\\\\Users\\\\wardog\\\\Desktop\\\\Outflank-Dumpert.exe\", \"Product\": \"-\", \"User\": \"WORKSTATION5\\\\wardog\"}, \"occurrences\": 1, \"rule_id\": \"47a8d776-78b7-bfd8-ea26-8924edf61182\", \"rule_author\": \"Florian Roth (Nextron Systems)\"}",
+    "expected_routing": "malware",
+    "expected_severity": "critical",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Hacktool Execution - Imphash' on OTRF 'Lsass Memory Dump via Syscalls' (ATT&CK T1003.001); rule technique matches the simulated T1003.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/cmd_lsass_memory_dumpert_syscalls",
+      "archive": "datasets/atomic/windows/credential_access/host/cmd_lsass_memory_dumpert_syscalls.zip",
+      "otrf_id": "SDWIN-201018225619",
+      "tool": "hayabusa",
+      "rule": "Hacktool Execution - Imphash",
+      "rule_id": "47a8d776-78b7-bfd8-ea26-8924edf61182",
+      "rule_author": "Florian Roth (Nextron Systems)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 1790596800
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:49.833Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Log Cleared\", \"level\": \"high\", \"host\": \"WORKSTATION5\", \"channel\": \"Security\", \"event_id\": 1102, \"mitre\": [\"T1070.001\"], \"details\": {\"@timestamp\": \"2020-10-22T12:21:33.833Z\", \"Channel\": \"Security\", \"EventID\": 1102, \"Hostname\": \"WORKSTATION5\", \"Keywords\": \"0x4020000000000000\", \"Level\": 4, \"Message\": \"The audit log was cleared.\\r\\nSubject:\\r\\n\\tSecurity ID:\\tS-1-5-21-3940915590-64593676-1414006259-500\\r\\n\\tAccount Name:\\twardog\\r\\n\\tDomain Name:\\tWORKSTATION5\\r\\n\\tLogon ID:\\t0xC61D9\", \"ProviderGuid\": \"{fc65ddd8-d6ef-4962-83d5-6e5cfe9ce148}\", \"SourceName\": \"Microsoft-Windows-Eventlog\", \"Task\": 104, \"TimeCreated\": \"2020-10-22T12:21:33.833Z\"}, \"occurrences\": 1, \"rule_id\": \"c2f690ac-53f8-4745-8cfe-7127dda28c74\", \"rule_author\": \"Zach Mathis\"}",
+    "expected_routing": "malware",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Log Cleared' on OTRF 'HH Execution of Local Compiled HTML Payload' (ATT&CK T1218.001); rule tactic Stealth matches the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/psh_hh_local_html_payload",
+      "archive": "datasets/atomic/windows/defense_evasion/host/psh_hh_local_html_payload.zip",
+      "otrf_id": "SDWIN-201022002145",
+      "tool": "hayabusa",
+      "rule": "Log Cleared",
+      "rule_id": "c2f690ac-53f8-4745-8cfe-7127dda28c74",
+      "rule_author": "Zach Mathis",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 187227496
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:47:47.750Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Meterpreter or Cobalt Strike Getsystem Service Installation - Security\", \"level\": \"high\", \"host\": \"PRD01.pandalab.com\", \"channel\": \"Security\", \"event_id\": 4697, \"mitre\": [\"T1134.001\", \"T1134.002\"], \"details\": {\"LID\": \"0x37296df\", \"Path\": \"rundll32.exe C:\\\\Users\\\\PEDRO~1.GUS\\\\AppData\\\\Local\\\\Temp\\\\qfhaer.dll,a /p:qfhaer\", \"Svc\": \"qfhaer\", \"SvcAcct\": \"LocalSystem\", \"SvcStartType\": 3, \"SvcType\": \"0x10\", \"User\": \"pedro.gustavo\"}, \"occurrences\": 1, \"rule_id\": \"e2755f38-e817-94c0-afef-acff29676b43\", \"rule_author\": \"Teymur Kheirkhabarov, Ecco, Florian Roth (Nextron Systems)\"}",
+    "expected_routing": "malware",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Meterpreter or Cobalt Strike Getsystem Service Installation - Security' on OTRF 'LSASS Memory - comsvcs.dll' (ATT&CK T1587.001, T1608.001, T1204.002, T1082, T1033, T1057, T1543.003, T1055.002, T1003.001, T1041); rule tactic PrivEsc, Stealth matches the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/metasploit_comsvcs_lsass_memory_dump",
+      "archive": "datasets/compound/LSASS_campaign_03/metasploit_comsvcs_lsass_memory_dump.zip",
+      "otrf_id": "17b6c633-1946-4894-b4d8-2ab4503b0707",
+      "tool": "hayabusa",
+      "rule": "Meterpreter or Cobalt Strike Getsystem Service Installation - Security",
+      "rule_id": "e2755f38-e817-94c0-afef-acff29676b43",
+      "rule_author": "Teymur Kheirkhabarov, Ecco, Florian Roth (Nextron Systems)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 98246976
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:08.316Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Network Connection Initiated Via Notepad.EXE\", \"level\": \"high\", \"host\": \"WORKSTATION6.theshire.local\", \"channel\": \"Security\", \"event_id\": 5156, \"mitre\": [\"T1055\"], \"details\": {\"PID\": \"n/a\", \"Proc\": \"\\\\device\\\\harddiskvolume2\\\\windows\\\\system32\\\\notepad.exe\", \"Protocol\": 6, \"SrcIP\": \"172.18.39.6\", \"SrcPort\": 64392, \"TgtIP\": \"10.10.10.5\", \"TgtMachineID\": \"S-1-0-0\", \"TgtPort\": 80, \"TgtSID\": \"S-1-0-0\"}, \"occurrences\": 1, \"rule_id\": \"e6f76f81-e758-4001-122c-58a3ceef02f9\", \"rule_author\": \"EagleEye Team\"}",
+    "expected_routing": "malware",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Network Connection Initiated Via Notepad.EXE' on OTRF 'Covenant Remote WMI Wbemcomn DLL Hijacking' (ATT&CK T1047); rule tactic Exec matches the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/covenant_wmi_wbemcomn_dll_hijack",
+      "archive": "datasets/atomic/windows/lateral_movement/host/covenant_wmi_wbemcomn_dll_hijack.zip",
+      "otrf_id": "SDWIN-201009173318",
+      "tool": "hayabusa",
+      "rule": "Network Connection Initiated Via Notepad.EXE",
+      "rule_id": "e6f76f81-e758-4001-122c-58a3ceef02f9",
+      "rule_author": "EagleEye Team",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 188317388
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:57:37.173Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Potential DCOM InternetExplorer.Application DLL Hijack\", \"level\": \"critical\", \"host\": \"WORKSTATION6.theshire.local\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 11, \"mitre\": [\"T1021.002\", \"T1021.003\"], \"details\": {\"PGUID\": \"{9318926b-a294-5f7e-0100-000000000400}\", \"PID\": 4, \"Path\": \"C:\\\\Program Files\\\\Internet Explorer\\\\iertutil.dll\", \"Proc\": \"System\"}, \"occurrences\": 1, \"rule_id\": \"4df31d46-89ee-5092-2043-c6da5a9b8bec\", \"rule_author\": \"Roberto Rodriguez @Cyb3rWard0g, Open Threat Research (OTR), wagga\"}",
+    "expected_routing": "malware",
+    "expected_severity": "critical",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Potential DCOM InternetExplorer.Application DLL Hijack' on OTRF 'Covenant Remote DCOM Iertutil DLL Hijacking' (ATT&CK T1021.003); rule technique matches the simulated T1021.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/covenant_dcom_iertutil_dll_hijack",
+      "archive": "datasets/atomic/windows/lateral_movement/host/covenant_dcom_iertutil_dll_hijack.zip",
+      "otrf_id": "SDWIN-201009183000",
+      "tool": "hayabusa",
+      "rule": "Potential DCOM InternetExplorer.Application DLL Hijack",
+      "rule_id": "4df31d46-89ee-5092-2043-c6da5a9b8bec",
+      "rule_author": "Roberto Rodriguez @Cyb3rWard0g, Open Threat Research (OTR), wagga",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 188314024
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:02.902Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Potential DCOM InternetExplorer.Application DLL Hijack - Image Load\", \"level\": \"critical\", \"host\": \"WORKSTATION6.theshire.local\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 7, \"mitre\": [\"T1021.002\", \"T1021.003\"], \"details\": {\"Company\": \"-\", \"Description\": \"-\", \"Hash\": \"SHA1=8249229ED98F9C9B03FB890C1D4FA869E44D5231,MD5=C470F453E2FDADC283CDCDB0D4B4C7BA,SHA256=3BD2AF8A45626D2D0D567AE4989290FD0065C74E64B81DDC640AF775B402BD2F,IMPHASH=E7129F83FB101A6ABDCBCDBC693723D8\", \"Image\": \"C:\\\\Program Files\\\\Internet Explorer\\\\iertutil.dll\", \"OrigFilename\": \"-\", \"PGUID\": \"{9318926b-e49c-5f80-110b-000000000400}\", \"PID\": 9428, \"Proc\": \"C:\\\\Program Files\\\\Internet Explorer\\\\iexplore.exe\", \"Product\": \"-\", \"Sig\": \"Unavailable\", \"Signed\": false}, \"occurrences\": 1, \"rule_id\": \"484d27da-4a7f-9a4d-3254-0ec190b0e0b5\", \"rule_author\": \"Roberto Rodriguez @Cyb3rWard0g, Open Threat Research (OTR), wagga\"}",
+    "expected_routing": "malware",
+    "expected_severity": "critical",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Potential DCOM InternetExplorer.Application DLL Hijack - Image Load' on OTRF 'Covenant Remote DCOM Iertutil DLL Hijacking' (ATT&CK T1021.003); rule technique matches the simulated T1021.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/covenant_dcom_iertutil_dll_hijack",
+      "archive": "datasets/atomic/windows/lateral_movement/host/covenant_dcom_iertutil_dll_hijack.zip",
+      "otrf_id": "SDWIN-201009183000",
+      "tool": "hayabusa",
+      "rule": "Potential DCOM InternetExplorer.Application DLL Hijack - Image Load",
+      "rule_id": "484d27da-4a7f-9a4d-3254-0ec190b0e0b5",
+      "rule_author": "Roberto Rodriguez @Cyb3rWard0g, Open Threat Research (OTR), wagga",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 188314024
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:59.833Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Shell Open Registry Keys Manipulation\", \"level\": \"high\", \"host\": \"WORKSTATION5.theshire.local\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 13, \"mitre\": [\"T1548.002\", \"T1546.001\"], \"details\": {\"Details\": \"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe -NoP -NonI -W Hidden -c $x=$((gp HKCU:Software\\\\Microsoft\\\\Windows Update).Update); powershell -NoP -NonI -W Hidden -enc $x\", \"EventType\": \"SetValue\", \"PGUID\": \"{3ddc5665-e80d-5f51-2501-000000000500}\", \"PID\": 1376, \"Proc\": \"C:\\\\windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\", \"RegKey\": \"HKU\\\\S-1-5-21-3125456671-949036322-3048627137-1104_Classes\\\\ms-settings\\\\Shell\\\\Open\\\\command\\\\(Default)\", \"User\": \"n/a\"}, \"occurrences\": 1, \"rule_id\": \"18c993a5-ea76-b7c7-eec4-3b62c426f7a7\", \"rule_author\": \"Christian Burkard (Nextron Systems)\"}",
+    "expected_routing": "malware",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Shell Open Registry Keys Manipulation' on OTRF 'Invoke BypassUAC FodHelper' (ATT&CK T1548.002); rule technique matches the simulated T1548.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/empire_uac_shellapi_fodhelper",
+      "archive": "datasets/atomic/windows/privilege_escalation/host/empire_uac_shellapi_fodhelper.zip",
+      "otrf_id": "SDWIN-200904032946",
+      "tool": "hayabusa",
+      "rule": "Shell Open Registry Keys Manipulation",
+      "rule_id": "18c993a5-ea76-b7c7-eec4-3b62c426f7a7",
+      "rule_author": "Christian Burkard (Nextron Systems)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 191392126
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:33.534Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Suspicious PowerShell Invocations - Specific\", \"level\": \"high\", \"host\": \"WORKSTATION6.theshire.local\", \"channel\": \"Microsoft-Windows-PowerShell/Operational\", \"event_id\": 4104, \"mitre\": [\"T1059.001\"], \"details\": {\"ScriptBlock\": \"If($PSVersionTABlE.PSVERsION.MajOr -GE 3){$43de2=[REF].AssemBLy.GetTYpE('System.Management.Automation.Utils').\\\"GeTFiE`LD\\\"('cachedGroupPolicySettings','N'+'onPublic,Static');If($43de2){$712db=$43de2.GeTVALUE($nULL);IF($712dB['ScriptB'+'lockLogging']){$712DB['ScriptB'+'lockLogging']['EnableScriptB'+'l…\"}, \"occurrences\": 1, \"rule_id\": \"8655ba53-c937-dbcf-91c5-3125219b9497\", \"rule_author\": \"Florian Roth (Nextron Systems), Jonhnathan Ribeiro\"}",
+    "expected_routing": "malware",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Suspicious PowerShell Invocations - Specific' on OTRF 'Empire Invoke Execute MSBuild' (ATT&CK T1047); rule tactic Exec matches the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/empire_msbuild_dcerpc_wmi_smb",
+      "archive": "datasets/atomic/windows/lateral_movement/host/empire_msbuild_dcerpc_wmi_smb.zip",
+      "otrf_id": "SDWIN-190518213907",
+      "tool": "hayabusa",
+      "rule": "Suspicious PowerShell Invocations - Specific",
+      "rule_id": "8655ba53-c937-dbcf-91c5-3125219b9497",
+      "rule_author": "Florian Roth (Nextron Systems), Jonhnathan Ribeiro",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 189958744
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:57:36.924Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Wmiprvse Wbemcomn DLL Hijack - File\", \"level\": \"critical\", \"host\": \"WORKSTATION6.theshire.local\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 11, \"mitre\": [\"T1047\", \"T1021.002\"], \"details\": {\"PGUID\": \"{9318926b-a294-5f7e-0100-000000000400}\", \"PID\": 4, \"Path\": \"C:\\\\Windows\\\\System32\\\\wbem\\\\wbemcomn.dll\", \"Proc\": \"System\"}, \"occurrences\": 1, \"rule_id\": \"a8ddbd32-fff1-c7d9-3d66-1e1da1998c69\", \"rule_author\": \"Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)\"}",
+    "expected_routing": "malware",
+    "expected_severity": "critical",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Wmiprvse Wbemcomn DLL Hijack - File' on OTRF 'Covenant Remote WMI Wbemcomn DLL Hijacking' (ATT&CK T1047); rule technique matches the simulated T1047.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/covenant_wmi_wbemcomn_dll_hijack",
+      "archive": "datasets/atomic/windows/lateral_movement/host/covenant_wmi_wbemcomn_dll_hijack.zip",
+      "otrf_id": "SDWIN-201009173318",
+      "tool": "hayabusa",
+      "rule": "Wmiprvse Wbemcomn DLL Hijack - File",
+      "rule_id": "a8ddbd32-fff1-c7d9-3d66-1e1da1998c69",
+      "rule_author": "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 188317388
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:13.906Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"A Member Was Added to a Security-Enabled Global Group\", \"level\": \"low\", \"host\": \"WORKSTATION6.theshire.local\", \"channel\": \"Security\", \"event_id\": 4728, \"mitre\": [\"T1098\"], \"details\": {\"LID\": \"0x551686\", \"SrcSID\": \"S-1-5-21-1969843730-2406867588-1543852148-1000\", \"TgtGrp\": \"None\"}, \"occurrences\": 1, \"rule_id\": \"26767093-828c-2f39-bdd8-d0439e87307c\", \"rule_author\": \"Alexandr Yampolskyi, SOC Prime\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'A Member Was Added to a Security-Enabled Global Group' on OTRF 'Empire Remote WMIC Add User' (ATT&CK T1047); background activity in the lab capture; the rule is unrelated to the simulated technique.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/empire_wmic_add_user_backdoor",
+      "archive": "datasets/atomic/windows/defense_evasion/host/empire_wmic_add_user_backdoor.zip",
+      "otrf_id": "SDWIN-200914080546",
+      "tool": "hayabusa",
+      "rule": "A Member Was Added to a Security-Enabled Global Group",
+      "rule_id": "26767093-828c-2f39-bdd8-d0439e87307c",
+      "rule_author": "Alexandr Yampolskyi, SOC Prime",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 190511590
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:13.907Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Local User Account Created\", \"level\": \"low\", \"host\": \"WORKSTATION6.theshire.local\", \"channel\": \"Security\", \"event_id\": 4720, \"mitre\": [], \"details\": {\"TgtSID\": \"S-1-5-21-1969843730-2406867588-1543852148-1000\", \"TgtUser\": \"backdoor\"}, \"occurrences\": 1, \"rule_id\": \"13edce80-2b02-4469-8de4-a3e37271dcdb\", \"rule_author\": \"Zach Mathis\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'Local User Account Created' on OTRF 'Empire Remote WMIC Add User' (ATT&CK T1047); rule has no ATT&CK tag, so it could not be matched to the simulation: check whether it is part of the attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/empire_wmic_add_user_backdoor",
+      "archive": "datasets/atomic/windows/defense_evasion/host/empire_wmic_add_user_backdoor.zip",
+      "otrf_id": "SDWIN-200914080546",
+      "tool": "hayabusa",
+      "rule": "Local User Account Created",
+      "rule_id": "13edce80-2b02-4469-8de4-a3e37271dcdb",
+      "rule_author": "Zach Mathis",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 190511590
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:41.085Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Logon Failure (Unknown Reason)\", \"level\": \"low\", \"host\": \"Pedro01\", \"channel\": \"Security\", \"event_id\": 4625, \"mitre\": [], \"details\": {\"AuthPkg\": \"Negotiate\", \"Proc\": \"C:\\\\Windows\\\\System32\\\\consent.exe\", \"SrcComp\": \"PEDRO01\", \"SrcIP\": \"::1\", \"SubStatus\": \"SUCCESS\", \"TgtUser\": \"pedro\", \"Type\": \"11 - CACHED INTERACTIVE\"}, \"occurrences\": 1, \"rule_id\": \"a85096da-be85-48d7-8ad5-2f957cd74daa\", \"rule_author\": \"Zach Mathis\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'Logon Failure (Unknown Reason)' on OTRF 'Stopping Event Log Service via Modification of Start Up Type' (ATT&CK T1562.002); rule has no ATT&CK tag, so it could not be matched to the simulation: check whether it is part of the attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/reg_disable_eventlog_service_startuptype_modification_via_registry",
+      "archive": "datasets/atomic/windows/defense_evasion/host/reg_disable_eventlog_service_startuptype_modification_via_registry.zip",
+      "otrf_id": "SDWIN-220708104215",
+      "tool": "hayabusa",
+      "rule": "Logon Failure (Unknown Reason)",
+      "rule_id": "a85096da-be85-48d7-8ad5-2f957cd74daa",
+      "rule_author": "Zach Mathis",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 130997325
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:12.210Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Logon Failure (Wrong Password)\", \"level\": \"low\", \"host\": \"WORKSTATION5.theshire.local\", \"channel\": \"Security\", \"event_id\": 4625, \"mitre\": [], \"details\": {\"AuthPkg\": \"MICROSOFT_AUTHENTICATION_PACKAGE_V1_0\", \"Proc\": \"C:\\\\Users\\\\pgustavo\\\\Downloads\\\\PurpleSharp.exe\", \"SrcComp\": \"WORKSTATION5\", \"SrcIP\": \"-\", \"TgtUser\": \"lrodriguez\", \"Type\": \"2 - INTERACTIVE\"}, \"occurrences\": 7, \"rule_id\": \"e87bd730-df45-4ae9-85de-6c75369c5d29\", \"rule_author\": \"Zach Mathis\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'Logon Failure (Wrong Password)' on OTRF 'PurpleSharp Active Directory Playbook I' (ATT&CK T1110.003, T1558.003, T1135, T1021.006); rule has no ATT&CK tag, so it could not be matched to the simulation: check whether it is part of the attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/purplesharp_ad_playbook_I",
+      "archive": "datasets/atomic/windows/lateral_movement/host/purplesharp_ad_playbook_I.zip",
+      "otrf_id": "SDWIN-201022042947",
+      "tool": "hayabusa",
+      "rule": "Logon Failure (Wrong Password)",
+      "rule_id": "e87bd730-df45-4ae9-85de-6c75369c5d29",
+      "rule_author": "Zach Mathis",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 7,
+      "time_offset_seconds": 187241357
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:43.860Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Outgoing Logon with New Credentials\", \"level\": \"low\", \"host\": \"WORKSTATION6.theshire.local\", \"channel\": \"Security\", \"event_id\": 4624, \"mitre\": [\"T1550\"], \"details\": {\"LID\": \"0x42e7ba4\", \"SrcComp\": \"-\", \"SrcIP\": \"::1\", \"TgtUser\": \"wardog\", \"Type\": \"9 - NEW CREDENTIALS\"}, \"occurrences\": 1, \"rule_id\": \"897e25ba-f935-3fd3-c6d5-f9abf379e831\", \"rule_author\": \"Max Altgelt (Nextron Systems)\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'Outgoing Logon with New Credentials' on OTRF 'Rubeus Elevated ASKTGT CreateNetOnly' (ATT&CK T1003.003); background activity in the lab capture; the rule is unrelated to the simulated technique.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/empire_shell_rubeus_asktgt_createnetonly",
+      "archive": "datasets/atomic/windows/credential_access/host/empire_shell_rubeus_asktgt_createnetonly.zip",
+      "otrf_id": "SDWIN-200921230246",
+      "tool": "hayabusa",
+      "rule": "Outgoing Logon with New Credentials",
+      "rule_id": "897e25ba-f935-3fd3-c6d5-f9abf379e831",
+      "rule_author": "Max Altgelt (Nextron Systems)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 189852935
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:56.582Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Successful Account Login Via WMI\", \"level\": \"low\", \"host\": \"WORKSTATION5.theshire.local\", \"channel\": \"Security\", \"event_id\": 4624, \"mitre\": [\"T1047\"], \"details\": {\"LID\": \"0x1f401a\", \"SrcComp\": \"WORKSTATION5\", \"SrcIP\": \"-\", \"TgtUser\": \"pgustavo\", \"Type\": \"3 - NETWORK\"}, \"occurrences\": 1, \"rule_id\": \"c310cab1-252e-1d98-6b6f-e6e60c88a374\", \"rule_author\": \"Thomas Patzke\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'Successful Account Login Via WMI' on OTRF 'Empire Elevated WMI Eventing' (ATT&CK T1546.003); background activity in the lab capture; the rule is unrelated to the simulated technique.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/empire_wmi_local_event_subscriptions_elevated_user",
+      "archive": "datasets/atomic/windows/persistence/host/empire_wmi_local_event_subscriptions_elevated_user.zip",
+      "otrf_id": "SDWIN-190518184306",
+      "tool": "hayabusa",
+      "rule": "Successful Account Login Via WMI",
+      "rule_id": "c310cab1-252e-1d98-6b6f-e6e60c88a374",
+      "rule_author": "Thomas Patzke",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 191344217
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:21.904Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Active Directory Replication from Non Machine Account - DcSync Indicator\", \"level\": \"medium\", \"host\": \"MORDORDC.theshire.local\", \"channel\": \"Security\", \"event_id\": 4662, \"mitre\": [\"T1003.006\"], \"details\": {\"HID\": \"0x0\", \"LID\": \"0x69099c7\", \"ObjName\": \"%{d613d8a5-418b-4b7a-83b8-ae1511c502c4}\", \"ObjSvr\": \"DS\", \"OpType\": \"Object Access\", \"User\": \"pgustavo\"}, \"occurrences\": 3, \"rule_id\": \"5c8e2537-5c7f-56d8-de80-1f0746b61067\", \"rule_author\": \"Roberto Rodriguez @Cyb3rWard0g\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Active Directory Replication from Non Machine Account - DcSync Indicator' on OTRF 'Empire DCSync' (ATT&CK T1003.006); rule technique matches the simulated T1003.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/empire_dcsync_dcerpc_drsuapi_DsGetNCChanges",
+      "archive": "datasets/atomic/windows/credential_access/host/empire_dcsync_dcerpc_drsuapi_DsGetNCChanges.zip",
+      "otrf_id": "SDWIN-190301174830",
+      "tool": "hayabusa",
+      "rule": "Active Directory Replication from Non Machine Account - DcSync Indicator",
+      "rule_id": "5c8e2537-5c7f-56d8-de80-1f0746b61067",
+      "rule_author": "Roberto Rodriguez @Cyb3rWard0g",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 3,
+      "time_offset_seconds": 189867607
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:25.558Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"External Remote RDP Logon from Public IP\", \"level\": \"medium\", \"host\": \"WORKSTATION5.theshire.local\", \"channel\": \"Security\", \"event_id\": 4624, \"mitre\": [\"T1133\", \"T1078\", \"T1110\"], \"details\": {\"LID\": \"0xa96e8\", \"SrcComp\": \"WORKSTATION5\", \"SrcIP\": \"1.2.3.4\", \"TgtUser\": \"pgustavo\", \"Type\": \"10 - REMOTE INTERACTIVE\"}, \"occurrences\": 2, \"rule_id\": \"56a1bb6f-e039-3f65-3ea0-de425cefa8a7\", \"rule_author\": \"Micah Babinski (@micahbabinski), Zach Mathis (@yamatosecurity)\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'External Remote RDP Logon from Public IP' on OTRF 'Empire Userland Registry Run Keys' (ATT&CK T1547.001); rule tactic Persis matches the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/empire_persistence_registry_modification_run_keys_standard_user",
+      "archive": "datasets/atomic/windows/persistence/host/empire_persistence_registry_modification_run_keys_standard_user.zip",
+      "otrf_id": "SDWIN-190319023812",
+      "tool": "hayabusa",
+      "rule": "External Remote RDP Logon from Public IP",
+      "rule_id": "56a1bb6f-e039-3f65-3ea0-de425cefa8a7",
+      "rule_author": "Micah Babinski (@micahbabinski), Zach Mathis (@yamatosecurity)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 2,
+      "time_offset_seconds": 191393403
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:20.665Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"External Remote SMB Logon from Public IP\", \"level\": \"high\", \"host\": \"WORKSTATION5.theshire.local\", \"channel\": \"Security\", \"event_id\": 4624, \"mitre\": [\"T1133\", \"T1078\", \"T1110\"], \"details\": {\"LID\": \"0xc3e079\", \"SrcComp\": \"-\", \"SrcIP\": \"1.2.3.4\", \"TgtUser\": \"pgustavo\", \"Type\": \"3 - NETWORK\"}, \"occurrences\": 1, \"rule_id\": \"5c67a566-7829-eb05-4a1f-0eb292ef993f\", \"rule_author\": \"Micah Babinski (@micahbabinski), Zach Mathis (@yamatosecurity)\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'External Remote SMB Logon from Public IP' on OTRF 'RDP TaskManager LSASS Dump' (ATT&CK T1003.001); rule tactic CredAccess matches the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/rdp_interactive_taskmanager_lsass_dump",
+      "archive": "datasets/atomic/windows/credential_access/host/rdp_interactive_taskmanager_lsass_dump.zip",
+      "otrf_id": "SDWIN-191027055035",
+      "tool": "hayabusa",
+      "rule": "External Remote SMB Logon from Public IP",
+      "rule_id": "5c67a566-7829-eb05-4a1f-0eb292ef993f",
+      "rule_author": "Micah Babinski (@micahbabinski), Zach Mathis (@yamatosecurity)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 189832817
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:06.448Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"HackTool - Mimikatz Kirbi File Creation\", \"level\": \"critical\", \"host\": \"WORKSTATION5.theshire.local\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 11, \"mitre\": [\"T1558\"], \"details\": {\"PGUID\": \"{b34bc01c-a92a-5f69-7e02-000000000900}\", \"PID\": \"n/a\", \"Path\": \"C:\\\\Windows\\\\System32\\\\0-40e10000-pgustavo@krbtgt~THESHIRE.LOCAL-THESHIRE.LOCAL.kirbi\", \"Proc\": \"C:\\\\windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\"}, \"occurrences\": 1, \"rule_id\": \"67fb9539-c38a-ffdd-c78d-b4980c3692f5\", \"rule_author\": \"Florian Roth (Nextron Systems), David ANDRE\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "critical",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'HackTool - Mimikatz Kirbi File Creation' on OTRF 'Empire Mimikatz Extract Kerberos Keys' (ATT&CK T1003.004); rule tactic CredAccess matches the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/empire_mimikatz_extract_keys",
+      "archive": "datasets/atomic/windows/credential_access/host/empire_mimikatz_extract_keys.zip",
+      "otrf_id": "SDWIN-190518230752",
+      "tool": "hayabusa",
+      "rule": "HackTool - Mimikatz Kirbi File Creation",
+      "rule_id": "67fb9539-c38a-ffdd-c78d-b4980c3692f5",
+      "rule_author": "Florian Roth (Nextron Systems), David ANDRE",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 189836528
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:43.843Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"HackTool - Rubeus Execution\", \"level\": \"critical\", \"host\": \"WORKSTATION6.theshire.local\", \"channel\": \"Security\", \"event_id\": 4688, \"mitre\": [\"T1003\", \"T1558.003\", \"T1550.003\"], \"details\": {\"Cmdline\": \"\\\"C:\\\\users\\\\sbeavers\\\\Desktop\\\\Rubeus.exe\\\" asktgt /user:pgustavo /rc4:81d310fa34e6a56a31145445891bb7b8 /createnetonly:C:\\\\Windows\\\\System32\\\\cmd.exe\\\"\", \"LID\": \"0x41a6996\", \"PID\": 7520, \"Proc\": \"C:\\\\Users\\\\sbeavers\\\\Desktop\\\\Rubeus.exe\", \"User\": \"wardog\"}, \"occurrences\": 1, \"rule_id\": \"be670d5c-31eb-7391-4d2e-d122c89cd5bb\", \"rule_author\": \"Florian Roth (Nextron Systems)\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "critical",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'HackTool - Rubeus Execution' on OTRF 'Rubeus Elevated ASKTGT CreateNetOnly' (ATT&CK T1003.003); rule technique matches the simulated T1003.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/empire_shell_rubeus_asktgt_createnetonly",
+      "archive": "datasets/atomic/windows/credential_access/host/empire_shell_rubeus_asktgt_createnetonly.zip",
+      "otrf_id": "SDWIN-200921230246",
+      "tool": "hayabusa",
+      "rule": "HackTool - Rubeus Execution",
+      "rule_id": "be670d5c-31eb-7391-4d2e-d122c89cd5bb",
+      "rule_author": "Florian Roth (Nextron Systems)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 189852935
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:12.403Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Kerberoasting Activity - Initial Query\", \"level\": \"medium\", \"host\": \"MORDORDC.theshire.local\", \"channel\": \"Security\", \"event_id\": 4769, \"mitre\": [\"T1558.003\"], \"details\": {\"SrcIP\": \"::ffff:172.18.39.5\", \"Status\": \"0x0\", \"Svc\": \"sysmonsvc\", \"TgtUser\": \"pgustavo@THESHIRE.LOCAL\"}, \"occurrences\": 5, \"rule_id\": \"4386b4e0-f268-42a6-b91d-e3bb768976d6\", \"rule_author\": \"@kostastsale\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Kerberoasting Activity - Initial Query' on OTRF 'PurpleSharp Active Directory Playbook I' (ATT&CK T1110.003, T1558.003, T1135, T1021.006); rule technique matches the simulated T1021, T1110, T1135, T1558.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/purplesharp_ad_playbook_I",
+      "archive": "datasets/atomic/windows/lateral_movement/host/purplesharp_ad_playbook_I.zip",
+      "otrf_id": "SDWIN-201022042947",
+      "tool": "hayabusa",
+      "rule": "Kerberoasting Activity - Initial Query",
+      "rule_id": "4386b4e0-f268-42a6-b91d-e3bb768976d6",
+      "rule_author": "@kostastsale",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 5,
+      "time_offset_seconds": 187241357
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:16.765Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Mimikatz Use\", \"level\": \"high\", \"host\": \"WORKSTATION5.theshire.local\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 1, \"mitre\": [\"S0002\", \"T1003.002\", \"T1003.004\", \"T1003.001\", \"T1003.006\"], \"details\": {\"Cmdline\": \"\\\"cmd.exe\\\" /c C:\\\\Users\\\\pgustavo\\\\Downloads\\\\mimikatz_trunk\\\\x64\\\\mimikatz.exe \\\"lsadump::zerologon /target:MORDORDC.theshire.local /account:MORDORDC$ /exploit\\\" exit\\\"\", \"Company\": \"Microsoft Corporation\", \"Description\": \"Windows Command Processor\", \"Hashes\": \"SHA1=8DCA9749CD48D286950E7A9FA1088C937CBCCAD4,MD5=D7AB69FAD18D4A643D84A271DFC0DBDF,SHA256=FF79D3C4A0B7EB191783C323AB8363EBD1FD10BE58D8BCC96B07067743CA81D5,IMPHASH=272245E2988E1E430500B852C4FB5E18\", \"LGUID\": \"{f0d8d782-6f2d-5f62-bad9-290000000000}\", \"LID\": \"0x29d9ba\", \"PGUID\": \"{f0d8d782-da94-5f62-ec04-000000000400}\", \"PID\": 7024, \"ParentCmdline\": \"\\\"C:\\\\Users\\\\pgustavo\\\\Desktop\\\\GruntHTTP.exe\\\"\", \"ParentPGUID\": \"{f0d8d782-bff3-5f62-e003-000000000400}\", \"ParentPID\": 7248, \"Proc\": \"C:\\\\Windows\\\\System32\\\\cmd.exe\", \"Product\": \"Microsoft® Windows® Operating System\", \"User\": \"THESHIRE\\\\pgustavo\"}, \"occurrences\": 5, \"rule_id\": \"06d71506-7beb-4f22-8888-e2e5e2ca7fd8\", \"rule_author\": \"Florian Roth (Nextron Systems), David ANDRE (additional keywords)\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Mimikatz Use' on OTRF 'Mimikatz Netlogon Unauthenticated NetrServerAuthenticate2' (ATT&CK T1210); rule tactic LatMov matches the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/mimikatz_CVE-2020-1472_Unauthenticated_NetrServerAuthenticate2",
+      "archive": "datasets/atomic/windows/lateral_movement/host/mimikatz_CVE-2020-1472_Unauthenticated_NetrServerAuthenticate2.zip",
+      "otrf_id": "SDWIN-200916232559",
+      "tool": "hayabusa",
+      "rule": "Mimikatz Use",
+      "rule_id": "06d71506-7beb-4f22-8888-e2e5e2ca7fd8",
+      "rule_author": "Florian Roth (Nextron Systems), David ANDRE (additional keywords)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 5,
+      "time_offset_seconds": 190282692
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:43:21.241Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"PSExec Lateral Movement\", \"level\": \"high\", \"host\": \"NASHUA.dmevals.local\", \"channel\": \"System\", \"event_id\": 7045, \"mitre\": [\"S0029\", \"T1136.002\", \"T1543.003\", \"T1570\", \"T1021.002\", \"T1569.002\"], \"details\": {\"Acct\": \"pbeesly\", \"Path\": \"%SystemRoot%\\\\PSEXESVC.exe\", \"StartType\": \"demand start\", \"Svc\": \"PSEXESVC\"}, \"occurrences\": 4, \"rule_id\": \"0694c340-3a46-40ac-acfc-c3444ae6572c\", \"rule_author\": \"Zach Mathis\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'PSExec Lateral Movement' on OTRF 'APT29 ATT&CK evaluation emulation, day 1 (host logs)' (ATT&CK T1204, T1059, T1071, T1548, T1003, T1021, T1560, T1041, T1113, T1115, T1005, T1083); rule technique matches the simulated T1003, T1005, T1021, T1041, T1059, T1071, T1083, T1113, T1115, T1204, T1548, T1560.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/apt29_evals_day1_manual",
+      "archive": "datasets/compound/apt29/day1/apt29_evals_day1_manual.zip",
+      "otrf_id": "",
+      "tool": "hayabusa",
+      "rule": "PSExec Lateral Movement",
+      "rule_id": "0694c340-3a46-40ac-acfc-c3444ae6572c",
+      "rule_author": "Zach Mathis",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 4,
+      "time_offset_seconds": 202206700
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:29.857Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Pass the Hash Activity 2\", \"level\": \"medium\", \"host\": \"WORKSTATION6.theshire.local\", \"channel\": \"Security\", \"event_id\": 4624, \"mitre\": [\"T1550.002\"], \"details\": {\"LID\": \"0x2074186\", \"SrcComp\": \"WORKSTATION5\", \"SrcIP\": \"172.18.39.5\", \"TgtUser\": \"pgustavo\", \"Type\": \"3 - NETWORK\"}, \"occurrences\": 1, \"rule_id\": \"059e7255-411c-1666-a2e5-2e99e294e614\", \"rule_author\": \"Dave Kennedy, Jeff Warren (method) / David Vassallo (rule)\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Pass the Hash Activity 2' on OTRF 'Empire Invoke SMBExec' (ATT&CK T1021.002); rule tactic LatMov matches the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/empire_smbexec_dcerpc_smb_svcctl",
+      "archive": "datasets/atomic/windows/lateral_movement/host/empire_smbexec_dcerpc_smb_svcctl.zip",
+      "otrf_id": "SDWIN-190518210125",
+      "tool": "hayabusa",
+      "rule": "Pass the Hash Activity 2",
+      "rule_id": "059e7255-411c-1666-a2e5-2e99e294e614",
+      "rule_author": "Dave Kennedy, Jeff Warren (method) / David Vassallo (rule)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 190011642
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:57:18.726Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Potential Remote WMI ActiveScriptEventConsumers Activity\", \"level\": \"medium\", \"host\": \"WORKSTATION6.theshire.local\", \"channel\": \"Security\", \"event_id\": 4624, \"mitre\": [\"T1546.003\"], \"details\": {\"LID\": \"0x11f0fcd\", \"SrcComp\": \"WORKSTATION6\", \"SrcIP\": \"-\", \"TgtUser\": \"pgustavo\", \"Type\": \"3 - NETWORK\"}, \"occurrences\": 1, \"rule_id\": \"910ec16d-6957-01b7-39a8-5e676e459cac\", \"rule_author\": \"Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Potential Remote WMI ActiveScriptEventConsumers Activity' on OTRF 'Covenant Remote WMI Eventing ActiveScriptEventConsumers' (ATT&CK T1047); rule tactic LatMov matches the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/covenant_wmi_remote_event_subscription_ActiveScriptEventConsumers",
+      "archive": "datasets/atomic/windows/lateral_movement/host/covenant_wmi_remote_event_subscription_ActiveScriptEventConsumers.zip",
+      "otrf_id": "SDWIN-200724174200",
+      "tool": "hayabusa",
+      "rule": "Potential Remote WMI ActiveScriptEventConsumers Activity",
+      "rule_id": "910ec16d-6957-01b7-39a8-5e676e459cac",
+      "rule_author": "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 191585587
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:09.484Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Successful Overpass the Hash Attempt\", \"level\": \"high\", \"host\": \"WORKSTATION6.theshire.local\", \"channel\": \"Security\", \"event_id\": 4624, \"mitre\": [\"S0002\", \"T1550.002\"], \"details\": {\"LID\": \"0x420de2f\", \"SrcComp\": \"-\", \"SrcIP\": \"::1\", \"TgtUser\": \"wardog\", \"Type\": \"9 - NEW CREDENTIALS\"}, \"occurrences\": 1, \"rule_id\": \"20f4e87b-c272-42da-9a1f-ad54206e3622\", \"rule_author\": \"Roberto Rodriguez (source), Dominik Schaudel (rule)\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Successful Overpass the Hash Attempt' on OTRF 'Empire Over-Pass-The-Hash' (ATT&CK T1550.002); rule technique matches the simulated T1550.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/empire_over_pth_patch_lsass",
+      "archive": "datasets/atomic/windows/credential_access/host/empire_over_pth_patch_lsass.zip",
+      "otrf_id": "SDWIN-190319131123",
+      "tool": "hayabusa",
+      "rule": "Successful Overpass the Hash Attempt",
+      "rule_id": "20f4e87b-c272-42da-9a1f-ad54206e3622",
+      "rule_author": "Roberto Rodriguez (source), Dominik Schaudel (rule)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 189855880
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:39.783Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Uncommon Outbound Kerberos Connection\", \"level\": \"medium\", \"host\": \"WORKSTATION6.theshire.local\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 3, \"mitre\": [\"T1558\", \"T1550.003\"], \"details\": {\"Initiated\": true, \"PGUID\": \"{d273d0f0-63ce-5f69-940c-000000000800}\", \"PID\": \"n/a\", \"Proc\": \"C:\\\\Users\\\\sbeavers\\\\Desktop\\\\Rubeus.exe\", \"Proto\": \"tcp\", \"SrcHost\": \"-\", \"SrcIP\": \"172.18.39.6\", \"SrcPort\": 53409, \"TgtHost\": \"-\", \"TgtIP\": \"172.18.38.5\", \"TgtPort\": 88, \"User\": \"THESHIRE\\\\wardog\"}, \"occurrences\": 1, \"rule_id\": \"322fd5f2-b5b7-1bf4-58f2-92873dc878bb\", \"rule_author\": \"Ilyas Ochkov, oscd.community\"}",
+    "expected_routing": "identity_auth",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "itdr_specialist",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Uncommon Outbound Kerberos Connection' on OTRF 'Rubeus Userland ASKTGT PTT' (ATT&CK T1003.003); rule tactic CredAccess matches the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/empire_shell_rubeus_asktgt_ptt",
+      "archive": "datasets/atomic/windows/credential_access/host/empire_shell_rubeus_asktgt_ptt.zip",
+      "otrf_id": "SDWIN-190319145126",
+      "tool": "hayabusa",
+      "rule": "Uncommon Outbound Kerberos Connection",
+      "rule_id": "322fd5f2-b5b7-1bf4-58f2-92873dc878bb",
+      "rule_author": "Ilyas Ochkov, oscd.community",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 189854364
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:56.639Z\", \"event_type\": \"alert\", \"src_ip\": \"172.18.39.5\", \"src_port\": 50504, \"dest_ip\": \"172.18.39.6\", \"dest_port\": 445, \"proto\": \"TCP\", \"app_proto\": \"smb\", \"alert\": {\"signature_id\": 2067087, \"rev\": 1, \"signature\": \"ET INFO NTLM Session Setup Request - Auth\", \"category\": \"Misc activity\", \"severity\": 3}, \"count\": 1}",
+    "expected_routing": "network",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (benign): suricata 'ET INFO NTLM Session Setup Request - Auth' on OTRF 'Empire Invoke SMBExec' (ATT&CK T1021.002); 'Misc activity' traffic that also occurs outside the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "net/lateral_movement__empire_smbexec_dcerpc_smb_svcctl/empire_smbexec_dcerpc_smb_svcctl_WORKSTATION5_2020-09-20025716.cap",
+      "archive": "datasets/atomic/windows/lateral_movement/network/empire_smbexec_dcerpc_smb_svcctl.zip",
+      "otrf_id": "SDWIN-190518210125",
+      "tool": "suricata",
+      "rule": "ET INFO NTLM Session Setup Request - Auth",
+      "rule_id": "2067087",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 190011670
+    }
+  },
+  {
+    "alert": "09/28/2026-11:58:56.614000  [**] [1:2067085:1] ET INFO NTLM Session Setup Request - Negotiate [**] [Classification: Misc activity] [Priority: 3] {TCP} 172.18.39.5:50504 -> 172.18.39.6:445 count=1",
+    "expected_routing": "network",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (benign): suricata 'ET INFO NTLM Session Setup Request - Negotiate' on OTRF 'Empire Invoke SMBExec' (ATT&CK T1021.002); 'Misc activity' traffic that also occurs outside the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "net/lateral_movement__empire_smbexec_dcerpc_smb_svcctl/empire_smbexec_dcerpc_smb_svcctl_WORKSTATION5_2020-09-20025716.cap",
+      "archive": "datasets/atomic/windows/lateral_movement/network/empire_smbexec_dcerpc_smb_svcctl.zip",
+      "otrf_id": "SDWIN-190518210125",
+      "tool": "suricata",
+      "rule": "ET INFO NTLM Session Setup Request - Negotiate",
+      "rule_id": "2067085",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 190011670
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:54.612Z\", \"event_type\": \"alert\", \"src_ip\": \"172.18.39.6\", \"src_port\": 445, \"dest_ip\": \"172.18.39.5\", \"dest_port\": 50504, \"proto\": \"TCP\", \"app_proto\": \"smb\", \"alert\": {\"signature_id\": 2067086, \"rev\": 1, \"signature\": \"ET INFO NTLMv1 Session Setup Response - Challenge\", \"category\": \"Misc activity\", \"severity\": 3}, \"count\": 1}",
+    "expected_routing": "network",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (benign): suricata 'ET INFO NTLMv1 Session Setup Response - Challenge' on OTRF 'Empire Invoke SMBExec' (ATT&CK T1021.002); 'Misc activity' traffic that also occurs outside the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "net/lateral_movement__empire_smbexec_dcerpc_smb_svcctl/empire_smbexec_dcerpc_smb_svcctl_WORKSTATION6_2020-09-20025716.cap",
+      "archive": "datasets/atomic/windows/lateral_movement/network/empire_smbexec_dcerpc_smb_svcctl.zip",
+      "otrf_id": "SDWIN-190518210125",
+      "tool": "suricata",
+      "rule": "ET INFO NTLMv1 Session Setup Response - Challenge",
+      "rule_id": "2067086",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 190011668
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:59.304Z\", \"event_type\": \"alert\", \"src_ip\": \"192.168.2.6\", \"src_port\": 49877, \"dest_ip\": \"192.168.2.5\", \"dest_port\": 80, \"proto\": \"TCP\", \"app_proto\": \"http\", \"alert\": {\"signature_id\": 2032884, \"rev\": 1, \"signature\": \"ET EXPLOIT Possible Local Active Directory Federation Services (AD FS) Replication Attempt\", \"category\": \"Web Application Attack\", \"severity\": 1}, \"count\": 1, \"details\": {\"http\": {\"hostname\": \"adfs01.blacksmith.local\", \"http_method\": \"POST\", \"http_user_agent\": \"Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.18362.1171\", \"length\": 0, \"protocol\": \"HTTP/1.1\", \"status\": 100, \"url\": \"/adfs/services/policystoretransfer\"}}}",
+    "expected_routing": "network",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET EXPLOIT Possible Local Active Directory Federation Services (AD FS) Replication Attempt' on OTRF 'Export ADFS Database Configuration Remotely' (ATT&CK T0000); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/lateral_movement__aadinternals_export_adfsdatabaseconfig_remotely/aadinternals_export_adfsdatabaseconfig_remotely_20210427020247.pcapng",
+      "archive": "datasets/atomic/windows/lateral_movement/network/aadinternals_export_adfsdatabaseconfig_remotely.zip",
+      "otrf_id": "SDWIN-210427020247",
+      "tool": "suricata",
+      "rule": "ET EXPLOIT Possible Local Active Directory Federation Services (AD FS) Replication Attempt",
+      "rule_id": "2032884",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 171093432
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:43.519Z\", \"event_type\": \"alert\", \"src_ip\": \"172.18.39.5\", \"src_port\": 49263, \"dest_ip\": \"172.18.38.5\", \"dest_port\": 49674, \"proto\": \"TCP\", \"app_proto\": \"dcerpc\", \"alert\": {\"signature_id\": 2030870, \"rev\": 4, \"signature\": \"ET EXPLOIT Possible Zerologon Phase 1/3 - NetrServerReqChallenge with 0x00 Client Challenge (CVE-2020-1472)\", \"category\": \"Attempted Administrator Privilege Gain\", \"severity\": 1}, \"count\": 1}",
+    "expected_routing": "network",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET EXPLOIT Possible Zerologon Phase 1/3 - NetrServerReqChallenge with 0x00 Client Challenge (CVE-2020-1472)' on OTRF 'Mimikatz Netlogon Unauthenticated NetrServerAuthenticate2' (ATT&CK T1210); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/lateral_movement__mimikatz_CVE-2020-1472_Unauthenticated_NetrServerAuthenticate2/mimikatz_CVE-2020-1472_Unauthenticated_NetrServerAuthenticate2_2020-09-16233923.cap",
+      "archive": "datasets/atomic/windows/lateral_movement/network/mimikatz_CVE-2020-1472_Unauthenticated_NetrServerAuthenticate2.zip",
+      "otrf_id": "SDWIN-200916232559",
+      "tool": "suricata",
+      "rule": "ET EXPLOIT Possible Zerologon Phase 1/3 - NetrServerReqChallenge with 0x00 Client Challenge (CVE-2020-1472)",
+      "rule_id": "2030870",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 190282719
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:43.526Z\", \"event_type\": \"alert\", \"src_ip\": \"172.18.39.5\", \"src_port\": 49263, \"dest_ip\": \"172.18.38.5\", \"dest_port\": 49674, \"proto\": \"TCP\", \"app_proto\": \"dcerpc\", \"alert\": {\"signature_id\": 2035258, \"rev\": 3, \"signature\": \"ET EXPLOIT Zerologon Phase 2/3 - NetrServerAuthenticate2 Request with 0x00 Client Challenge and Sign and Seal Disabled (CVE-2020-1472) M1\", \"category\": \"Attempted Administrator Privilege Gain\", \"severity\": 1}, \"count\": 1}",
+    "expected_routing": "network",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET EXPLOIT Zerologon Phase 2/3 - NetrServerAuthenticate2 Request with 0x00 Client Challenge and Sign and Seal Disabled (CVE-2020-1472) M1' on OTRF 'Mimikatz Netlogon Unauthenticated NetrServerAuthenticate2' (ATT&CK T1210); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/lateral_movement__mimikatz_CVE-2020-1472_Unauthenticated_NetrServerAuthenticate2/mimikatz_CVE-2020-1472_Unauthenticated_NetrServerAuthenticate2_2020-09-16233923.cap",
+      "archive": "datasets/atomic/windows/lateral_movement/network/mimikatz_CVE-2020-1472_Unauthenticated_NetrServerAuthenticate2.zip",
+      "otrf_id": "SDWIN-200916232559",
+      "tool": "suricata",
+      "rule": "ET EXPLOIT Zerologon Phase 2/3 - NetrServerAuthenticate2 Request with 0x00 Client Challenge and Sign and Seal Disabled (CVE-2020-1472) M1",
+      "rule_id": "2035258",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 190282719
+    }
+  },
+  {
+    "alert": "09/28/2026-11:58:55.604000  [**] [1:2027179:1] ET INFO Command Shell Activity Using Comspec Environmental Variable Over SMB - Very Likely Lateral Movement [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 172.18.39.5:50504 -> 172.18.39.6:445 count=2",
+    "expected_routing": "network",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET INFO Command Shell Activity Using Comspec Environmental Variable Over SMB - Very Likely Lateral Movement' on OTRF 'Empire Invoke SMBExec' (ATT&CK T1021.002); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/lateral_movement__empire_smbexec_dcerpc_smb_svcctl/empire_smbexec_dcerpc_smb_svcctl_WORKSTATION6_2020-09-20025716.cap",
+      "archive": "datasets/atomic/windows/lateral_movement/network/empire_smbexec_dcerpc_smb_svcctl.zip",
+      "otrf_id": "SDWIN-190518210125",
+      "tool": "suricata",
+      "rule": "ET INFO Command Shell Activity Using Comspec Environmental Variable Over SMB - Very Likely Lateral Movement",
+      "rule_id": "2027179",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 2,
+      "time_offset_seconds": 190011668
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:57:23.036Z\", \"event_type\": \"alert\", \"src_ip\": \"172.18.39.5\", \"src_port\": 50963, \"dest_ip\": \"172.18.39.6\", \"dest_port\": 445, \"proto\": \"TCP\", \"app_proto\": \"smb\", \"alert\": {\"signature_id\": 2027267, \"rev\": 4, \"signature\": \"ET INFO Possible Lateral Movement - File Creation Request in Remote System32 Directory (T1105)\", \"category\": \"Misc activity\", \"severity\": 3}, \"count\": 2}",
+    "expected_routing": "network",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET INFO Possible Lateral Movement - File Creation Request in Remote System32 Directory (T1105)' on OTRF 'Covenant Remote WMI Wbemcomn DLL Hijacking' (ATT&CK T1047); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/lateral_movement__covenant_wmi_wbemcomn_dll_hijack/covenant_wmi_wbemcomn_dll_hijack_WORKSTATION5_2020-10-09173318.cap",
+      "archive": "datasets/atomic/windows/lateral_movement/network/covenant_wmi_wbemcomn_dll_hijack.zip",
+      "otrf_id": "SDWIN-201009173318",
+      "tool": "suricata",
+      "rule": "ET INFO Possible Lateral Movement - File Creation Request in Remote System32 Directory (T1105)",
+      "rule_id": "2027267",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 2,
+      "time_offset_seconds": 188317376
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:50:53.356Z\", \"event_type\": \"alert\", \"src_ip\": \"10.0.1.4\", \"src_port\": 60824, \"dest_ip\": \"10.0.1.6\", \"dest_port\": 445, \"proto\": \"TCP\", \"app_proto\": \"smb\", \"alert\": {\"signature_id\": 2010781, \"rev\": 4, \"signature\": \"ET INFO PsExec service created\", \"category\": \"A suspicious filename was detected\", \"severity\": 2}, \"count\": 16}",
+    "expected_routing": "network",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET INFO PsExec service created' on OTRF 'APT29 ATT&CK evaluation emulation (day 1/2 network captures)' (ATT&CK T1071, T1105, T1021, T1003, T1041, T1560); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/apt29__day1__SCRANTON/SCRANTON.pcap",
+      "archive": "datasets/compound/apt29/day1/pcaps/SCRANTON.zip",
+      "otrf_id": "",
+      "tool": "suricata",
+      "rule": "ET INFO PsExec service created",
+      "rule_id": "2010781",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 16,
+      "time_offset_seconds": 202389180
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:54:24.511Z\", \"event_type\": \"alert\", \"src_ip\": \"10.0.5.13\", \"src_port\": 80, \"dest_ip\": \"192.168.1.43\", \"dest_port\": 51744, \"proto\": \"TCP\", \"app_proto\": \"http\", \"alert\": {\"signature_id\": 2034636, \"rev\": 2, \"signature\": \"ET INFO Python SimpleHTTP ServerBanner\", \"category\": \"Misc activity\", \"severity\": 3}, \"count\": 3, \"details\": {\"http\": {\"hostname\": \"10.0.5.13\", \"http_method\": \"GET\", \"http_refer\": \"http://10.0.5.13/\", \"http_user_agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36 Edg/92.0.902.67\", \"length\": 0, \"protocol\": \"HTTP/1.1\", \"status\": 304, \"url\": \"/happy_image.jpeg.exe\"}}}",
+    "expected_routing": "network",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET INFO Python SimpleHTTP ServerBanner' on OTRF 'LSASS Memory - Procdump' (ATT&CK T1587.001, T1608.001, T1204.002, T1082, T1033, T1105, T1003.001, T1041); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/LSASS_campaign_02__metasploit_procdump_lsass_memory_dump_pcapng/metasploit_procdump_lsass_memory_dump.pcapng",
+      "archive": "datasets/compound/LSASS_campaign_02/metasploit_procdump_lsass_memory_dump_pcapng.zip",
+      "otrf_id": "e32c5e65-eba9-47fa-81f3-8924d10e7506",
+      "tool": "suricata",
+      "rule": "ET INFO Python SimpleHTTP ServerBanner",
+      "rule_id": "2034636",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 3,
+      "time_offset_seconds": 98450396
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:57:17.040Z\", \"event_type\": \"alert\", \"src_ip\": \"172.18.39.5\", \"src_port\": 50963, \"dest_ip\": \"172.18.39.6\", \"dest_port\": 445, \"proto\": \"TCP\", \"app_proto\": \"smb\", \"alert\": {\"signature_id\": 2025699, \"rev\": 3, \"signature\": \"ET INFO SMB Executable File Transfer\", \"category\": \"Potentially Bad Traffic\", \"severity\": 2}, \"count\": 2}",
+    "expected_routing": "network",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET INFO SMB Executable File Transfer' on OTRF 'Covenant Remote WMI Wbemcomn DLL Hijacking' (ATT&CK T1047); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/lateral_movement__covenant_wmi_wbemcomn_dll_hijack/covenant_wmi_wbemcomn_dll_hijack_WORKSTATION6_2020-10-09173318.cap",
+      "archive": "datasets/atomic/windows/lateral_movement/network/covenant_wmi_wbemcomn_dll_hijack.zip",
+      "otrf_id": "SDWIN-201009173318",
+      "tool": "suricata",
+      "rule": "ET INFO SMB Executable File Transfer",
+      "rule_id": "2025699",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 2,
+      "time_offset_seconds": 188317370
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:45.639Z\", \"event_type\": \"alert\", \"src_ip\": \"172.18.39.5\", \"src_port\": 51712, \"dest_ip\": \"172.18.39.6\", \"dest_port\": 445, \"proto\": \"TCP\", \"app_proto\": \"smb\", \"alert\": {\"signature_id\": 2025709, \"rev\": 2, \"signature\": \"ET INFO SMB2 NT Create AndX Request For a DLL File - Possible Lateral Movement\", \"category\": \"Potentially Bad Traffic\", \"severity\": 2}, \"count\": 1}",
+    "expected_routing": "network",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET INFO SMB2 NT Create AndX Request For a DLL File - Possible Lateral Movement' on OTRF 'Covenant Remote DCOM Iertutil DLL Hijacking' (ATT&CK T1021.003); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/lateral_movement__covenant_dcom_iertutil_dll_hijack/covenant_dcom_iertutil_dll_hijack_WORKSTATION6_2020-10-09183000.cap",
+      "archive": "datasets/atomic/windows/lateral_movement/network/covenant_dcom_iertutil_dll_hijack.zip",
+      "otrf_id": "SDWIN-201009183000",
+      "tool": "suricata",
+      "rule": "ET INFO SMB2 NT Create AndX Request For a DLL File - Possible Lateral Movement",
+      "rule_id": "2025709",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 188314094
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:50:08.638Z\", \"event_type\": \"alert\", \"src_ip\": \"10.0.1.4\", \"src_port\": 60803, \"dest_ip\": \"10.0.1.6\", \"dest_port\": 445, \"proto\": \"TCP\", \"app_proto\": \"smb\", \"alert\": {\"signature_id\": 2025701, \"rev\": 2, \"signature\": \"ET INFO SMB2 NT Create AndX Request For an Executable File\", \"category\": \"Potentially Bad Traffic\", \"severity\": 2}, \"count\": 8}",
+    "expected_routing": "network",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET INFO SMB2 NT Create AndX Request For an Executable File' on OTRF 'APT29 ATT&CK evaluation emulation (day 1/2 network captures)' (ATT&CK T1071, T1105, T1021, T1003, T1041, T1560); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/apt29__day1__NASHUA/NASHUA.pcap",
+      "archive": "datasets/compound/apt29/day1/pcaps/NASHUA.zip",
+      "otrf_id": "",
+      "tool": "suricata",
+      "rule": "ET INFO SMB2 NT Create AndX Request For an Executable File",
+      "rule_id": "2025701",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 8,
+      "time_offset_seconds": 202389283
+    }
+  },
+  {
+    "alert": "09/28/2026-11:48:25.653000  [**] [1:2025703:3] ET INFO SMB2 NT Create AndX Request For an Executable File In a Temp Directory [**] [Classification: Misc activity] [Priority: 3] {TCP} 10.0.1.4:60803 -> 10.0.1.6:445 count=2",
+    "expected_routing": "network",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET INFO SMB2 NT Create AndX Request For an Executable File In a Temp Directory' on OTRF 'APT29 ATT&CK evaluation emulation (day 1/2 network captures)' (ATT&CK T1071, T1105, T1021, T1003, T1041, T1560); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/apt29__day1__SCRANTON/SCRANTON.pcap",
+      "archive": "datasets/compound/apt29/day1/pcaps/SCRANTON.zip",
+      "otrf_id": "",
+      "tool": "suricata",
+      "rule": "ET INFO SMB2 NT Create AndX Request For an Executable File In a Temp Directory",
+      "rule_id": "2025703",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 2,
+      "time_offset_seconds": 202389180
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:48.754Z\", \"event_type\": \"alert\", \"src_ip\": \"172.18.39.5\", \"src_port\": 58214, \"dest_ip\": \"172.18.39.7\", \"dest_port\": 5985, \"proto\": \"TCP\", \"app_proto\": \"http\", \"alert\": {\"signature_id\": 2026849, \"rev\": 4, \"signature\": \"ET INFO WinRM wsman Access - Possible Lateral Movement\", \"category\": \"Potentially Bad Traffic\", \"severity\": 2}, \"count\": 31, \"details\": {\"http\": {\"hostname\": \"workstation7.theshire.local\", \"http_content_type\": \"multipart/encrypted\", \"http_method\": \"POST\", \"http_port\": 5985, \"http_user_agent\": \"Microsoft WinRM Client\", \"length\": 2481, \"protocol\": \"HTTP/1.1\", \"status\": 200, \"url\": \"/wsman?PSVersion=5.1.18362.1110\"}}}",
+    "expected_routing": "network",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET INFO WinRM wsman Access - Possible Lateral Movement' on OTRF 'PurpleSharp Active Directory Playbook I' (ATT&CK T1110.003, T1558.003, T1135, T1021.006); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/lateral_movement__purplesharp_ad_playbook_I/purplesharp_ad_playbook_I_2020-10-22042947.cap",
+      "archive": "datasets/atomic/windows/lateral_movement/network/purplesharp_ad_playbook_I.zip",
+      "otrf_id": "SDWIN-201022042947",
+      "tool": "suricata",
+      "rule": "ET INFO WinRM wsman Access - Possible Lateral Movement",
+      "rule_id": "2026849",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 31,
+      "time_offset_seconds": 187241391
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:58:56.572Z\", \"event_type\": \"alert\", \"src_ip\": \"172.18.39.5\", \"src_port\": 56607, \"dest_ip\": \"172.18.39.6\", \"dest_port\": 135, \"proto\": \"TCP\", \"app_proto\": \"dcerpc\", \"alert\": {\"signature_id\": 2027237, \"rev\": 3, \"signature\": \"ET RPC DCERPC SVCCTL - Remote Service Control Manager Access\", \"category\": \"Attempted User Privilege Gain\", \"severity\": 1}, \"count\": 1}",
+    "expected_routing": "network",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET RPC DCERPC SVCCTL - Remote Service Control Manager Access' on OTRF 'Empire Invoke PsExec' (ATT&CK T1021); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/lateral_movement__empire_psexec_dcerpc_tcp_svcctl/empire_psexec_dcerpc_tcp_svcctl_WORKSTATION6_2020-09-20121608.cap",
+      "archive": "datasets/atomic/windows/lateral_movement/network/empire_psexec_dcerpc_tcp_svcctl.zip",
+      "otrf_id": "SDWIN-190518210652",
+      "tool": "suricata",
+      "rule": "ET RPC DCERPC SVCCTL - Remote Service Control Manager Access",
+      "rule_id": "2027237",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 189978120
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:16.788Z\", \"event_type\": \"alert\", \"src_ip\": \"172.18.39.5\", \"src_port\": 59770, \"dest_ip\": \"172.18.39.6\", \"dest_port\": 5985, \"proto\": \"TCP\", \"app_proto\": \"http\", \"alert\": {\"signature_id\": 2026850, \"rev\": 5, \"signature\": \"ET USER_AGENTS WinRM User Agent Detected - Possible Lateral Movement\", \"category\": \"Potentially Bad Traffic\", \"severity\": 2}, \"count\": 10, \"details\": {\"http\": {\"hostname\": \"workstation6.theshire.local\", \"http_content_type\": \"multipart/encrypted\", \"http_method\": \"POST\", \"http_port\": 5985, \"http_user_agent\": \"Microsoft WinRM Client\", \"length\": 2486, \"protocol\": \"HTTP/1.1\", \"status\": 200, \"url\": \"/wsman?PSVersion=5.1.18362.752\"}}}",
+    "expected_routing": "network",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET USER_AGENTS WinRM User Agent Detected - Possible Lateral Movement' on OTRF 'Empire Invoke PSRemoting' (ATT&CK T1021.006); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/lateral_movement__empire_psremoting_stager/empire_psremoting_stager_WORKSTATION5_2020-09-20170827.cap",
+      "archive": "datasets/atomic/windows/lateral_movement/network/empire_psremoting_stager.zip",
+      "otrf_id": "SDWIN-190518211456",
+      "tool": "suricata",
+      "rule": "ET USER_AGENTS WinRM User Agent Detected - Possible Lateral Movement",
+      "rule_id": "2026850",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 10,
+      "time_offset_seconds": 189960606
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:47:00.749Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Sysmon Error\", \"level\": \"low\", \"host\": \"UTICA.dmevals.local\", \"channel\": \"Microsoft-Windows-Sysmon/Operational\", \"event_id\": 255, \"mitre\": [], \"details\": {\"Description\": \"Failed to open service configuration with error 93 - Last error: The media is write protected.\", \"ID\": \"GetConfigurationOptions\"}, \"occurrences\": 2, \"rule_id\": \"f9a0bb41-a47a-4acb-875b-d64da687ee91\", \"rule_author\": \"Zach Mathis\"}",
+    "expected_routing": "other",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'Sysmon Error' on OTRF 'APT29 ATT&CK evaluation emulation, day 2 (host logs)' (ATT&CK T1204, T1059, T1547, T1546, T1003, T1558, T1021, T1047, T1114, T1070, T1027, T1087); rule has no ATT&CK tag, so it could not be matched to the simulation: check whether it is part of the attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/apt29_evals_day2_manual",
+      "archive": "datasets/compound/apt29/day2/apt29_evals_day2_manual.zip",
+      "otrf_id": "",
+      "tool": "hayabusa",
+      "rule": "Sysmon Error",
+      "rule_id": "f9a0bb41-a47a-4acb-875b-d64da687ee91",
+      "rule_author": "Zach Mathis",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 2,
+      "time_offset_seconds": 202188637
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:57:57.377Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Windows Service Terminated With Error\", \"level\": \"low\", \"host\": \"Pedro01\", \"channel\": \"System\", \"event_id\": 7023, \"mitre\": [], \"details\": {\"Error\": \"%%31\", \"Svc\": \"Network Connection Broker\"}, \"occurrences\": 6, \"rule_id\": \"c002ec31-f147-d591-b2f2-253774fd4248\", \"rule_author\": \"Nasreddine Bencherchali (Nextron Systems)\"}",
+    "expected_routing": "other",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (benign): hayabusa 'Windows Service Terminated With Error' on OTRF 'Stopping Event Log Service after Stopping Depending Services' (ATT&CK T1562.002); rule has no ATT&CK tag, so it could not be matched to the simulation: check whether it is part of the attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "benign",
+    "source": {
+      "dataset": "host/psh_metasploit_stop_netprofm_eventlog_after_reboot",
+      "archive": "datasets/atomic/windows/defense_evasion/host/psh_metasploit_stop_netprofm_eventlog_after_reboot.zip",
+      "otrf_id": "SDWIN-220708104300",
+      "tool": "hayabusa",
+      "rule": "Windows Service Terminated With Error",
+      "rule_id": "c002ec31-f147-d591-b2f2-253774fd4248",
+      "rule_author": "Nasreddine Bencherchali (Nextron Systems)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 6,
+      "time_offset_seconds": 130672955
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:49.056Z\", \"event_type\": \"alert\", \"src_ip\": \"192.168.2.6\", \"src_port\": 38782, \"dest_ip\": \"192.168.2.5\", \"dest_port\": 8080, \"proto\": \"TCP\", \"app_proto\": \"http\", \"alert\": {\"signature_id\": 2034649, \"rev\": 1, \"signature\": \"ET EXPLOIT Apache log4j RCE Attempt (tcp ldap) (CVE-2021-44228)\", \"category\": \"Attempted Administrator Privilege Gain\", \"severity\": 1}, \"count\": 1}",
+    "expected_routing": "other",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET EXPLOIT Apache log4j RCE Attempt (tcp ldap) (CVE-2021-44228)' on OTRF 'Log4Shell' (ATT&CK T1190, T1203); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/Log4Shell__pcap_log4shell_cve2021_44228_jndi_reference/pcap_log4shell_cve2021_44228_jndi_reference_2022-05-11181020.pcap",
+      "archive": "datasets/compound/Log4Shell/pcap_log4shell_cve2021_44228_jndi_reference.zip",
+      "otrf_id": "34861b31-60d9-4c2a-a25d-df929256004b",
+      "tool": "suricata",
+      "rule": "ET EXPLOIT Apache log4j RCE Attempt (tcp ldap) (CVE-2021-44228)",
+      "rule_id": "2034649",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 138304167
+    }
+  },
+  {
+    "alert": "09/28/2026-11:59:41.445000  [**] [1:2034700:1] ET EXPLOIT Apache log4j RCE Attempt - lower/upper TCP Bypass M2 (CVE-2021-44228) [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 192.168.3.5:50452 -> 192.168.2.5:8080 count=1",
+    "expected_routing": "other",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET EXPLOIT Apache log4j RCE Attempt - lower/upper TCP Bypass M2 (CVE-2021-44228)' on OTRF 'Log4Shell' (ATT&CK T1190, T1203); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/Log4Shell__pcap_log4shell_cve2021_44228_java_serialized/pcap_log4shell_cve2021_44228_java_serialized_2022-05-13045800.pcapng",
+      "archive": "datasets/compound/Log4Shell/pcap_log4shell_cve2021_44228_java_serialized.zip",
+      "otrf_id": "34861b31-60d9-4c2a-a25d-df929256004b",
+      "tool": "suricata",
+      "rule": "ET EXPLOIT Apache log4j RCE Attempt - lower/upper TCP Bypass M2 (CVE-2021-44228)",
+      "rule_id": "2034700",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 138164733
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:49.056Z\", \"event_type\": \"alert\", \"src_ip\": \"192.168.2.6\", \"src_port\": 38782, \"dest_ip\": \"192.168.2.5\", \"dest_port\": 8080, \"proto\": \"TCP\", \"app_proto\": \"http\", \"alert\": {\"signature_id\": 2034661, \"rev\": 2, \"signature\": \"ET HUNTING Possible Apache log4j RCE Attempt - Any Protocol TCP (CVE-2021-44228)\", \"category\": \"Misc activity\", \"severity\": 3}, \"count\": 1}",
+    "expected_routing": "other",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET HUNTING Possible Apache log4j RCE Attempt - Any Protocol TCP (CVE-2021-44228)' on OTRF 'Log4Shell' (ATT&CK T1190, T1203); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/Log4Shell__pcap_log4shell_cve2021_44228_jndi_reference/pcap_log4shell_cve2021_44228_jndi_reference_2022-05-11181020.pcap",
+      "archive": "datasets/compound/Log4Shell/pcap_log4shell_cve2021_44228_jndi_reference.zip",
+      "otrf_id": "34861b31-60d9-4c2a-a25d-df929256004b",
+      "tool": "suricata",
+      "rule": "ET HUNTING Possible Apache log4j RCE Attempt - Any Protocol TCP (CVE-2021-44228)",
+      "rule_id": "2034661",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 138304167
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:41.445Z\", \"event_type\": \"alert\", \"src_ip\": \"192.168.3.5\", \"src_port\": 50452, \"dest_ip\": \"192.168.2.5\", \"dest_port\": 8080, \"proto\": \"TCP\", \"app_proto\": \"http\", \"alert\": {\"signature_id\": 2034783, \"rev\": 3, \"signature\": \"ET HUNTING Possible Apache log4j RCE Attempt - Any Protocol TCP (Outbound) (CVE-2021-44228)\", \"category\": \"Misc activity\", \"severity\": 3}, \"count\": 1}",
+    "expected_routing": "other",
+    "expected_severity": "low",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (malicious): suricata 'ET HUNTING Possible Apache log4j RCE Attempt - Any Protocol TCP (Outbound) (CVE-2021-44228)' on OTRF 'Log4Shell' (ATT&CK T1190, T1203); signature fired on the capture of the simulated attack.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "net/Log4Shell__pcap_log4shell_cve2021_44228_java_serialized/pcap_log4shell_cve2021_44228_java_serialized_2022-05-13045800.pcapng",
+      "archive": "datasets/compound/Log4Shell/pcap_log4shell_cve2021_44228_java_serialized.zip",
+      "otrf_id": "34861b31-60d9-4c2a-a25d-df929256004b",
+      "tool": "suricata",
+      "rule": "ET HUNTING Possible Apache log4j RCE Attempt - Any Protocol TCP (Outbound) (CVE-2021-44228)",
+      "rule_id": "2034783",
+      "rule_author": "Emerging Threats (ET Open)",
+      "rule_licence": "BSD (ET Open SID 2000000-2099999)",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 1,
+      "time_offset_seconds": 138164733
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:39:57.456Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Powershell Local Email Collection\", \"level\": \"medium\", \"host\": \"UTICA.dmevals.local\", \"channel\": \"Microsoft-Windows-PowerShell/Operational\", \"event_id\": 4104, \"mitre\": [\"T1114.001\"], \"details\": {\"ScriptBlock\": \"# This code was derived from https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1114/Get-Inbox.ps1\\n\\nfunction psemail {\\n\\tAdd-type -assembly \\\"Microsoft.Office.Interop.Outlook\\\" | out-null\\n\\t$olFolders = \\\"Microsoft.Office.Interop.Outlook.olDefaultFolders\\\" -as [type]\\n\\t$outlook = new-objec…\"}, \"occurrences\": 2, \"rule_id\": \"00ba998e-b435-22a6-2dbf-e85e1918b8a7\", \"rule_author\": \"frack113\"}",
+    "expected_routing": "other",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Powershell Local Email Collection' on OTRF 'APT29 ATT&CK evaluation emulation, day 2 (host logs)' (ATT&CK T1204, T1059, T1547, T1546, T1003, T1558, T1021, T1047, T1114, T1070, T1027, T1087); rule technique matches the simulated T1003, T1021, T1027, T1047, T1059, T1070, T1087, T1114, T1204, T1546, T1547, T1558.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/apt29_evals_day2_manual",
+      "archive": "datasets/compound/apt29/day2/apt29_evals_day2_manual.zip",
+      "otrf_id": "",
+      "tool": "hayabusa",
+      "rule": "Powershell Local Email Collection",
+      "rule_id": "00ba998e-b435-22a6-2dbf-e85e1918b8a7",
+      "rule_author": "frack113",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 2,
+      "time_offset_seconds": 202188637
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:59:45.338Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"Suspicious Process By Web Server Process\", \"level\": \"high\", \"host\": \"MXS01.azsentinel.local\", \"channel\": \"Security\", \"event_id\": 4688, \"mitre\": [\"T1505.003\", \"T1190\"], \"details\": {\"Cmdline\": \"cmd /c whoami\", \"LID\": \"0x3e7\", \"PID\": 23392, \"Proc\": \"C:\\\\Windows\\\\System32\\\\cmd.exe\", \"User\": \"MXS01$\"}, \"occurrences\": 2, \"rule_id\": \"5bdc7357-a9e6-95bc-a7cd-c6e0022b3299\", \"rule_author\": \"Thomas Patzke, Florian Roth (Nextron Systems), Zach Stanford @svch0st, Tim Shelton, Nasreddine Bencherchali (Nextron Systems)\"}",
+    "expected_routing": "other",
+    "expected_severity": "high",
+    "expected_escalation": true,
+    "expected_workers_contains": [
+      "enrichment"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'Suspicious Process By Web Server Process' on OTRF 'Exchange ProxyLogon SSRF RCE Vuln POC' (ATT&CK T1505.003); rule technique matches the simulated T1505.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/proxylogon_ssrf_rce_poc",
+      "archive": "datasets/atomic/windows/persistence/host/proxylogon_ssrf_rce_poc.zip",
+      "otrf_id": "SDWIN-210314014019",
+      "tool": "hayabusa",
+      "rule": "Suspicious Process By Web Server Process",
+      "rule_id": "5bdc7357-a9e6-95bc-a7cd-c6e0022b3299",
+      "rule_author": "Thomas Patzke, Florian Roth (Nextron Systems), Zach Stanford @svch0st, Tim Shelton, Nasreddine Bencherchali (Nextron Systems)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 2,
+      "time_offset_seconds": 174910770
+    }
+  },
+  {
+    "alert": "{\"timestamp\": \"2026-09-28T11:40:32.471Z\", \"source\": \"Hayabusa/Sigma\", \"rule\": \"WebDav Client Execution Via Rundll32.EXE\", \"level\": \"medium\", \"host\": \"SCRANTON.dmevals.local\", \"channel\": \"Security\", \"event_id\": 4688, \"mitre\": [\"T1048.003\"], \"details\": {\"Cmdline\": \"rundll32.exe C:\\\\windows\\\\system32\\\\davclnt.dll,DavSetCookie 192.168.0.4 http://192.168.0.4/webdav\", \"LID\": \"0x3e5\", \"PID\": 3268, \"Proc\": \"C:\\\\Windows\\\\System32\\\\rundll32.exe\", \"User\": \"LOCAL SERVICE\"}, \"occurrences\": 5, \"rule_id\": \"f84fbf6b-fa1f-71fb-e2ca-4f67b2451fe6\", \"rule_author\": \"Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)\"}",
+    "expected_routing": "other",
+    "expected_severity": "medium",
+    "expected_escalation": false,
+    "expected_workers_contains": [
+      "enrichment",
+      "soc_analyst"
+    ],
+    "label_notes": "PROPOSED (malicious): hayabusa 'WebDav Client Execution Via Rundll32.EXE' on OTRF 'APT29 ATT&CK evaluation emulation, day 1 (host logs)' (ATT&CK T1204, T1059, T1071, T1548, T1003, T1021, T1560, T1041, T1113, T1115, T1005, T1083); rule tactic Exfil matches the simulation.",
+    "label_origin": "proposed",
+    "proposed_verdict": "malicious",
+    "source": {
+      "dataset": "host/apt29_evals_day1_manual",
+      "archive": "datasets/compound/apt29/day1/apt29_evals_day1_manual.zip",
+      "otrf_id": "",
+      "tool": "hayabusa",
+      "rule": "WebDav Client Execution Via Rundll32.EXE",
+      "rule_id": "f84fbf6b-fa1f-71fb-e2ca-4f67b2451fe6",
+      "rule_author": "Roberto Rodriguez (Cyb3rWard0g), OTR (Open Threat Research)",
+      "rule_licence": "DRL-1.1",
+      "data_licence": "MIT (OTRF Security-Datasets)",
+      "occurrences": 5,
+      "time_offset_seconds": 202206700
+    }
+  }
+]

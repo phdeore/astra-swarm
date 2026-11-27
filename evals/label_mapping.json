@@ -1,0 +1,76 @@
+{
+  "_comment": "Rules scripts/build_real_world_set.py uses to PROPOSE labels. Every proposed row is reviewed by a human before it enters evals/real_world_set.json. Rules are applied in the order written; the first match wins.",
+  "version": 1,
+  "reference_time": "2026-09-28T12:00:00Z",
+
+  "hayabusa": {
+    "level_names": {"crit": "critical", "high": "high", "med": "medium", "low": "low", "info": "informational"},
+    "severity_from_level": {"crit": "critical", "high": "high", "med": "medium", "low": "low", "info": "low"},
+    "skip_levels": ["info"],
+    "benign_levels": ["low"],
+    "tactic_codes": {
+      "TA0043": "Recon", "TA0042": "ResDev", "TA0001": "InitAccess", "TA0002": "Exec",
+      "TA0003": "Persis", "TA0004": "PrivEsc", "TA0005": "Stealth", "TA0006": "CredAccess",
+      "TA0007": "Disc", "TA0008": "LatMov", "TA0009": "Collect", "TA0011": "C2",
+      "TA0010": "Exfil", "TA0040": "Impact"
+    },
+    "identity_auth": {
+      "technique_prefixes": ["T1558", "T1550", "T1110", "T1098", "T1136", "T1078", "T1003.006", "T1556", "T1207", "T1484", "T1187", "T1557", "T1649", "T1606"],
+      "event_ids": [4624, 4625, 4648, 4672, 4720, 4722, 4724, 4725, 4726, 4728, 4732, 4738, 4740, 4756, 4765, 4766, 4768, 4769, 4771, 4776, 4794, 5136],
+      "channels": ["Microsoft-Windows-NTLM/Operational"]
+    },
+    "other": {
+      "technique_prefixes": ["T1005", "T1039", "T1114", "T1119", "T1213", "T1530", "T1020", "T1048", "T1567", "T1190"],
+      "untagged_channels": ["Sys", "System", "App", "Application"],
+      "untagged_title_substrings": ["Error", "Terminated", "Crash"]
+    },
+    "default_routing": "malware"
+  },
+
+  "suricata": {
+    "bsd_sid_range": [2000000, 2099999],
+    "severity_from_priority": {"1": "high", "2": "medium", "3": "low"},
+    "malware_signature_prefixes": ["ET MALWARE", "ET TROJAN", "ET CNC", "ET MOBILE_MALWARE"],
+    "malware_categories": ["A Network Trojan was detected", "Malware Command and Control Activity Detected"],
+    "other_signature_prefixes": ["ET WEB_SERVER", "ET WEB_SPECIFIC_APPS"],
+    "other_signature_substrings": ["Log4j", "CVE-2021-44228"],
+    "benign_categories": ["Not Suspicious Traffic", "Unknown Traffic", "Generic Protocol Command Decode"],
+    "benign_signature_substrings": ["Windows Update", "Microsoft Connection Test", "NTP", "Observed DNS Query to .cloud", "Possible External IP Lookup", "NTLM Session Setup", "NTLMv1 Session Setup"],
+    "default_routing": "network"
+  },
+
+  "dataset_overrides": {
+    "host/apt29_evals_day1_manual": {
+      "title": "APT29 ATT&CK evaluation emulation, day 1 (host logs)",
+      "techniques": ["T1204", "T1059", "T1071", "T1548", "T1003", "T1021", "T1560", "T1041", "T1113", "T1115", "T1005", "T1083"],
+      "tactics": ["TA0001", "TA0002", "TA0004", "TA0006", "TA0007", "TA0008", "TA0009", "TA0010", "TA0011"]
+    },
+    "host/apt29_evals_day2_manual": {
+      "title": "APT29 ATT&CK evaluation emulation, day 2 (host logs)",
+      "techniques": ["T1204", "T1059", "T1547", "T1546", "T1003", "T1558", "T1021", "T1047", "T1114", "T1070", "T1027", "T1087"],
+      "tactics": ["TA0001", "TA0002", "TA0003", "TA0004", "TA0005", "TA0006", "TA0007", "TA0008", "TA0009", "TA0011"]
+    },
+    "net/apt29": {
+      "title": "APT29 ATT&CK evaluation emulation (day 1/2 network captures)",
+      "techniques": ["T1071", "T1105", "T1021", "T1003", "T1041", "T1560"],
+      "tactics": ["TA0001", "TA0002", "TA0011", "TA0008", "TA0006", "TA0010"]
+    }
+  },
+
+  "workers": {
+    "always": ["enrichment"],
+    "itdr_for_routing": ["identity_auth"],
+    "soc_analyst_tactics": ["LatMov", "C2", "Exfil", "Impact"]
+  },
+
+  "selection": {
+    "classes": ["malware", "identity_auth", "network", "other"],
+    "candidates_per_class": 18,
+    "candidates_per_class_overrides": {"malware": 24},
+    "final_per_class": 15,
+    "benign_share": 0.4,
+    "max_rows_per_dataset": 2,
+    "max_alert_chars": 2000,
+    "key_fields_within_chars": 400
+  }
+}
