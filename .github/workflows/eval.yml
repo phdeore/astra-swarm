@@ -40,10 +40,18 @@ jobs:
         run: pytest -q
       - name: Run evaluation (replay, no API calls)
         run: python scripts/run_eval.py --mode replay
+      - name: Real-world evaluation (replay, report only)
+        # No thresholds until a baseline exists, and a failure here never fails the PR.
+        # Skips with a warning while evals/real_world_set.json or its cassettes are absent.
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        run: python scripts/run_eval.py --mode replay --dataset real_world
       - name: Upload eval report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: eval-report
-          path: eval_report.json
+          path: |
+            eval_report.json
+            evals/real_world_report.json
           if-no-files-found: ignore

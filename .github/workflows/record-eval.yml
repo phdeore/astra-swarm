@@ -5,14 +5,24 @@ name: Record eval cassettes
 #
 # Authentication is Workload Identity Federation — there is no API key anywhere:
 #   * the job runs in the `ci-eval` environment, which requires your approval;
-#   * GitHub issues an OIDC token whose subject is
-#     repo:<owner>/<repo>:environment:ci-eval, and the Anthropic federation rule
-#     accepts only that subject;
+#   * GitHub issues an OIDC token whose subject ends in :environment:ci-eval (this
+#     repo uses the immutable form repo:<owner>@<id>/<repo>@<id>:environment:ci-eval),
+#     and the Anthropic federation rule accepts only that subject;
 #   * the Anthropic SDK exchanges it for a short-lived token automatically.
 # Setup: see "Evaluation and CI" in README.md.
 
 on:
   workflow_dispatch:
+    inputs:
+      dataset:
+        description: Labelled set to record (see DATASETS in scripts/run_eval.py)
+        type: choice
+        options: [golden, real_world]
+        default: golden
+      shard:
+        description: "Record part of the set as N/M, e.g. 1/3 (empty = whole set)"
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -83,14 +93,24 @@ jobs:
             > "$RUNNER_TEMP/oidc-refresh.log" 2>&1 &
 
       - name: Record cassettes (real API calls)
-        run: python scripts/run_eval.py --mode record
+        id: record
+        env:
+          # Inputs go through env, never straight into the script, so they can't inject shell.
+          DATASET: ${{ inputs.dataset }}
+          SHARD: ${{ inputs.shard }}
+        run: |
+          name="eval-cassettes-${DATASET}"
+          if [ -n "$SHARD" ]; then name="${name}-shard-${SHARD/\//of}"; fi
+          echo "artifact=$name" >> "$GITHUB_OUTPUT"
+          python scripts/run_eval.py --mode record --dataset "$DATASET" ${SHARD:+--shard "$SHARD"}
 
       - name: Upload cassettes and report
-        if: always()
+        if: always() && steps.record.outputs.artifact != ''
         uses: actions/upload-artifact@v4
         with:
-          name: eval-cassettes
+          name: ${{ steps.record.outputs.artifact }}
           path: |
             evals/cassettes/
             eval_report.json
+            evals/*_report*.json
           if-no-files-found: warn
