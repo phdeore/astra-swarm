@@ -58,10 +58,24 @@ from forks. When a change alters prompts, tool output or graph flow, replay miss
 the job fails with exit code 2. Re-record, review and commit the cassettes:
 
     gh workflow run record-eval.yml --ref <your-branch>   # then approve it in the Actions tab
-    gh run download <run-id> -n eval-cassettes              # puts evals/cassettes/ in place
+    gh run download <run-id> -n eval-cassettes-golden       # puts evals/cassettes/ in place
     git add evals/cassettes && git commit -m "Re-record eval cassettes"
 
 Locally: `python scripts/run_eval.py` (replay, default), `--mode record`, or `--mode live`.
+
+**Datasets.** `--dataset golden` (default) is the 20-alert hand-written set and the only
+one that gates PRs. `--dataset real_world` (`evals/real_world_set.json`, built from public
+detection data) has its own cassettes (`evals/cassettes/real_world/`), auth-log fixture
+and report (`evals/real_world_report.json`). It reports without thresholds, and the PR job
+never fails on it. Every report includes 95% bootstrap intervals, a per-class breakdown
+and a routing confusion matrix.
+
+A recording can be split across jobs with `--shard N/M`, which runs every M-th alert. Each
+alert has its own cassette, so the shards combine. A sharded run never gates; replay the
+whole set afterwards for the real scorecard:
+
+    gh workflow run record-eval.yml -f dataset=real_world -f shard=1/2   # and shard=2/2
+    gh run download <run-id> -n eval-cassettes-real_world-shard-1of2
 
 ### One-time setup for recording
 
