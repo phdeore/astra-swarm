@@ -1,0 +1,1742 @@
+[
+  {
+    "ts": "2026-09-28T11:42:04.472Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:42:04.476Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:42:04.480Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:42:04.481Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:42:05.488Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:43:00.084Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.6",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "SCRANTON.dmevals.local",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:43:00.086Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:43:01.076Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4768"
+  },
+  {
+    "ts": "2026-09-28T11:43:01.076Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:43:21.262Z",
+    "user": "pbeesly",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:43:21.263Z",
+    "user": "pbeesly",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:43:21.264Z",
+    "user": "pbeesly",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:43:22.294Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.6",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4768"
+  },
+  {
+    "ts": "2026-09-28T11:43:22.294Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.6",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:44:06.666Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4768"
+  },
+  {
+    "ts": "2026-09-28T11:44:06.666Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:44:06.674Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.6",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "SCRANTON.dmevals.local",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:44:06.674Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:44:27.927Z",
+    "user": "pbeesly",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:44:27.928Z",
+    "user": "pbeesly",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:44:27.930Z",
+    "user": "pbeesly",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:44:27.944Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.6",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4768"
+  },
+  {
+    "ts": "2026-09-28T11:44:27.944Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.6",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:45:10.157Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.6",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "SCRANTON.dmevals.local",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:45:10.158Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:45:10.159Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4768"
+  },
+  {
+    "ts": "2026-09-28T11:45:10.160Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:45:31.454Z",
+    "user": "pbeesly",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:45:31.455Z",
+    "user": "pbeesly",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:45:31.457Z",
+    "user": "pbeesly",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:45:31.469Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.6",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4768"
+  },
+  {
+    "ts": "2026-09-28T11:45:31.470Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.6",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:46:02.490Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.6",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:46:20.242Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "PRD01.pandalab.com",
+    "reason": "event 4625, logon type 11, status 0xc000006d"
+  },
+  {
+    "ts": "2026-09-28T11:46:20.266Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "PRD01.pandalab.com",
+    "reason": "event 4625, logon type 2, status 0xc000006d"
+  },
+  {
+    "ts": "2026-09-28T11:46:24.393Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.6",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "SCRANTON.dmevals.local",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:46:24.395Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:46:24.396Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4768"
+  },
+  {
+    "ts": "2026-09-28T11:46:24.396Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:46:25.699Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "PRD01.pandalab.com",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:46:25.699Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "PRD01.pandalab.com",
+    "reason": "event 4624, logon type 11"
+  },
+  {
+    "ts": "2026-09-28T11:46:25.699Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "PRD01.pandalab.com",
+    "reason": "event 4624, logon type 11"
+  },
+  {
+    "ts": "2026-09-28T11:46:36.819Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MKT01.pandalab.com",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:46:36.820Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MKT01.pandalab.com",
+    "reason": "event 4624, logon type 11"
+  },
+  {
+    "ts": "2026-09-28T11:46:36.820Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MKT01.pandalab.com",
+    "reason": "event 4624, logon type 11"
+  },
+  {
+    "ts": "2026-09-28T11:46:45.607Z",
+    "user": "pbeesly",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:46:45.608Z",
+    "user": "pbeesly",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:46:45.610Z",
+    "user": "pbeesly",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NASHUA.dmevals.local",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:46:45.621Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.6",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4768"
+  },
+  {
+    "ts": "2026-09-28T11:46:45.623Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.6",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:49:29.911Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MKT01.pandalab.com",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:49:29.911Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MKT01.pandalab.com",
+    "reason": "event 4624, logon type 11"
+  },
+  {
+    "ts": "2026-09-28T11:49:29.911Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MKT01.pandalab.com",
+    "reason": "event 4624, logon type 11"
+  },
+  {
+    "ts": "2026-09-28T11:49:41.840Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MKT01.pandalab.com",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:49:41.840Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MKT01.pandalab.com",
+    "reason": "event 4624, logon type 11"
+  },
+  {
+    "ts": "2026-09-28T11:49:41.840Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MKT01.pandalab.com",
+    "reason": "event 4624, logon type 11"
+  },
+  {
+    "ts": "2026-09-28T11:49:55.908Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MKT01.pandalab.com",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:49:55.908Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MKT01.pandalab.com",
+    "reason": "event 4624, logon type 11"
+  },
+  {
+    "ts": "2026-09-28T11:49:55.908Z",
+    "user": "pedro.gustavo",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MKT01.pandalab.com",
+    "reason": "event 4624, logon type 11"
+  },
+  {
+    "ts": "2026-09-28T11:52:27.613Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4776"
+  },
+  {
+    "ts": "2026-09-28T11:52:27.897Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4768"
+  },
+  {
+    "ts": "2026-09-28T11:52:27.897Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:52:27.897Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:52:27.898Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:52:28.426Z",
+    "user": "pbeesly",
+    "src_ip": "10.0.1.4",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "NEWYORK.dmevals.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:58:55.119Z",
+    "user": "sbeavers",
+    "src_ip": "172.18.39.6",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:58:56.501Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:58:56.501Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:58:57.749Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4625, logon type 11, status 0xc000010b"
+  },
+  {
+    "ts": "2026-09-28T11:58:57.750Z",
+    "user": "pedro",
+    "src_ip": "PEDRO01",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4776"
+  },
+  {
+    "ts": "2026-09-28T11:58:57.755Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:58:57.755Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:58:57.755Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:04.772Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4625, logon type 11, status 0xc000010b"
+  },
+  {
+    "ts": "2026-09-28T11:59:04.774Z",
+    "user": "pedro",
+    "src_ip": "PEDRO01",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4776, status 0xc000006a"
+  },
+  {
+    "ts": "2026-09-28T11:59:04.774Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4625, logon type 2, status 0xc000006d"
+  },
+  {
+    "ts": "2026-09-28T11:59:06.951Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4625, logon type 11, status 0xc000010b"
+  },
+  {
+    "ts": "2026-09-28T11:59:06.953Z",
+    "user": "pedro",
+    "src_ip": "PEDRO01",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4776"
+  },
+  {
+    "ts": "2026-09-28T11:59:06.963Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:59:06.963Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:06.963Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:07.329Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4625, logon type 11, status 0xc000010b"
+  },
+  {
+    "ts": "2026-09-28T11:59:07.330Z",
+    "user": "pedro",
+    "src_ip": "PEDRO01",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4776"
+  },
+  {
+    "ts": "2026-09-28T11:59:07.336Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:59:07.336Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:07.337Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:12.210Z",
+    "user": "lrodriguez",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION5.theshire.local",
+    "reason": "event 4625, logon type 2, status 0xc000006d"
+  },
+  {
+    "ts": "2026-09-28T11:59:12.214Z",
+    "user": "sysmonsvc",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION5.theshire.local",
+    "reason": "event 4625, logon type 2, status 0xc000006d"
+  },
+  {
+    "ts": "2026-09-28T11:59:12.215Z",
+    "user": "sbeavers",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION5.theshire.local",
+    "reason": "event 4625, logon type 2, status 0xc000006d"
+  },
+  {
+    "ts": "2026-09-28T11:59:12.219Z",
+    "user": "pbeesly",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION5.theshire.local",
+    "reason": "event 4625, logon type 2, status 0xc000006d"
+  },
+  {
+    "ts": "2026-09-28T11:59:12.357Z",
+    "user": "lrodriguez",
+    "src_ip": "WORKSTATION5",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4776, status 0xc000006a"
+  },
+  {
+    "ts": "2026-09-28T11:59:12.370Z",
+    "user": "sysmonsvc",
+    "src_ip": "WORKSTATION5",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4776, status 0xc000006a"
+  },
+  {
+    "ts": "2026-09-28T11:59:12.371Z",
+    "user": "sbeavers",
+    "src_ip": "WORKSTATION5",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4776, status 0xc000006a"
+  },
+  {
+    "ts": "2026-09-28T11:59:12.381Z",
+    "user": "pbeesly",
+    "src_ip": "WORKSTATION5",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4776, status 0xc000006a"
+  },
+  {
+    "ts": "2026-09-28T11:59:12.532Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION6.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:12.532Z",
+    "user": "pgustavo",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION7.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:12.651Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION6.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:13.848Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION6.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:13.852Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION6.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:13.888Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:13.889Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:13.889Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:14.198Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:14.224Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:14.229Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:14.261Z",
+    "user": "pgustavo",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION6.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:14.311Z",
+    "user": "pgustavo",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:14.603Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:15.595Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4625, logon type 11, status 0xc000010b"
+  },
+  {
+    "ts": "2026-09-28T11:59:15.597Z",
+    "user": "pedro",
+    "src_ip": "PEDRO01",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4776"
+  },
+  {
+    "ts": "2026-09-28T11:59:15.603Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:59:15.603Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:15.604Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:16.015Z",
+    "user": "pgustavo",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION6.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:16.344Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:16.653Z",
+    "user": "pgustavo",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION7.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:16.743Z",
+    "user": "pgustavo",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION6.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:16.810Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION6.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:16.824Z",
+    "user": "pgustavo",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION7.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:17.439Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4625, logon type 11, status 0xc000010b"
+  },
+  {
+    "ts": "2026-09-28T11:59:17.441Z",
+    "user": "pedro",
+    "src_ip": "PEDRO01",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4776"
+  },
+  {
+    "ts": "2026-09-28T11:59:17.447Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:59:17.448Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:17.448Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:19.457Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4625, logon type 11, status 0xc000010b"
+  },
+  {
+    "ts": "2026-09-28T11:59:19.458Z",
+    "user": "pedro",
+    "src_ip": "PEDRO01",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4776"
+  },
+  {
+    "ts": "2026-09-28T11:59:19.465Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:59:19.465Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:19.465Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:21.904Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:21.904Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:22.794Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:22.795Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:23.852Z",
+    "user": "pgustavo",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION7.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:24.114Z",
+    "user": "pgustavo",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION6.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:24.622Z",
+    "user": "pgustavo",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:24.623Z",
+    "user": "pgustavo",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:25.163Z",
+    "user": "pgustavo",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:25.753Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION6.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:27.817Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:27.818Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:27.819Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:28.287Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4625, logon type 11, status 0xc000010b"
+  },
+  {
+    "ts": "2026-09-28T11:59:28.288Z",
+    "user": "pedro",
+    "src_ip": "PEDRO01",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4776"
+  },
+  {
+    "ts": "2026-09-28T11:59:28.295Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:59:28.295Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:28.295Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:28.670Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4625, logon type 11, status 0xc000010b"
+  },
+  {
+    "ts": "2026-09-28T11:59:28.672Z",
+    "user": "pedro",
+    "src_ip": "PEDRO01",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4776"
+  },
+  {
+    "ts": "2026-09-28T11:59:28.678Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:59:28.678Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:28.679Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:28.962Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:28.963Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:28.963Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:34.922Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:34.922Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:34.922Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:35.127Z",
+    "user": "pgustavo",
+    "src_ip": "-",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION6.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:35.147Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:41.085Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "fail",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4625, logon type 11, status 0xc000010b"
+  },
+  {
+    "ts": "2026-09-28T11:59:41.087Z",
+    "user": "pedro",
+    "src_ip": "PEDRO01",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4776"
+  },
+  {
+    "ts": "2026-09-28T11:59:41.095Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4648"
+  },
+  {
+    "ts": "2026-09-28T11:59:41.096Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:41.096Z",
+    "user": "pedro",
+    "src_ip": "::1",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "Pedro01",
+    "reason": "event 4624, logon type 2"
+  },
+  {
+    "ts": "2026-09-28T11:59:43.001Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:43.003Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:43.005Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:43.007Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:46.576Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4769"
+  },
+  {
+    "ts": "2026-09-28T11:59:46.856Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION6.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:47.585Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "MORDORDC.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:49.109Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION6.theshire.local",
+    "reason": "event 4624, logon type 3"
+  },
+  {
+    "ts": "2026-09-28T11:59:52.238Z",
+    "user": "pgustavo",
+    "src_ip": "172.18.39.5",
+    "geo": "internal (lab network)",
+    "result": "success",
+    "mfa_challenge": false,
+    "device_id": "WORKSTATION6.theshire.local",
+    "reason": "event 4624, logon type 3"
+  }
+]

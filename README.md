@@ -68,7 +68,9 @@ one that gates PRs. `--dataset real_world` (`evals/real_world_set.json`, built f
 detection data) has its own cassettes (`evals/cassettes/real_world/`), auth-log fixture
 and report (`evals/real_world_report.json`). It reports without thresholds, and the PR job
 never fails on it. Every report includes 95% bootstrap intervals, a per-class breakdown
-and a routing confusion matrix.
+and a routing confusion matrix. How that set is built from OTRF lab data with Hayabusa and
+Suricata, its licences and the label review are in
+[evals/real_world_SOURCES.md](evals/real_world_SOURCES.md).
 
 A recording can be split across jobs with `--shard N/M`, which runs every M-th alert. Each
 alert has its own cassette, so the shards combine. A sharded run never gates; replay the
